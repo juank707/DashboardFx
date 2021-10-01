@@ -1,0 +1,46 @@
+
+- !!io.github.gleidson28.global.plugin.Module
+  name      : professional
+  title     : Professional
+  directory : professional
+  fxml      : professional_index.fxml
+
+
+- !!io.github.gleidson28.global.plugin.Module
+  name: register
+  title: User Register
+  directory: registers
+  fxml: register.fxml
+
+- !!io.github.gleidson28.global.plugin.Module
+  name      : professional_register
+  title     : Professional
+  directory : professional
+  fxml      : professional_register.fxml
+
+- !!io.github.gleidson28.global.plugin.Module
+  name      : avatars_content
+  title     : Product Register
+  directory : user
+  fxml      : avatars_content.fxml
+
+
+
+
+- !!io.github.gleidson28.global.plugin.Module
+  name      : layout
+  title     : Layout
+  directory : layout
+  fxml      : layout.fxml
+
+
+- !!io.github.gleidson28.global.plugin.Module
+  name      : controls
+  title     : Controls
+  directory : controls
+  views :
+    - name : button
+      title : Button
+      directory : button
+      fxml : button.fxml
+

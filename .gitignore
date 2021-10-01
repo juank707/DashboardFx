@@ -6,3 +6,6 @@ annotation.txt
 scenicView.properties
 dashboard.properties
 DashboardFx.iml
+/.gradle/
+/gradle/
+/lib/

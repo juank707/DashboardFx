@@ -1,0 +1,50 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+mainClassName = 'Start'
+
+compileJava.options.encoding = "UTF-8"
+
+group 'io.github.gleidson28'
+version '2.2.1'
+
+repositories {
+    mavenCentral()
+}
+
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'io.github.gleidson28.Start'
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+dependencies {
+    implementation 'org.jetbrains:annotations:20.1.0'
+    compile group: 'org.yaml', name: 'snakeyaml', version: '1.26'
+    compile 'io.github.typhon0:AnimateFX:1.2.1'
+
+    compile 'io.github.Gleidson28:GNAvatarView:1.0.5'
+
+    implementation files('vendor/GNControls-1.1.8.jar')
+
+    implementation 'org.jetbrains:annotations:19.0.0'
+    implementation files('vendor/GNDecorator-0.3.3.jar')
+    implementation files('vendor/mysql-connector-java-8.0.14.jar')
+    implementation files('vendor/scenicView.jar')
+    implementation files('vendor/controlsfx-8.40.17.jar')
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+test {
+    useJUnitPlatform()
+}
