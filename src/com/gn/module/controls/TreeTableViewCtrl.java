@@ -56,8 +56,40 @@ public class TreeTableViewCtrl implements Initializable {
 //        second.getChildren().add(p1)
 
 //        root.getChildren().add(second);
+        treeTableView.setShowRoot(false);
 
-        root.getChildren().addAll(p1, p2, p3, p4);
+        root.getChildren().addAll(p1, p2);
+
+        Button btn = new Button("Welcome");
+        btn.setMinHeight(40);
+
+        p3.setGraphic(btn);
+
+        p1.getChildren().addAll(p3, p4);
+
+        c1.setCellFactory(new Callback<TreeTableColumn<Person, String>, TreeTableCell<Person, String>>() {
+            @Override
+            public TreeTableCell<Person, String> call(TreeTableColumn<Person, String> param) {
+                return new TreeTableCell(){
+                    @Override
+                    protected void updateItem(Object item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if(!empty){
+                            setItem(item);
+                            setOnMouseClicked(event -> {
+                                this.setMinHeight(200);
+                                this.getTreeTableRow().requestLayout();
+                                this.getTreeTableRow().applyCss();
+                                this.getTreeTableRow().requestFocus();
+                            });
+                        } else {
+                            setItem(null);
+                        }
+                    }
+                };
+            }
+        });
+
 
         c1.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Person, String>, ObservableValue<String>>() {
             @Override

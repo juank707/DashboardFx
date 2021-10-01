@@ -20,7 +20,7 @@ package com.gn;
 import com.gn.global.plugin.GridFxOld;
 import com.gn.global.plugin.LoadViews;
 import com.gn.global.plugin.UserDetail;
-import io.github.gleidson28.test.components.GNDecoratorT;
+import io.github.gleidson28.decorator.GNDecorator;
 import javafx.application.Application;
 import javafx.application.HostServices;
 import javafx.application.Platform;
@@ -28,6 +28,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import org.scenicview.ScenicView;
 
 import java.io.IOException;
 
@@ -42,7 +43,7 @@ public class App extends Application {
     private float increment = 0;
     private float progress = 0;
 
-    private static final GNDecoratorT decorator = new GNDecoratorT();
+    private static final GNDecorator decorator = new GNDecorator();
 //    private static final Scene scene = decorator.getScene();
 
     public static ObservableList<String> stylesheets;
@@ -52,7 +53,7 @@ public class App extends Application {
     private double minWidth = 350;
     private double minHeight = 500;
 
-    public static GNDecoratorT getDecorator() {
+    public static GNDecorator getDecorator() {
         return decorator;
     }
 
@@ -120,7 +121,8 @@ public class App extends Application {
         LoadViews load = new LoadViews();
         load.start();
 
-//        ScenicView.show(decorator.getScene());
+        decorator.testWithScenicView();
+//        ScenicView.show(decorator);
     }
 
     public static void main(String[] args) {

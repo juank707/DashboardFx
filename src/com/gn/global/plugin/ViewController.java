@@ -25,10 +25,10 @@ import javafx.scene.Parent;
  */
 public class ViewController {
 
-    private final View        view;
+    private final Module view;
     private final FXMLLoader  loader;
 
-    ViewController(View view, FXMLLoader loader){
+    ViewController(Module view, FXMLLoader loader){
         this.view = view;
         this.loader = loader;
     }
@@ -41,7 +41,7 @@ public class ViewController {
         return view.getName();
     }
 
-    public View getView() {
+    public Module getView() {
         return view;
     }
 

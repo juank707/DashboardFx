@@ -16,6 +16,8 @@
  */
 package com.gn.module.main;
 
+import com.gn.DashApp;
+import io.github.gleidson28.decorator.GNDecorator;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ToggleButton;
@@ -80,15 +82,15 @@ public class SettingsController implements Initializable {
 
     private void changeTheme(boolean light){
 
-//        if(light){
-//            App.getDecorator().initTheme(GNDecorator.Theme.DEFAULT);
-//            App.getDecorator().getScene().getStylesheets().removeAll(getClass().getResource("/com/gn/theme/css/dark.css").toExternalForm());
-//        }
-//        else {
-////            App.getDecorator().getScene().setUserAgentStylesheet(getClass().getResource("/com/gn/theme/css/dark.css").toExternalForm());
-//            App.getDecorator().initTheme(GNDecorator.Theme.DARK);
-//            App.getDecorator().getScene().getStylesheets().addAll(getClass().getResource("/com/gn/theme/css/dark.css").toExternalForm());
-//
-//        }
+        if(light){
+            DashApp.decorator.setDark(false);
+            DashApp.decorator.getStylesheets().removeAll(getClass().getResource("/com/gn/theme/css/dark.css").toExternalForm());
+        }
+        else {
+//            App.getDecorator().getScene().setUserAgentStylesheet(getClass().getResource("/com/gn/theme/css/dark.css").toExternalForm());
+            DashApp.decorator.setDark(true);
+            DashApp.decorator.getStylesheets().addAll(getClass().getResource("/com/gn/theme/css/dark.css").toExternalForm());
+
+        }
     }
 }

@@ -410,3 +410,8 @@
 .gn-bar .menuBar .container .menu .label:hover {
     -fx-background-color : red;
 }
+
+.tree-table-view:row-selection:constrained-resize .virtual-flow .clipped-container .sheet .tree-table-row-cell:filled:odd:expanded {
+
+    -fx-pref-height : 40px;
+}

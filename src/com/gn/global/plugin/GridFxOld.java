@@ -16,7 +16,7 @@
  */
 package com.gn.global.plugin;
 
-import io.github.gleidson28.test.components.GNDecoratorT;
+import io.github.gleidson28.decorator.GNDecorator;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.HPos;
@@ -47,7 +47,7 @@ public class GridFxOld {
     // The stage for listen
     private static Stage stage;
 
-    private static GNDecoratorT decorator;
+    private static GNDecorator decorator;
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
@@ -63,7 +63,7 @@ public class GridFxOld {
         GridFxOld.stage = stage;
     }
 
-    public static void addDecorator(GNDecoratorT decorator){
+    public static void addDecorator(GNDecorator decorator){
         
     }
 

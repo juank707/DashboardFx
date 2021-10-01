@@ -123,7 +123,9 @@ public class DataFilterHandler<E extends Model> {
             if (c.next()) {
                 if (table.getItems().size() < entries.getValue()) {
                     pagination();
-                } else pagination(maxPages, entries.getValue());
+                } else {
+                    pagination(maxPages, entries.getValue());
+                }
             }
         });
 
@@ -277,6 +279,8 @@ public class DataFilterHandler<E extends Model> {
 //            pagination.setVisible(true);
 //        }
 
+        System.out.println("def = " + deff);
+
         if(maxPages < deff){
             pagination.setVisible(true);
         } else {
@@ -293,10 +297,12 @@ public class DataFilterHandler<E extends Model> {
         first.setPrefWidth(maxPages < deff ? 0D : Region.USE_COMPUTED_SIZE);
         first.setMinWidth(maxPages < deff ? 0D : Region.USE_COMPUTED_SIZE);
 
-        pagination.setPrefWidth((pagination.getMaxPageIndicatorCount() + 2) * 30D);
 
         removePagination(maxPages < 2);
-        pagination.setMaxPageIndicatorCount(maxPages < deff ? maxPages : deff);
+        pagination.setMaxPageIndicatorCount(Math.min(maxPages, deff));
+
+        pagination.setPrefWidth((pagination.getMaxPageIndicatorCount() + 2) * 30D);
+
     }
 
     // For hacking

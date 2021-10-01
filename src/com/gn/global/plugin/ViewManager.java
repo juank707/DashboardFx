@@ -17,7 +17,7 @@
 package com.gn.global.plugin;
 
 import com.gn.global.exceptions.NavigationException;
-import io.github.gleidson28.test.components.GNDecoratorT;
+import io.github.gleidson28.decorator.GNDecorator;
 import javafx.scene.control.ScrollPane;
 
 import java.util.HashMap;
@@ -59,7 +59,7 @@ public enum  ViewManager {
         return SCREENS.get(view);
     }
 
-    public void navigate(GNDecoratorT decorator, String name) throws NavigationException {
+    public void navigate(GNDecorator decorator, String name) throws NavigationException {
 
 
         if(get(name) == null)

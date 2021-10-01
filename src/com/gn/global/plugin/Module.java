@@ -24,13 +24,13 @@ import java.util.StringJoiner;
  * Create on  29/03/2020
  */
 @SuppressWarnings("unused")
-public class View {
+public class Module {
 
     private String          title;
     private String          name;
     private String          moduleName;
     private String          fxmlFile;
-    private List<View>     views;
+    private List<Module>      views;
 
     public String getTitle() {
         return title;
@@ -64,17 +64,17 @@ public class View {
         this.fxmlFile = fxmlFile;
     }
 
-    public List<View> getViews() {
+    public List<Module> getViews() {
         return views;
     }
 
-    public void setViews(List<View> views) {
+    public void setViews(List<Module> views) {
         this.views = views;
     }
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", View.class.getSimpleName() + "[", "]")
+        return new StringJoiner(", ", Module.class.getSimpleName() + "[", "]")
                 .add("title='" + title + "'")
                 .add("name='" + name + "'")
                 .add("fxmlFile='" + fxmlFile + "'")

@@ -16,7 +16,7 @@
  */
 package com.gn.global.plugin;
 
-import io.github.gleidson28.test.components.GNDecoratorT;
+import io.github.gleidson28.decorator.GNDecorator;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.HPos;
@@ -44,7 +44,7 @@ public class GridFX {
     // Simple log
     private static boolean log = false;
 
-    private static GNDecoratorT decorator;
+    private static GNDecorator decorator;
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
@@ -56,7 +56,7 @@ public class GridFX {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
 
-    public static void addDecorator(GNDecoratorT decorator){
+    public static void addDecorator(GNDecorator decorator){
         GridFX.decorator = decorator;
     }
 

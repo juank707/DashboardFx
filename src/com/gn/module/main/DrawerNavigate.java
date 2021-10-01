@@ -46,20 +46,15 @@ public class DrawerNavigate implements Initializable  {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        DrawerController drawerController = new DrawerController( drawer );
+        new DrawerController( drawer );
 
-        search.setOnMouseClicked(event -> {
-            new Shake(clear).play();
-        });
-
-        name.setOnMouseEntered(event ->{
-            new Shake(name).play();
-        });
+        search.setOnMouseClicked(event -> new Shake(clear).play());
+        name.setOnMouseEntered(event -> new Shake(name).play());
 
     }
 
     @FXML
-    private void clearText(){
+    private void clearText() {
         search.clear();
     }
 
@@ -105,7 +100,7 @@ public class DrawerNavigate implements Initializable  {
 
     @FXML
     private void goCheckBox(){
-        updateViewDetails("checkbox");
+        updateViewDetails("check-box");
     }
 
     @FXML
@@ -115,12 +110,12 @@ public class DrawerNavigate implements Initializable  {
 
     @FXML
     private void goColorPicker(){
-        updateViewDetails("colorpicker");
+        updateViewDetails("color-picker");
     }
 
     @FXML
     private void goChoiceBox(){
-        updateViewDetails("choicebox");
+        updateViewDetails("choice-box");
     }
 
     @FXML
@@ -200,22 +195,22 @@ public class DrawerNavigate implements Initializable  {
 
     @FXML
     private void goPieChart(){
-        updateViewDetails("piechart");
+        updateViewDetails("pie-chart");
     }
 
     @FXML
     private void goStackedBarChart(){
-        updateViewDetails("stackedbarchart");
+        updateViewDetails("stacked-bar-chart");
     }
 
     @FXML
     private void goStackedAreaChart(){
-        updateViewDetails("stackedareachart");
+        updateViewDetails("stacked-area-chart");
     }
 
     @FXML
     private void goScatterChart(){
-        updateViewDetails("scatterchart");
+        updateViewDetails("scatter-chart");
     }
 
     @FXML
@@ -225,22 +220,22 @@ public class DrawerNavigate implements Initializable  {
 
     @FXML
     private void goAreaChart(){
-        updateViewDetails("areachart");
+        updateViewDetails("area-chart");
     }
 
     @FXML
     private void goBarChart(){
-        updateViewDetails("barchart");
+        updateViewDetails("bar-chart");
     }
 
     @FXML
     private void goBubbleChart(){
-        updateViewDetails("bubblechart");
+        updateViewDetails("bubble-chart");
     }
 
     @FXML
     private void goLineChart(){
-        updateViewDetails("linechart");
+        updateViewDetails("line-chart");
     }
 
     @FXML
@@ -270,7 +265,7 @@ public class DrawerNavigate implements Initializable  {
 
     @FXML
     private void goAnimateButtons(){
-        updateViewDetails("animatedbutton");
+        updateViewDetails("animated-button");
     }
 
     @FXML
