@@ -1410,12 +1410,17 @@ Text {
     -fx-background-insets: 0;
 }
 
+.list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:filled:selected:focused,
 .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:selected {
     -fx-text-fill : white;
 }
 
 .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:selected:hover {
     -fx-text-fill : -text-color;
+}
+
+.list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:focused .label .text {
+    -fx-fill : white;
 }
 
 .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:selected:hover .label .text {

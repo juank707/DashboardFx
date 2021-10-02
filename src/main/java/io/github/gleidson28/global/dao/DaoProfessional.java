@@ -60,13 +60,13 @@ public final class DaoProfessional extends AbstractDao<Professional> {
 
         try {
             connect();
-            PreparedStatement prepare = prepare("insert into professional(name, lastName, avatar, price, status) values(?, ?, ?, ?, ?);");
+            PreparedStatement prepare = prepare("insert into professional(name, lastName, avatar, price, status, rating) values(?, ?, ?, ?, ?, ?);");
             prepare.setString(1, professional.getName());
             prepare.setString(2, professional.getLastName());
             prepare.setString(3, professional.getAvatar().getPath());
             prepare.setBigDecimal(4, professional.getPrice());
-
             prepare.setString(5, String.valueOf(Status.convertChar(professional.getStatus())));
+            prepare.setFloat(6, professional.getRating());
 
             prepare.execute();
 
@@ -84,12 +84,13 @@ public final class DaoProfessional extends AbstractDao<Professional> {
 
             connect();
             PreparedStatement prepare = prepare("update professional set name = ?, avatar = ?, " +
-                    "price = ?, teams = ? where id = " + professional.getId() + "; ");
+                    "price = ?, teams = ?, rating = ? where id = " + professional.getId() + "; ");
 
             prepare.setString(1, professional.getName());
             prepare.setString(2, professional.getAvatar().getPath());
             prepare.setBigDecimal(3, professional.getPrice());
             prepare.setString(4, professional.getTeams());
+            prepare.setFloat(5, professional.getRating());
 
             prepare.execute();
 

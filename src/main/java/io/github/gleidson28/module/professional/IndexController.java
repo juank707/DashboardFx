@@ -97,6 +97,12 @@ public class IndexController implements Initializable, FluidView {
     @FXML private TableColumn<Professional, String>      columnLocation;
     @FXML private TableColumn<Professional, String>      columnEmail;
 
+    @FXML private GridPane title;
+    @FXML private HBox     boxControls;
+    @FXML private HBox     boxSearch;
+    @FXML private HBox     boxEntries;
+
+
     @FXML private VBox content;
     @FXML private HBox boxPagination;
 
@@ -170,7 +176,7 @@ public class IndexController implements Initializable, FluidView {
 
 
         rangeFilter.bind(Bindings.createObjectBinding( () ->
-                        professional -> price.getLowValue() <= professional.getPrice().doubleValue() &&  professional.getPrice().doubleValue() <= price.getHighValue(),
+                        professional -> professional.getPrice() != null && price.getLowValue() <= professional.getPrice().doubleValue() &&  professional.getPrice().doubleValue() <= price.getHighValue(),
                 price.lowValueProperty(), price.highValueProperty()
         ));
 
@@ -189,9 +195,7 @@ public class IndexController implements Initializable, FluidView {
                 nameFilter, rangeFilter, ratingFilter, statusFilter ));
     }
 
-
-    @Override
-    public void onEnter() {
+    private void configTable() {
         popupRoot = createRootPopup();
 
         new FadeInLeft(loader).play();
@@ -200,25 +204,25 @@ public class IndexController implements Initializable, FluidView {
 
 
         Task<ObservableList<Professional>> load = professionalPresenter.getTask();
-            RotateTransition rotate = new RotateTransition(Duration.seconds(10), loader);
+        RotateTransition rotate = new RotateTransition(Duration.seconds(10), loader);
 
-            rotate.setNode(loader);
-            rotate.setAutoReverse(true);
+        rotate.setNode(loader);
+        rotate.setAutoReverse(true);
 
-            rotate.setByAngle(180);
-            rotate.setDelay(Duration.seconds(0));
-            rotate.setRate(3);
-            rotate.setCycleCount(-1);
-            rotate.play();
+        rotate.setByAngle(180);
+        rotate.setDelay(Duration.seconds(0));
+        rotate.setRate(3);
+        rotate.setCycleCount(-1);
+        rotate.play();
 
-            FadeTransition fadeTransition = new FadeTransition();
+        FadeTransition fadeTransition = new FadeTransition();
 
-            fadeTransition.setNode(loader);
+        fadeTransition.setNode(loader);
 
-            fadeTransition.setFromValue(1.0);
-            fadeTransition.setToValue(0.0);
+        fadeTransition.setFromValue(1.0);
+        fadeTransition.setToValue(0.0);
 
-            load.setOnSucceeded(event -> new FadeOutLeft(loader).play());
+        load.setOnSucceeded(event -> new FadeOutLeft(loader).play());
 
 //            Thread thread = new Thread(load);
 //            thread.setDaemon(true);
@@ -330,60 +334,70 @@ public class IndexController implements Initializable, FluidView {
             }
         });
 
-        Service<ObservableList<Professional>> service = new Service<ObservableList<Professional>>() {
-            @Override
-            protected Task<ObservableList<Professional>> createTask() {
-                return load;
-            }
-        };
-        service.start();
+        Thread thread = new Thread(load);
+        thread.setName("Loading data table [Professional]");
+        thread.setPriority(1);
+        thread.start();
+
+    }
+
+    @Override
+    public void onEnter() {
+        if(filteredItems.isEmpty()) {
+            configTable();
+        }
 
         App.INSTANCE.getDecorator().widthProperty().addListener(resizeTable);
         App.INSTANCE.getDecorator().widthProperty().addListener(resizeFields);
         App.INSTANCE.getDecorator().widthProperty().addListener(resizeTitles);
     }
 
-    ChangeListener<Number> resizeTitles = new ChangeListener<Number>() {
-        @Override
-        public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-            if(newValue.doubleValue() <= 800) {
-//                GridPane.clearConstraints(boxPagination);
-                contPag.getColumnConstraints().clear();
-                GridPane.setConstraints(legend, 0, 0, 1, 1,HPos.CENTER, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
-                GridPane.setConstraints(boxPagination, 0, 1, 1, 1,HPos.CENTER, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
-                boxPagination.setAlignment(Pos.CENTER);
-            } else {
-                contPag.getColumnConstraints().clear();
-                GridPane.setConstraints(legend, 0, 0, 1, 1,HPos.LEFT, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
-                GridPane.setConstraints(boxPagination, 1, 0, 1, 1,HPos.CENTER, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
-                boxPagination.setAlignment(Pos.CENTER_RIGHT);
-            }
-        }
-    };
-
-    private ChangeListener<Number> resizeFields = new ChangeListener<Number>() {
-        @Override
-        public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-            if(newValue.doubleValue() <= 800) {
-//                GridPane.clearConstraints(boxPagination);
-                contPag.getColumnConstraints().clear();
-                GridPane.setConstraints(legend, 0, 0, 1, 1,HPos.CENTER, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
-                GridPane.setConstraints(boxPagination, 0, 1, 1, 1,HPos.CENTER, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
-                boxPagination.setAlignment(Pos.CENTER);
-            } else {
-                contPag.getColumnConstraints().clear();
-                GridPane.setConstraints(legend, 0, 0, 1, 1,HPos.LEFT, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
-                GridPane.setConstraints(boxPagination, 1, 0, 1, 1,HPos.CENTER, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
-                boxPagination.setAlignment(Pos.CENTER_RIGHT);
-            }
-        }
-    };
-
-    private ChangeListener<Number> resizeTable = new ChangeListener<Number>() {
+    private final ChangeListener<Number> resizeTitles = new ChangeListener<Number>() {
         @Override
         public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
             System.out.println(newValue.doubleValue());
+            if(newValue.doubleValue() <= 800) {
+                title.getColumnConstraints().clear();
+                GridPane.setConstraints(boxControls, 0, 0, 1, 1,HPos.CENTER, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
+                boxControls.setAlignment(Pos.CENTER);
+                GridPane.setConstraints(boxSearch, 0, 1, 1, 1,HPos.CENTER, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
+                boxEntries.setAlignment(Pos.CENTER);
+                GridPane.setConstraints(boxEntries, 0, 2, 1, 1,HPos.CENTER, VPos.CENTER, Priority.SOMETIMES, Priority.SOMETIMES);
+                title.setMinHeight(150);
+            } else {
+
+                GridPane.setConstraints(boxControls, 0, 0, 1, 1,HPos.CENTER, VPos.CENTER, Priority.SOMETIMES, Priority.SOMETIMES);
+                boxControls.setAlignment(Pos.CENTER_LEFT);
+                boxSearch.setAlignment(Pos.CENTER_LEFT);
+                GridPane.setConstraints(boxSearch, 1, 0, 1, 1,HPos.LEFT, VPos.CENTER, Priority.ALWAYS, Priority.SOMETIMES);
+                GridPane.setConstraints(boxEntries, 2, 0, 1, 1,HPos.CENTER, VPos.CENTER, Priority.SOMETIMES, Priority.SOMETIMES);
+
+                title.setMinHeight(Region.USE_COMPUTED_SIZE);
+            }
+        }
+    };
+
+    private final ChangeListener<Number> resizeFields = new ChangeListener<Number>() {
+        @Override
+        public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+            if(newValue.doubleValue() <= 800) {
+                contPag.getColumnConstraints().clear();
+                GridPane.setConstraints(legend, 0, 0, 1, 1,HPos.CENTER, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
+                GridPane.setConstraints(boxPagination, 0, 1, 1, 1,HPos.CENTER, VPos.CENTER, Priority.SOMETIMES, Priority.SOMETIMES);
+                boxPagination.setAlignment(Pos.CENTER);
+            } else {
+                contPag.getColumnConstraints().clear();
+                GridPane.setConstraints(legend, 0, 0, 1, 1,HPos.LEFT, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
+                GridPane.setConstraints(boxPagination, 1, 0, 1, 1,HPos.CENTER, VPos.CENTER, Priority.SOMETIMES, Priority.SOMETIMES);
+                boxPagination.setAlignment(Pos.CENTER_RIGHT);
+            }
+        }
+    };
+
+    private final ChangeListener<Number> resizeTable = new ChangeListener<Number>() {
+        @Override
+        public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
             if(newValue.doubleValue() <= 800) {
                 if(content.getChildren().contains(table)) {
@@ -406,7 +420,7 @@ public class IndexController implements Initializable, FluidView {
                 columnLocation.setVisible(false);
                 columnRating.setVisible(true);
 
-            } else if(newValue.doubleValue() > 700) {
+            } else {
                 columnEmail.setVisible(true);
                 columnLocation.setVisible(true);
                 columnRating.setVisible(true);
@@ -417,7 +431,9 @@ public class IndexController implements Initializable, FluidView {
 
     @Override
     public void onExit() {
-
+        App.INSTANCE.getDecorator().widthProperty().removeListener(resizeTable);
+        App.INSTANCE.getDecorator().widthProperty().removeListener(resizeFields);
+        App.INSTANCE.getDecorator().widthProperty().removeListener(resizeTitles);
     }
 
     @FXML
