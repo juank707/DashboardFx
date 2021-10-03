@@ -352,7 +352,6 @@ public class IndexController implements Initializable, FluidView {
         @Override
         public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
-            System.out.println(newValue.doubleValue());
             if(newValue.doubleValue() <= 800) {
                 title.getColumnConstraints().clear();
                 GridPane.setConstraints(boxSearch, 0, 0, 1, 1,HPos.CENTER, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);

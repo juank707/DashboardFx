@@ -82,6 +82,9 @@ public class RegisterController implements Initializable, FluidView, CrudView {
                         rating.ratingProperty())
         );
 
+        status.selectedToggleProperty().
+                addListener((observable, oldValue, newValue) ->
+                        professional.setStatus(Status.convertString( ((RadioButton) newValue).getText())));
     }
 
     @Override
@@ -106,14 +109,11 @@ public class RegisterController implements Initializable, FluidView, CrudView {
 
         txtName.textProperty().bindBidirectional(professional.nameProperty());
         txtLastName.textProperty().bindBidirectional(professional.lastNameProperty());
-
         tfPrice.valueProperty().bindBidirectional(professional.priceProperty());
-
         teamsText.textProperty().bindBidirectional(professional.teamsProperty());
-
-        status.selectedToggleProperty().addListener((observable, oldValue, newValue) -> professional.setStatus(Status.convertString( ((RadioButton) newValue).getText())));
-
         rating.ratingProperty().bindBidirectional(professional.ratingProperty());
+
+        professional.setStatus(Status.convertString( ((RadioButton) status.getSelectedToggle()).getText()));
 
 
         if(professional.getAvatar() != null)
@@ -134,8 +134,6 @@ public class RegisterController implements Initializable, FluidView, CrudView {
 
     @FXML
     private void save() throws NavigationException  {
-
-        System.out.println("this.professional.getTeams() = " + this.professional.getRating());
 
         if(this.professional.isValid()) {
             if(this.professional.getId() == 0) new ProfessionalPresenter().save(professional);

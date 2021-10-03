@@ -81,6 +81,15 @@ public class DataHandler<E extends Model> {
                        Pagination pagination, ComboBox<Integer> entries, Label legend,
                        FilteredList<E> filteredList, ResourceBundle bundle) {
 
+        if (!(dataControl instanceof TableView) && !(dataControl instanceof ListView)) {
+            try {
+                throw new Exception("Data Control does not instance of TableView or ListView ");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
         if(entries.getItems().size() == 0) {
             entries.getItems().setAll(5, 10, 50, 100);
             entries.setValue(10);
@@ -127,6 +136,8 @@ public class DataHandler<E extends Model> {
             setFilteredList(filteredList);
         }
 
+        this.first.setDisable(true);
+
         // config if bundle not null
         if(this.bundle.get() != null){
             first.setText(this.bundle.get().getString("DataTable.first"));
@@ -135,10 +146,6 @@ public class DataHandler<E extends Model> {
             first.setText("First");
             last.setText("Last");
         }
-
-
-
-
     }
 
     public void removeCheckBoxColumn() {
@@ -209,9 +216,7 @@ public class DataHandler<E extends Model> {
             updatePagination(filteredList.size());
             pagination(0, entries.getValue());
 
-            filteredList.predicateProperty().addListener((observable, oldValue, newValue) -> {
-                pagination();
-            });
+            filteredList.predicateProperty().addListener((observable, oldValue, newValue) -> pagination());
         }
 
     }
@@ -277,9 +282,8 @@ public class DataHandler<E extends Model> {
 
         ObservableList<E> newData = FXCollections.observableArrayList(subList);
 
-        if(dataControl instanceof TableView) {
-            ((TableView<E>) dataControl).setItems(newData);
-        } else ((ListView<E>) dataControl).setItems(newData);
+        if(dataControl instanceof TableView) ((TableView) dataControl).setItems(newData);
+        else ((ListView) dataControl).setItems(newData);
 
 
         updatePagination(filtered.size());
@@ -350,7 +354,7 @@ public class DataHandler<E extends Model> {
 
                 legend.setText(
                         "Showing "
-                                + init + " "
+                                + init + " to "
                                 + end + " of "
                                 + total
                                 + " entries."
@@ -422,11 +426,4 @@ public class DataHandler<E extends Model> {
 
     }
 
-    public int getIndex(){
-        return pagination.getCurrentPageIndex();
-    }
-
-    public int getLimit(){
-        return entries.getValue();
-    }
 }

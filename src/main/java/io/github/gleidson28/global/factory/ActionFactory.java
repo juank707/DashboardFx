@@ -20,6 +20,7 @@ import animatefx.animation.Pulse;
 import animatefx.animation.Shake;
 import animatefx.animation.Swing;
 import io.github.gleidson28.global.cell.ActionCell;
+import io.github.gleidson28.global.dao.ProfessionalPresenter;
 import io.github.gleidson28.global.exceptions.NavigationException;
 import io.github.gleidson28.global.model.Model;
 import io.github.gleidson28.global.model.User;
@@ -81,11 +82,7 @@ public class ActionFactory<E extends Model> implements Callback<TableColumn<E, E
                         });
 
                         cell.setDeleteAction(event -> {
-                            try {
-                                ViewManager.INSTANCE.setContent(item.getClass().getSimpleName().toLowerCase() + "_index", item);
-                            } catch (NavigationException e) {
-                                e.printStackTrace();
-                            }
+                            new ProfessionalPresenter().getAll().remove(item);
                         });
 
 //

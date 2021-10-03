@@ -88,7 +88,7 @@ public enum App {
         decorator.setContent(root);
         decorator.show();
 
-        decorator.testWithScenicView();
+//        decorator.testWithScenicView();
     }
 
     public Object getObject(String name) {

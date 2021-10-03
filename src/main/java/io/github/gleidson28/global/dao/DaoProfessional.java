@@ -19,18 +19,22 @@ package io.github.gleidson28.global.dao;
 import io.github.gleidson28.global.enhancement.Avatar;
 import io.github.gleidson28.global.model.Professional;
 import io.github.gleidson28.global.model.Status;
+import io.github.gleidson28.global.util.MoneyUtil;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
@@ -50,6 +54,42 @@ public final class DaoProfessional extends AbstractDao<Professional> {
         return instance;
     }
 
+    private DaoProfessional() {
+        professionals.get().addListener(new ListChangeListener<Professional>() {
+            @Override
+            public void onChanged(Change<? extends Professional> c) {
+                if(c.next()) {
+                    if(c.wasRemoved()) {
+                        delete(c.getRemoved());
+                    }
+                    if(c.wasAdded()) {
+                        System.out.println(c.getAddedSubList());
+                    }
+                }
+            }
+        });
+    }
+
+    private void delete(List<? extends Professional> professionals) {
+        for (Professional model : professionals) {
+            delete(model);
+        }
+    }
+
+    @Override
+    public boolean delete(Professional model) {
+        connect();
+        PreparedStatement prepare = prepare("delete from professional where id = " + model.getId());
+        try {
+            return prepare.execute();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            disconnect();
+        }
+        return false;
+    }
+
     @Override
     public Professional find(long id) {
         return null;
@@ -60,15 +100,19 @@ public final class DaoProfessional extends AbstractDao<Professional> {
 
         try {
             connect();
+
+            System.out.println(professional.getPrice() == null ? MoneyUtil.get("0") : professional.getPrice());
+
             PreparedStatement prepare = prepare("insert into professional(name, lastName, avatar, price, status, rating) values(?, ?, ?, ?, ?, ?);");
             prepare.setString(1, professional.getName());
             prepare.setString(2, professional.getLastName());
             prepare.setString(3, professional.getAvatar().getPath());
-            prepare.setBigDecimal(4, professional.getPrice());
+            prepare.setBigDecimal(4, professional.getPrice() == null ? MoneyUtil.get("0") : professional.getPrice());
             prepare.setString(5, String.valueOf(Status.convertChar(professional.getStatus())));
             prepare.setFloat(6, professional.getRating());
 
-            prepare.execute();
+            if(prepare.execute())
+                professionals.get().add(professional);
 
         } catch (SQLException e) {
             e.printStackTrace();

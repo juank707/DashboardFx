@@ -76,6 +76,12 @@
 	  -fx-fill : white;
 }
 
+.root .list-view .list-cell .text
+{
+     -fx-text-fill : -text-color;
+    	  -fx-fill : -text-color;
+}
+
 .root .list-view .list-cell:selected .text,
 .root .list-view .list-cell:selected:hover .text
 {
