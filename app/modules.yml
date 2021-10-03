@@ -5,12 +5,11 @@
   directory : professional
   fxml      : professional_index.fxml
 
-
 - !!io.github.gleidson28.global.plugin.Module
-  name: register
-  title: User Register
-  directory: registers
-  fxml: register.fxml
+  name      : professional_view
+  title     : Professional
+  directory : professional
+  fxml      : professional_view.fxml
 
 - !!io.github.gleidson28.global.plugin.Module
   name      : professional_register
@@ -20,12 +19,9 @@
 
 - !!io.github.gleidson28.global.plugin.Module
   name      : avatars_content
-  title     : Product Register
-  directory : user
+  title     : Avatars Content
+  directory : professional
   fxml      : avatars_content.fxml
-
-
-
 
 - !!io.github.gleidson28.global.plugin.Module
   name      : layout

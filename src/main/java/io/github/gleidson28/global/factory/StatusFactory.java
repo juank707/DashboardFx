@@ -53,21 +53,15 @@ public class StatusFactory<E extends User> implements Callback<TableColumn<E, St
                     HBox body = new HBox();
                     body.getChildren().add(lbl);
 
+                    String _default = "-fx-text-fill : white; " +
+                        "-fx-border-width : 2px;  -fx-border-color : white;";
+
                     switch (item) {
-
-                        case UNAVAILABLE: lbl.setStyle("-fx-background-color : -amber; " +
-                                "-fx-background-radius : 0; -fx-text-fill : white; " +
-                                "-fx-border-width : 1px; -fx-border-color : white;");
+                        case UNAVAILABLE: lbl.setStyle("-fx-background-color : white,  -amber; " + _default);
                         break;
-
-                        case FREE:  lbl.setStyle("-fx-background-color : -success; " +
-                                "-fx-background-radius : 0; -fx-text-fill : white;" +
-                                "-fx-border-width : 1px; -fx-border-color : white;");
+                        case FREE:  lbl.setStyle("-fx-background-color :  white, -success; " + _default);
                         break;
-
-                        default:  lbl.setStyle("-fx-background-color : -grapefruit; " +
-                                "-fx-background-radius : 0; -fx-text-fill : white;" +
-                                "-fx-border-width : 1px; -fx-border-color : white;");
+                        default:  lbl.setStyle("-fx-background-color :  white, -grapefruit; " + _default);
                         break;
                     }
 

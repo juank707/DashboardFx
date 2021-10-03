@@ -55,7 +55,7 @@ public class ActionCell<E extends Model> extends HBox implements DefaultCell<E> 
     }
 
     private void createContent(){
-        this.setAlignment(Pos.CENTER);
+        this.setAlignment(Pos.CENTER_LEFT);
 
 //        String edit = App.getBundle().getString("DataTable.cell.edit");
 //        String view = App.getBundle().getString("DataTable.cell.view");
@@ -87,7 +87,7 @@ public class ActionCell<E extends Model> extends HBox implements DefaultCell<E> 
 
         double sX = 0.8D;
         double sY = 0.8D;
-        double maxWidth = 30D;
+        double maxWidth = 30;
 
         iconView.setScaleX(sX);
         iconUpdate.setScaleX(sX);

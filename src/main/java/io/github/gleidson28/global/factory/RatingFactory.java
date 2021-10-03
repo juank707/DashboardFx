@@ -51,10 +51,10 @@ public class RatingFactory<E extends Model> implements Callback<TableColumn<E, N
 
                     setTooltip(tooltip);
 
-                    rating.setScaleX(0.8);
-                    rating.setScaleY(0.8);
+                    rating.setScaleX(0.6);
+                    rating.setScaleY(0.6);
 
-                    rating.setTranslateX(-12);
+                    rating.setTranslateX(-25);
 
                     setGraphic(rating);
                     setText(null);

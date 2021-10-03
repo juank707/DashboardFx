@@ -1400,6 +1400,7 @@ Text {
     -fx-background-color: white;
     -fx-padding: 1em 2em 1em 2em;
     -fx-font-family: Roboto ;
+    -fx-font-weight : bold;
 }
 
 .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:filled:hover {
@@ -1417,6 +1418,10 @@ Text {
 
 .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:selected:hover {
     -fx-text-fill : -text-color;
+}
+
+.list-view > .virtual-flow > .clipped-container > .sheet > .list-cell .label .text {
+    -fx-fill : -text-color;
 }
 
 .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:focused .label .text {
@@ -2358,13 +2363,24 @@ Text {
 
 .table-view .column-header-background .show-hide-columns-button
 {
-  /* -fx-padding : 4px; */
+    -fx-background-color : transparent;
+    -fx-padding : 1px;
+    -fx-background-insets : 0px;
 }
 
 .table-view .column-header-background .show-hide-columns-button .show-hide-column-image
 {
-  -fx-padding : 4px;
-  -fx-background-color : -icon-color;
+    -fx-background-insets : 0px;
+    -fx-padding : 2.3px;
+    -fx-scale-x : 3.4px;
+    -fx-translate-x : -10px;
+    -fx-background-color : -icon-color;
+    -fx-shape : "M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z";
+
+}
+
+.table-view:row-selection:constrained-resize .virtual-flow {
+    -fx-padding : 10px;
 }
 
 .table-view:focused .column-header-background,

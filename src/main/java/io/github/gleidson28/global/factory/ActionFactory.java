@@ -74,7 +74,7 @@ public class ActionFactory<E extends Model> implements Callback<TableColumn<E, E
 
                         cell.setViewAction(event -> {
                             try {
-                                ViewManager.INSTANCE.setContent(item.getClass().getSimpleName().toLowerCase() + "_index", item);
+                                ViewManager.INSTANCE.setContent(item.getClass().getSimpleName().toLowerCase() + "_view", item);
                             } catch (NavigationException e) {
                                 e.printStackTrace();
                             }

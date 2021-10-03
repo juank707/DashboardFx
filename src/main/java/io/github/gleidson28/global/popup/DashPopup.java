@@ -68,31 +68,47 @@ public class DashPopup extends PopOver {
         this.setOnHidden(event -> layoutController.foregroundClose());
     }
 
-    public void showAndWait(Node node) {
+    public void showTopRight(Node node) {
+        this.showTopRight(node, false);
+    }
 
-//        this.show(node,  node.getLayoutBounds().getHeight()  );
+    public void showBottomRight(Node node) {
 
-//        this.show(node, node.getLayoutBounds().getWidth(), node.getLayoutBounds().getHeight());
+        this.setArrowLocation(ArrowLocation.TOP_RIGHT);
+
         Bounds bounds = node.localToScreen(node.getBoundsInLocal());
 
-
         this.show(node, bounds.getMinX() + bounds.getWidth() ,
-                (bounds.getMinY() + bounds.getHeight()) - bounds.getHeight() );
-
-//        this.show(App.INSTANCE.getDecorator().getWindow());
-
-        LayoutController layoutController = (LayoutController)
-                ViewManager.INSTANCE.getController("layout");
+                 bounds.getMinY() + bounds.getHeight()  );
 
 //        Node skinNode = this.getSkin().getNode();
 //        new Pulse(skinNode).play();
 
-//        Pulse fadeInLeft = new Pulse();
-//        fadeInLeft.setNode(getRoot());
+        Pulse fadeInLeft = new Pulse();
+        fadeInLeft.setNode(getRoot());
+        fadeInLeft.play();
+    }
+
+    public void showTopRight(Node node, boolean shadow) {
+
+        Bounds bounds = node.localToScreen(node.getBoundsInLocal());
+
+        this.show(node, bounds.getMinX() + bounds.getWidth() ,
+                (bounds.getMinY() + bounds.getHeight()) - bounds.getHeight() );
+
+        Node skinNode = this.getSkin().getNode();
+        new Pulse(skinNode).play();
 //
-//        fadeInLeft.play();
-//        layoutController.foregroundOpen();
-//
-//        this.setOnHidden(event -> layoutController.foregroundClose());
+        if(shadow) {
+            Pulse fadeInLeft = new Pulse();
+            fadeInLeft.setNode(getRoot());
+            fadeInLeft.play();
+
+            LayoutController layoutController = (LayoutController)
+                    ViewManager.INSTANCE.getController("layout");
+
+            layoutController.foregroundOpen();
+            this.setOnHidden(event -> layoutController.foregroundClose());
+        }
     }
 }

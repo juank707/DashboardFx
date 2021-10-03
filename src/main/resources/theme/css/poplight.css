@@ -70,9 +70,21 @@
 }
 
 .root .list-view .list-cell:selected .alert-cell .text,
-.root .list-view .list-cell:focused .alert-cell .text,
-.root .list-view .list-cell:selected:focused .alert-cell .text
+.root .list-view .list-cell:focused .alert-cell .text
 {
 	  -fx-text-fill : white;
 	  -fx-fill : white;
+}
+
+.root .list-view .list-cell:selected .text,
+.root .list-view .list-cell:selected:hover .text
+{
+     -fx-text-fill : -text-color;
+    	  -fx-fill : -text-color;
+}
+
+.root .list-view .list-cell:selected .text
+{
+     -fx-text-fill : white;
+    	  -fx-fill : white;
 }
