@@ -362,7 +362,6 @@ public enum DrawerCreator {
                     Button b = (Button) c;
                     if(b.getId() != null) {
                         if(b.getId().equals("defaultButton")) {
-                            System.out.println("fuck yuoyu");
 
                                 // reset default button
                                 b.setDefaultButton(false);
@@ -478,7 +477,6 @@ public enum DrawerCreator {
         foreground.requestFocus();
         foreground.requestLayout();
 
-        System.out.println(content.lookup("#defaultButton"));
 
         if(content.lookup("#defaultButton") != null) {
 

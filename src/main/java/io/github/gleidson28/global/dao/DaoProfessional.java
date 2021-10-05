@@ -62,9 +62,6 @@ public final class DaoProfessional extends AbstractDao<Professional> {
                     if(c.wasRemoved()) {
                         delete(c.getRemoved());
                     }
-                    if(c.wasAdded()) {
-                        System.out.println(c.getAddedSubList());
-                    }
                 }
             }
         });
@@ -101,9 +98,9 @@ public final class DaoProfessional extends AbstractDao<Professional> {
         try {
             connect();
 
-            System.out.println(professional.getPrice() == null ? MoneyUtil.get("0") : professional.getPrice());
 
-            PreparedStatement prepare = prepare("insert into professional(name, lastName, avatar, price, status, rating) values(?, ?, ?, ?, ?, ?);");
+            PreparedStatement prepare = prepare("insert into professional(name, lastName, avatar, price, status," +
+                    " rating) values(?, ?, ?, ?, ?, ?);");
             prepare.setString(1, professional.getName());
             prepare.setString(2, professional.getLastName());
             prepare.setString(3, professional.getAvatar().getPath());
@@ -128,13 +125,15 @@ public final class DaoProfessional extends AbstractDao<Professional> {
 
             connect();
             PreparedStatement prepare = prepare("update professional set name = ?, avatar = ?, " +
-                    "price = ?, teams = ?, rating = ? where id = " + professional.getId() + "; ");
+                    "price = ?, teams = ?, rating = ?, avatar = ? where id = " + professional.getId() + "; ");
 
             prepare.setString(1, professional.getName());
             prepare.setString(2, professional.getAvatar().getPath());
             prepare.setBigDecimal(3, professional.getPrice());
             prepare.setString(4, professional.getTeams());
             prepare.setFloat(5, professional.getRating());
+
+            prepare.setString(6, professional.getAvatar().getPath());
 
             prepare.execute();
 

@@ -20,11 +20,9 @@ import io.github.gleidson28.decorator.GNDecorator;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Parent;
+import javafx.scene.image.Image;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.time.LocalDate;
 import java.util.Locale;
 import java.util.Properties;
@@ -86,6 +84,10 @@ public enum App {
 
         decorator.fullBody();
         decorator.setContent(root);
+
+        decorator.getIcons().add(new Image("/theme/img/logo4.png"));
+
+
         decorator.show();
 
 //        decorator.testWithScenicView();

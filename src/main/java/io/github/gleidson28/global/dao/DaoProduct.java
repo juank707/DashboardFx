@@ -71,7 +71,6 @@ public final class DaoProduct extends AbstractDao<Product> {
 
             System.out.println(prepare.execute());
 
-            System.out.println("product = " + product);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

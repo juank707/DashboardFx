@@ -48,7 +48,7 @@ public class AvatarsContentController implements Initializable {
         File file = fileChooser.showOpenDialog(App.INSTANCE.getDecorator().getWindow());
 
         if (file != null) {
-            if(registerController == null) registerController = (RegisterController) ViewManager.INSTANCE.getController("user_register");
+            if(registerController == null) registerController = (RegisterController) ViewManager.INSTANCE.getController("professional_register");
 
             registerController.setAvatar(new Avatar(new FileInputStream(file), file.getPath()));
 
@@ -62,7 +62,7 @@ public class AvatarsContentController implements Initializable {
         group.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue != null) {
 
-                if(registerController == null) registerController = (RegisterController) ViewManager.INSTANCE.getController("user_register");
+                if(registerController == null) registerController = (RegisterController) ViewManager.INSTANCE.getController("professional_register");
 
                 if(newValue instanceof ToggleButton) {
 

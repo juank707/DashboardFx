@@ -40,6 +40,10 @@ dependencies {
     implementation files('vendor/mysql-connector-java-8.0.14.jar')
     implementation files('vendor/scenicView.jar')
     implementation files('vendor/controlsfx-8.40.17.jar')
+    implementation files('vendor/CurvedFittedAreaChart.jar')
+    implementation files('vendor/fontawesomefx-8.9.jar')
+    implementation files('vendor/jfoenix-8.0.7.jar')
+    implementation files('vendor/GNCarousel-2.1.51.jar')
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'

@@ -29,6 +29,11 @@
   directory : layout
   fxml      : layout.fxml
 
+- !!io.github.gleidson28.global.plugin.Module
+  name      : dashboard
+  title     : Dashboard
+  directory : dashboard
+  fxml      : dashboard.fxml
 
 - !!io.github.gleidson28.global.plugin.Module
   name      : controls

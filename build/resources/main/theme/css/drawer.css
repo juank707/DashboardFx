@@ -1,0 +1,194 @@
+
+.scroll:fitToWidth .viewport {
+    -fx-background-color : transparent;
+    -secondary : -mint;
+}
+
+.drawer
+{
+  -fx-background-color: transparent;
+}
+
+
+.drawer .box-search
+{
+    -fx-background-repeat : no-repeat;
+    -fx-background-position : right;
+    -fx-border-width : 1px 0px 1px 0px;
+    -fx-min-height : 38px;
+    -fx-border-color : -box-search-color;
+}
+
+.drawer .box-search .text-field
+{
+    -fx-text-fill : -box-search-fill;
+}
+
+.drawer .scroll .drawer-content .drawer-item,
+.drawer .scroll .drawer-content .drawer-item:hover:selected,
+.drawer .scroll .drawer-content .drawer-item .text
+{
+  -fx-padding : 2 2 2 20;
+  -fx-background-radius : 0px;
+  -fx-background-color : transparent;
+  -fx-min-height : 50px;
+  -fx-alignment : baseline_left;
+  -fx-fill : -text-color;
+  -fx-border-width : 0 0 0 4;
+  -fx-border-color : transparent;
+}
+
+
+.drawer .scroll .drawer-content .drawer-item:hover:selected,
+.drawer .scroll .drawer-content .drawer-item:selected,
+.drawer .scroll .drawer-content .drawer-item:selected .text,
+.drawer .scroll .drawer-content .drawer-item:hover:selected .text,
+.drawer .scroll .drawer-content .drawer-item:selected .icon,
+.drawer .scroll .drawer-content .drawer-item:hover:selected .icon,
+.drawer .scroll .drawer-content .drawer-item:selected .group .icon,
+.drawer .scroll .drawer-content .drawer-item:hover:selected .group .icon
+{
+  -fx-effect : none;
+  -fx-background-color : -light-gray;
+  -fx-border-color : -info;
+  -fx-fill : -info;
+  -fx-font-weight : bold;
+  -fx-border-width : 0 0 0 4;
+    /* -fx-padding : 2 2 2 10; */
+}
+
+.drawer .scroll .drawer-content .drawer-item:hover,
+
+.drawer .scroll .drawer-content .drawer-item:hover .text,
+.drawer .scroll .drawer-content .drawer-item:hover .icon,
+.drawer .scroll .drawer-content .drawer-item:hover .group .icon
+{
+  -fx-background-color :  transparent;
+  -fx-fill : -mint;
+    /* -fx-padding : 2 2 2 10; */
+}
+
+
+.drawer .scroll .drawer-content .drawer-menu .title .arrow-button .arrow {
+  -fx-shape : "M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z";
+}
+
+.drawer .scroll .drawer-content .drawer-menu:expanded .title .arrow-button .arrow {
+  -fx-shape : "M0 0h4v4H0z";
+  -fx-max-height : 10px;
+  -fx-max-width : 10px;
+}
+
+.drawer .scroll .drawer-content .drawer-item  .glyph-icon,
+.drawer .scroll .drawer-content .drawer-item  .icon
+{
+    -fx-fill : -icon-color;
+}
+
+.drawer .scroll .drawer-content .drawer-menu .content
+{
+  -fx-border-color : transparent;
+  -fx-padding : 0px;
+}
+
+.drawer .scroll .drawer-content .drawer-menu .title
+{
+    -fx-background-radius : 0px;
+    -fx-background-color : transparent;
+    -fx-pref-height : 50px;
+    -fx-cursor : hand;
+    -fx-padding : 2 25 2 10 2;
+    -fx-border-width : 0 4 0 0;
+}
+
+.drawer .scroll .drawer-content .drawer-menu .title .arrow-button .arrow {
+  -fx-pref-height : 10px;
+  -fx-pref-width : 10px;
+}
+.drawer .scroll .drawer-content .drawer-menu:expanded .title .arrow-button .arrow
+{
+  -fx-pref-height : -45px;
+  -fx-scale-y : 0.4px;
+}
+
+.drawer .scroll .drawer-content .drawer-menu .title .text,
+.drawer .scroll .drawer-content .drawer-menu .title .icon,
+.drawer .scroll .drawer-content .drawer-menu .title .arrow-button .arrow,
+{
+  -fx-fill : -text-color;
+}
+
+.drawer .scroll .drawer-content .drawer-menu .drawer-item
+{
+  -fx-alignment : baseline_right;
+  -fx-padding : 2 20 2 20;
+}
+
+.drawer .scroll .drawer-content .drawer-menu .drawer-item .icon
+{
+  -fx-pref-height : 10px;
+}
+
+.drawer .scroll .drawer-content .drawer-menu .drawer-item:selected
+{
+  -fx-background-color : -light-gray;
+}
+
+
+.drawer .scroll .drawer-content .drawer-menu:collapsed:hover .arrow-button .arrow,
+.drawer .scroll .drawer-content .drawer-menu:collapsed:hover .title SVGPath,
+.drawer .scroll .drawer-content .drawer-menu:collapsed:hover .title .text
+{
+    -fx-fill : -secondary;
+    -fx-background-color : -secondary;
+}
+
+
+
+.drawer .scroll .drawer-content .menu-selected:expanded .title .text,
+.drawer .scroll .drawer-content .menu-selected:expanded .title .arrow-button .arrow,
+.drawer .scroll .drawer-content .menu-selected:expanded SVGPath,
+.drawer .scroll .drawer-content .menu-selected:expanded:focused .title .text
+
+
+{
+    -fx-fill : -base;
+    -fx-background-color : -base;
+}
+
+
+.drawer .scroll .drawer-content .menu-selected:expanded
+{
+    -fx-border-width : 0 4 0 0;
+    -fx-border-color : -base;
+    -fx-label-padding : 0 -4 0 0;
+
+
+}
+
+.drawer .scroll .drawer-content .menu-selected:expanded  SVGPath,
+.drawer .scroll .drawer-content .menu-selected:expanded .title .text,
+
+.drawer .scroll .drawer-content .menu-selected:expanded:hover  SVGPath,
+.drawer .scroll .drawer-content .menu-selected:expanded:hover .title .text
+{
+    -fx-border-color : -base;
+     -fx-border-width : 0;
+     -fx-fill : -base;
+
+}
+
+.drawer .scroll .drawer-content .menu-selected:expanded:hover .arrow-button .arrow,
+.drawer .scroll .drawer-content .menu-selected:expanded .arrow-button .arrow
+{
+         -fx-background-color : -base;
+}
+
+
+.drawer .scroll .drawer-content .menu-selected:expanded .drawer-item
+{
+    -fx-border-color : -base;
+     -fx-border-width : 0;
+     -fx-fill : -base;
+
+}

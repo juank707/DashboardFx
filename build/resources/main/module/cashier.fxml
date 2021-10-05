@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
+
+<StackPane fx:id="root" prefHeight="631.0" prefWidth="1118.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" >
+    <stylesheets>
+        <URL value="@../theme/css/material-color.css" />
+        <URL value="@../theme/css/skeleton.css" />
+        <URL value="@../theme/css/light.css" />
+        <URL value="@../theme/css/bootstrap.css" />
+        <URL value="@../theme/css/simple-info.css" />
+        <URL value="@../theme/css/forms.css" />
+        <URL value="@../theme/css/typographic.css" />
+        <URL value="@../theme/css/helpers.css" />
+        <URL value="@../theme/css/master.css" />
+    </stylesheets>
+   <children>
+      <VBox alignment="TOP_CENTER">
+         <children>
+            <GridPane VBox.vgrow="ALWAYS">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="452.0" minWidth="10.0" prefWidth="393.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="577.0" minWidth="10.0" prefWidth="391.0" />
+                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="441.0" minWidth="10.0" prefWidth="334.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <ImageView fitHeight="338.0" fitWidth="642.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../theme/img/cashier.png" />
+                     </image>
+                  </ImageView>
+                  <VBox alignment="CENTER" prefHeight="527.0" prefWidth="398.0" GridPane.columnIndex="1">
+                     <children>
+                        <GridPane hgap="10.0" prefHeight="313.0" prefWidth="303.0" vgap="10.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="289.0" minWidth="10.0" prefWidth="151.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="210.0" minWidth="10.0" prefWidth="151.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <VBox fx:id="open" alignment="CENTER" prefHeight="146.0" prefWidth="187.0" style="-fx-background-color: transparent; -fx-border-color: -mint; -fx-background-radius: 100; -fx-border-radius: 100;">
+                                 <children>
+                                    <Label contentDisplay="TOP" style="-fx-text-fill: -mint;" styleClass="label-bold" text="Abrir novo caixa" textFill="WHITE">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                       <graphic>
+                                          <Group>
+                                             <children>
+                                                <SVGPath content="M441.5 39.8C432.9 25.1 417.1 16 400 16H176c-17.1 0-32.9 9.1-41.5 23.8l-112 192c-8.7 14.9-8.7 33.4 0 48.4l112 192c8.6 14.7 24.4 23.8 41.5 23.8h224c17.1 0 32.9-9.1 41.5-23.8l112-192c8.7-14.9 8.7-33.4 0-48.4l-112-192zM400 448H176L64 256 176 64h224l112 192-112 192zm16-208v32c0 6.6-5.4 12-12 12h-88v88c0 6.6-5.4 12-12 12h-32c-6.6 0-12-5.4-12-12v-88h-88c-6.6 0-12-5.4-12-12v-32c0-6.6 5.4-12 12-12h88v-88c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v88h88c6.6 0 12 5.4 12 12z" fill="WHITE" scaleX="0.08" scaleY="0.08" style="-fx-fill: -mint;" />
+                                             </children>
+                                          </Group>
+                                       </graphic>
+                                    </Label>
+                                 </children>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </VBox>
+                              <VBox fx:id="close" alignment="CENTER" prefHeight="146.0" prefWidth="187.0" style="-fx-border-color: -base;" GridPane.columnIndex="1">
+                                 <children>
+                                    <Label contentDisplay="TOP" style="-fx-text-fill: -base;" styleClass="label-bold" text="Reabrir Último" textFill="WHITE">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                       <graphic>
+                                          <Group>
+                                             <children>
+                                                <SVGPath content="M504 96h-88V8c0-4.42-3.58-8-8-8h-16c-4.42 0-8 3.58-8 8v88h-88c-4.42 0-8 3.58-8 8v16c0 4.42 3.58 8 8 8h88v88c0 4.42 3.58 8 8 8h16c4.42 0 8-3.58 8-8v-88h88c4.42 0 8-3.58 8-8v-16c0-4.42-3.58-8-8-8zm-6.77 270.71l-99.72-42.87 99.72-42.87c8.35-3.6 12.19-13.23 8.58-21.52-3.65-8.29-13.32-12.13-21.74-8.48l-225.32 96.86c-1.81.77-3.74.77-5.48 0L45.23 258.4l193.45-83.16c8.35-3.59 12.19-13.23 8.58-21.52-3.65-8.28-13.26-12.13-21.74-8.48L14.81 235.81C5.81 239.66 0 248.52 0 258.4c0 9.87 5.81 18.74 14.77 22.58l99.73 42.87-99.7 42.85C5.81 370.55 0 379.42 0 389.31c0 9.87 5.81 18.74 14.77 22.58l225.32 96.84c5.06 2.17 10.48 3.28 15.9 3.28s10.84-1.09 15.9-3.28l225.29-96.83c9-3.85 14.81-12.72 14.81-22.59.01-9.89-5.8-18.76-14.76-22.6zM258.74 478.72c-1.81.77-3.74.77-5.48 0L45.23 389.29 156 341.68l84.1 36.15c5.06 2.17 10.48 3.28 15.9 3.28s10.84-1.09 15.9-3.28l84.12-36.16 110.78 47.62-208.06 89.43z" fill="WHITE" scaleX="0.08" scaleY="0.08" style="-fx-fill: -base;" />
+                                             </children>
+                                          </Group>
+                                       </graphic>
+                                    </Label>
+                                 </children>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </VBox>
+                              <VBox fx:id="older" alignment="CENTER" prefHeight="146.0" prefWidth="187.0" style="-fx-border-color: -sunflower;" GridPane.rowIndex="1">
+                                 <children>
+                                    <Label contentDisplay="TOP" style="-fx-text-fill: -sunflower;" styleClass="label-bold" text="Caixas Antigos" textFill="WHITE">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                       <graphic>
+                                          <Group>
+                                             <children>
+                                                <SVGPath content="M616 352h-72v-73.38L521.38 256 544 233.38v-82.75L521.38 128l22.25-22.28-.97-7.77C535.59 42.11 488.03 0 432 0H80C35.88 0 0 35.89 0 80v88c0 13.23 10.78 24 24 24h104v41.38L150.62 256 128 278.62v132.81c0 51.28 37.84 95.23 86.16 100.08 1.5.15 3 .14 4.5.23v.26h312C590.94 512 640 462.95 640 402.67V376c0-13.23-10.78-24-24-24zM128 160H32V80c0-26.47 21.53-48 48-48s48 21.53 48 48v80zm32 251.44V291.88L195.88 256 160 220.12V80c0-18-5.97-34.62-16.03-48H432c37.41 0 69.56 26.39 77.59 62.5L476.12 128 512 163.88v56.25L476.12 256 512 291.88V352h-73.38L416 374.62 393.38 352H320c-17.66 0-32 14.36-32 32v32c0 18.05-7.69 35.34-21.06 47.47-13.59 12.3-31.12 18.09-49.59 16.2-32.16-3.22-57.35-33.19-57.35-68.23zm448-8.77c0 42.64-34.69 77.33-77.34 77.33H294.83c15.82-17.55 25.17-40.18 25.17-64v-32h60.12L416 419.88 451.88 384H608v18.67z" fill="WHITE" scaleX="0.08" scaleY="0.08" style="-fx-fill: -sunflower;" />
+                                             </children>
+                                          </Group>
+                                       </graphic>
+                                    </Label>
+                                 </children>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </VBox>
+                              <VBox fx:id="reopen" alignment="CENTER" prefHeight="146.0" prefWidth="187.0" style="-fx-border-color: -secondary; -fx-background-radius: 100; -fx-border-radius: 100;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <children>
+                                    <Label contentDisplay="TOP" style="-fx-text-fill: -secondary;" styleClass="label-bold" text="Reabrir Caixa" textFill="WHITE">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                       <graphic>
+                                          <Group>
+                                             <children>
+                                                <SVGPath content="M61.77 401l17.5-20.15a19.92 19.92 0 0 0 5.07-14.19v-3.31C84.34 356 80.5 352 73 352H16a8 8 0 0 0-8 8v16a8 8 0 0 0 8 8h22.83a157.41 157.41 0 0 0-11 12.31l-5.61 7c-4 5.07-5.25 10.13-2.8 14.88l1.05 1.93c3 5.76 6.29 7.88 12.25 7.88h4.73c10.33 0 15.94 2.44 15.94 9.09 0 4.72-4.2 8.22-14.36 8.22a41.54 41.54 0 0 1-15.47-3.12c-6.49-3.88-11.74-3.5-15.6 3.12l-5.59 9.31c-3.72 6.13-3.19 11.72 2.63 15.94 7.71 4.69 20.38 9.44 37 9.44 34.16 0 48.5-22.75 48.5-44.12-.03-14.38-9.12-29.76-28.73-34.88zM496 224H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-160H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 320H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zM16 160h64a8 8 0 0 0 8-8v-16a8 8 0 0 0-8-8H64V40a8 8 0 0 0-8-8H32a8 8 0 0 0-7.14 4.42l-8 16A8 8 0 0 0 24 64h8v64H16a8 8 0 0 0-8 8v16a8 8 0 0 0 8 8zm-3.91 160H80a8 8 0 0 0 8-8v-16a8 8 0 0 0-8-8H41.32c3.29-10.29 48.34-18.68 48.34-56.44 0-29.06-25-39.56-44.47-39.56-21.36 0-33.8 10-40.46 18.75-4.37 5.59-3 10.84 2.8 15.37l8.58 6.88c5.61 4.56 11 2.47 16.12-2.44a13.44 13.44 0 0 1 9.46-3.84c3.33 0 9.28 1.56 9.28 8.75C51 248.19 0 257.31 0 304.59v4C0 316 5.08 320 12.09 320z" fill="WHITE" scaleX="0.08" scaleY="0.08" style="-fx-fill: -secondary;" />
+                                             </children>
+                                          </Group>
+                                       </graphic>
+                                    </Label>
+                                 </children>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </VBox>
+                           </children>
+                        </GridPane>
+                     </children>
+                     <padding>
+                        <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+                     </padding>
+                  </VBox>
+                  <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="270.0" style="-fx-border-color: -light-gray; -fx-border-width: 0 0 0 1;" GridPane.columnIndex="2">
+                     <children>
+                        <Button alignment="CENTER" graphicTextGap="8.0" layoutX="11.0" layoutY="10.0" minHeight="40.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="419.0" style="-fx-font-weight: bold; -fx-border-radius: 0; -fx-pref-height: 100; -fx-border-width: 0 0 1 0;" text="Conferencia de Turno">
+                           <styleClass>
+                              <String fx:value="btn-flat" />
+                              <String fx:value="h4" />
+                              <String fx:value="border" />
+                           </styleClass>
+                           <graphic>
+                              <SVGPath content="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="#837878" style="-fx-fill: -info;" />
+                           </graphic>
+                        </Button>
+                        <Button graphicTextGap="20.0" layoutX="11.0" layoutY="478.0" minHeight="40.0" mnemonicParsing="false" prefHeight="140.0" prefWidth="269.0" style="-fx-font-weight: bold; -fx-border-radius: 0; -fx-pref-height: 100; -fx-border-width: 0 0 1 0;" text="Revisar Turno" wrapText="true">
+                           <styleClass>
+                              <String fx:value="btn-flat" />
+                              <String fx:value="h4" />
+                              <String fx:value="border" />
+                           </styleClass>
+                           <graphic>
+                              <SVGPath content="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="#837878" style="-fx-fill: -info;" />
+                           </graphic>
+                        </Button>
+                        <Button alignment="CENTER" graphicTextGap="8.0" minHeight="40.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="419.0" style="-fx-font-weight: bold; -fx-border-radius: 0; -fx-pref-height: 100; -fx-border-width: 0 0 1 0;" text="Lancar Movimentacao">
+                           <styleClass>
+                              <String fx:value="btn-flat" />
+                              <String fx:value="h4" />
+                              <String fx:value="border" />
+                           </styleClass>
+                           <graphic>
+                              <SVGPath content="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="#837878" style="-fx-fill: -info;" />
+                           </graphic>
+                        </Button>
+                        <GridPane hgap="10.0" maxWidth="323.0" prefHeight="288.0" prefWidth="316.0" vgap="10.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints maxHeight="149.0" minHeight="0.0" prefHeight="70.0" vgrow="NEVER" />
+                            <RowConstraints maxHeight="307.0" minHeight="-Infinity" prefHeight="21.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="358.0" minHeight="21.0" prefHeight="21.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="358.0" minHeight="21.0" prefHeight="22.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="358.0" minHeight="21.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="358.0" minHeight="21.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label style="-fx-text-fill: -text-color; -fx-font-weight: bold;" text="Caixas de Hoje" GridPane.rowIndex="1" />
+                              <Label fx:id="lbl_total2" style="-fx-text-fill: -text-color; -fx-font-weight: bold;" styleClass="h5" text="3" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label layoutX="374.0" layoutY="86.0" style="-fx-text-fill: -text-color; -fx-font-weight: bold;" styleClass="h5" text="R$ 2000,00" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Label style="-fx-text-fill: -text-color; -fx-font-weight: bold;" text="Maior Caixa" GridPane.rowIndex="2" />
+                              <Label style="-fx-text-fill: -text-color; -fx-font-weight: bold;" text="Valor Total" GridPane.rowIndex="3" />
+                              <Label fx:id="lbl_total211" style="-fx-text-fill: -text-color; -fx-font-weight: bold;" styleClass="h5" text="R$ 5000,00" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <Label graphicTextGap="8.0" style="-fx-text-fill: -medium-gray; -fx-font-weight: bold;" styleClass="h4" text="Histórico do Dia" GridPane.columnSpan="2147483647" />
+                              <Label style="-fx-text-fill: -text-color; -fx-font-weight: bold;" text="Receitas" GridPane.rowIndex="4" />
+                              <Label fx:id="lbl_total2111" style="-fx-text-fill: -text-color; -fx-font-weight: bold;" styleClass="h5" text="R$ 17,00" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <Label style="-fx-text-fill: -text-color; -fx-font-weight: bold;" text="Despesas" GridPane.rowIndex="5" />
+                              <Label fx:id="lbl_total21111" style="-fx-text-fill: -text-color; -fx-font-weight: bold;" styleClass="h5" text="R$ 22,00" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </GridPane>
+                     </children>
+                  </VBox>
+               </children>
+            </GridPane>
+            <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="73.0" prefWidth="1118.0" style="-fx-border-color: -light-gray; -fx-border-width: 1 0 0 0;" VBox.vgrow="ALWAYS">
+               <children>
+                  <GridPane HBox.hgrow="ALWAYS">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="688.0" minWidth="10.0" prefWidth="609.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="382.0" minWidth="10.0" prefWidth="251.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="233.0" minWidth="0.0" prefWidth="217.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <Label styleClass="h5" text="Gleidson28 - 06/05/2019 08:35" GridPane.columnIndex="4" />
+                        <Label styleClass="h5" text="Último usúario conectado:" GridPane.columnIndex="3" />
+                     </children>
+                     <HBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </HBox.margin>
+                  </GridPane>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="10.0" right="5.0" top="10.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</StackPane>

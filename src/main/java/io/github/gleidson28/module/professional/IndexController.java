@@ -305,6 +305,8 @@ public class IndexController implements Initializable, FluidView {
                             icon.setContent("M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 " +
                                     "2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z");
                             view.setGraphic(icon);
+                            icon.setRotate(90);
+
                             view.getStyleClass().addAll("round","btn-small", "btn-action");
 
                             view.setMinHeight(40D);

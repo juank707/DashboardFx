@@ -99,6 +99,7 @@ public class LoadViews extends Service<Module> {
 //            loader.setCharset(StandardCharsets.UTF_8);
             loader.setLocation(location);
             loader.setResources(App.INSTANCE.getResourceBundle());
+
             try {
                 loader.load();
             } catch (IOException e) {
@@ -114,6 +115,7 @@ public class LoadViews extends Service<Module> {
     protected void succeeded() {
         try {
             ViewManager.INSTANCE.navigate("layout");
+            ViewManager.INSTANCE.setContent("dashboard");
         } catch (NavigationException e) {
             e.printStackTrace();
         }
