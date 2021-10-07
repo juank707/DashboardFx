@@ -44,6 +44,7 @@ dependencies {
     implementation files('vendor/fontawesomefx-8.9.jar')
     implementation files('vendor/jfoenix-8.0.7.jar')
     implementation files('vendor/GNCarousel-2.1.51.jar')
+    implementation files('vendor/colors-1.4.jar')
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'

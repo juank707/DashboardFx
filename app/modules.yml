@@ -45,3 +45,74 @@
       directory : button
       fxml : button.fxml
 
+- !!io.github.gleidson28.global.plugin.Module
+  name      : checkbox
+  title     : Check Box
+  directory : controls
+  fxml      : checkbox.fxml
+
+- !!io.github.gleidson28.global.plugin.Module
+  name      : area_chart
+  title     : Area Chart
+  directory : charts
+  fxml      : areaChart.fxml
+
+- !!io.github.gleidson28.global.plugin.Module
+  name      : bar_chart
+  title     : Bar Chart
+  directory : charts
+  fxml      : barChart.fxml
+
+- !!io.github.gleidson28.global.plugin.Module
+  name      : bubble_chart
+  title     : Bubble Chart
+  directory : charts
+  fxml      : bubbleChart.fxml
+
+- !!io.github.gleidson28.global.plugin.Module
+  name      : line_chart
+  title     : Line Chart
+  directory : charts
+  fxml      : lineChart.fxml
+
+- !!io.github.gleidson28.global.plugin.Module
+  name      : pie_chart
+  title     : Pie Chart
+  directory : charts
+  fxml      : pieChart.fxml
+
+- !!io.github.gleidson28.global.plugin.Module
+  name      : scatter_chart
+  title     : Scatter Chart
+  directory : charts
+  fxml      : scatterChart.fxml
+
+- !!io.github.gleidson28.global.plugin.Module
+  name      : stacked_area_chart
+  title     : Stacked Area Chart
+  directory : charts
+  fxml      : stackedAreaChart.fxml
+
+- !!io.github.gleidson28.global.plugin.Module
+  name      : stacked_bar_chart
+  title     : Stacked Bar Chart
+  directory : charts
+  fxml      : stackedBarChart.fxml
+
+- !!io.github.gleidson28.global.plugin.Module
+  name      : stacked_bar_chart
+  title     : Stacked Bar Chart
+  directory : charts
+  fxml      : stackedBarChart.fxml
+
+- !!io.github.gleidson28.global.plugin.Module
+  name      : color
+  title     : Material Color
+  directory : color
+  fxml      : colors.fxml
+
+- !!io.github.gleidson28.global.plugin.Module
+  name      : carousel
+  title     : Carousel
+  directory : custom
+  fxml      : carousel.fxml

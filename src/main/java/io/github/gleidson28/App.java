@@ -17,6 +17,7 @@
 package io.github.gleidson28;
 
 import io.github.gleidson28.decorator.GNDecorator;
+import javafx.application.HostServices;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Parent;
@@ -44,6 +45,8 @@ public enum App {
     private final DoubleProperty width = new SimpleDoubleProperty();
     private final DoubleProperty height = new SimpleDoubleProperty();
 
+    private HostServices hostServices = null;
+
     App() {
         width.set( Double.parseDouble(getString("app.width")));
         height.set( Double.parseDouble(getString("app.height")));
@@ -58,6 +61,14 @@ public enum App {
 
     public GNDecorator getDecorator() {
         return this.decorator;
+    }
+
+    public void setHostServices(HostServices hostServices) {
+        this.hostServices = hostServices;
+    }
+
+    public void openLink(String link) {
+        this.hostServices.showDocument(link);
     }
 
     public void show(Parent root) {
@@ -86,7 +97,6 @@ public enum App {
         decorator.setContent(root);
 
         decorator.getIcons().add(new Image("/theme/img/logo4.png"));
-
 
         decorator.show();
 

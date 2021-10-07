@@ -42,7 +42,7 @@
             </ImageView>
             <HBox fx:id="logo" alignment="CENTER" prefHeight="82.0" prefWidth="239.0" styleClass="h2" HBox.hgrow="ALWAYS">
                <children>
-                  <Label id="shopName" fx:id="title" minHeight="0.0" prefHeight="47.0" prefWidth="156.0" style="-fx-font-weight: bold; -fx-text-fill: -base;" styleClass="h3" text="DashboardFx V2" textOverrun="CLIP" />
+                  <Label id="shopName" fx:id="title" minHeight="0.0" prefHeight="47.0" prefWidth="156.0" style="-fx-font-weight: bold; -fx-text-fill: -base;" styleClass="h3" text="DashboardFx" textOverrun="CLIP" />
                </children>
             </HBox>
             <ToggleButton fx:id="hamburger" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="25.0" prefWidth="20.0" styleClass="hamburger" text="Button" visible="false">
@@ -109,21 +109,22 @@
                               <Insets bottom="10.0" left="20.0" top="10.0" />
                            </padding>
                         </Label>
-                        <ToggleButton alignment="BASELINE_LEFT" graphicTextGap="15.0" layoutX="10.0" layoutY="221.0" mnemonicParsing="false" onAction="#goDash" onMouseClicked="#goSales" prefHeight="50.0" prefWidth="295.0" styleClass="drawer-item" text="Dashboard">
-                           <toggleGroup>
-                              <ToggleGroup fx:id="team1" />
-                           </toggleGroup>
+                        <ToggleButton alignment="BASELINE_LEFT" graphicTextGap="15.0" layoutX="10.0" layoutY="221.0" mnemonicParsing="false" onAction="#goDash" onMouseClicked="#goSales" prefHeight="50.0" prefWidth="295.0" selected="true" styleClass="drawer-item" text="Dashboard">
                            <graphic>
                               <SVGPath content="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" styleClass="icon" translateX="-1.0" />
                            </graphic>
+                           <toggleGroup>
+                              <ToggleGroup fx:id="team" />
+                           </toggleGroup>
                         </ToggleButton>
-                        <TitledPane alignment="BASELINE_RIGHT" contentDisplay="RIGHT" graphicTextGap="15.0" nodeOrientation="RIGHT_TO_LEFT" text="Controls">
+                        <TitledPane alignment="BASELINE_RIGHT" contentDisplay="RIGHT" expanded="false" graphicTextGap="15.0" nodeOrientation="RIGHT_TO_LEFT" text="Controls">
                            <content>
                               <VBox>
                                  <children>
-                                    <ToggleButton alignment="BASELINE_LEFT" contentDisplay="RIGHT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#goButton" prefHeight="50.0" prefWidth="295.0" styleClass="drawer-item" text="Button">
+                                    <ToggleButton alignment="BASELINE_LEFT" contentDisplay="RIGHT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#goButton" prefHeight="50.0" prefWidth="295.0" styleClass="drawer-item" text="Button" toggleGroup="$team" />
+                                    <ToggleButton alignment="BASELINE_LEFT" contentDisplay="RIGHT" graphicTextGap="15.0" layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onAction="#goCheckBox" prefHeight="50.0" prefWidth="295.0" styleClass="drawer-item" text="Check Box">
                                        <toggleGroup>
-                                          <ToggleGroup fx:id="team" />
+                                          <ToggleGroup fx:id="team2" />
                                        </toggleGroup>
                                     </ToggleButton>
                                  </children>
@@ -140,17 +141,86 @@
                               <String fx:value="menu-selected" />
                            </styleClass>
                         </TitledPane>
-                        <ToggleButton alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onMouseClicked="#goSales" prefHeight="50.0" prefWidth="295.0" styleClass="drawer-item" text="Charts" toggleGroup="$team">
+                        <TitledPane alignment="BASELINE_RIGHT" contentDisplay="RIGHT" expanded="false" graphicTextGap="15.0" layoutX="10.0" layoutY="200.0" nodeOrientation="RIGHT_TO_LEFT" text="Charts">
+                           <content>
+                              <VBox>
+                                 <children>
+                                    <ToggleButton alignment="BASELINE_LEFT" contentDisplay="RIGHT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#goAreaChart" prefHeight="50.0" prefWidth="295.0" styleClass="drawer-item" text="AreaChart">
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="team21" />
+                                       </toggleGroup>
+                                    </ToggleButton>
+                                    <ToggleButton alignment="BASELINE_LEFT" contentDisplay="RIGHT" graphicTextGap="15.0" layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onAction="#goBarChart" prefHeight="50.0" prefWidth="295.0" styleClass="drawer-item" text="Bar Chart">
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="team211" />
+                                       </toggleGroup>
+                                    </ToggleButton>
+                                    <ToggleButton alignment="BASELINE_LEFT" contentDisplay="RIGHT" graphicTextGap="15.0" layoutX="20.0" layoutY="70.0" mnemonicParsing="false" onAction="#goBubbleChart" prefHeight="50.0" prefWidth="295.0" styleClass="drawer-item" text="Bubble Chart">
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="team2111" />
+                                       </toggleGroup>
+                                    </ToggleButton>
+                                    <ToggleButton alignment="BASELINE_LEFT" contentDisplay="RIGHT" graphicTextGap="15.0" layoutX="20.0" layoutY="120.0" mnemonicParsing="false" onAction="#goLineChart" prefHeight="50.0" prefWidth="295.0" styleClass="drawer-item" text="Line Chart">
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="team21111" />
+                                       </toggleGroup>
+                                    </ToggleButton>
+                                    <ToggleButton alignment="BASELINE_LEFT" contentDisplay="RIGHT" graphicTextGap="15.0" layoutX="20.0" layoutY="170.0" mnemonicParsing="false" onAction="#goPieChart" prefHeight="50.0" prefWidth="295.0" styleClass="drawer-item" text="Pie Chart">
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="team211111" />
+                                       </toggleGroup>
+                                    </ToggleButton>
+                                    <ToggleButton alignment="BASELINE_LEFT" contentDisplay="RIGHT" graphicTextGap="15.0" layoutX="20.0" layoutY="220.0" mnemonicParsing="false" onAction="#goScatter" prefHeight="50.0" prefWidth="295.0" styleClass="drawer-item" text="Scatter">
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="team2111111" />
+                                       </toggleGroup>
+                                    </ToggleButton>
+                                    <ToggleButton alignment="BASELINE_LEFT" contentDisplay="RIGHT" graphicTextGap="15.0" layoutX="20.0" layoutY="270.0" mnemonicParsing="false" onAction="#goStackedAreaChart" prefHeight="50.0" prefWidth="295.0" styleClass="drawer-item" text="Stacked Area Chart">
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="team21111111" />
+                                       </toggleGroup>
+                                    </ToggleButton>
+                                    <ToggleButton alignment="BASELINE_LEFT" contentDisplay="RIGHT" graphicTextGap="15.0" layoutX="20.0" layoutY="320.0" mnemonicParsing="false" onAction="#goStackedBarChart" prefHeight="50.0" prefWidth="295.0" styleClass="drawer-item" text="Stacked Bar Chart">
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="team211111111" />
+                                       </toggleGroup>
+                                    </ToggleButton>
+                                 </children>
+                              </VBox>
+                           </content>
                            <graphic>
-                              <SVGPath content="M11 2v20c-5.07-.5-9-4.79-9-10s3.93-9.5 9-10zm2.03 0v8.99H22c-.47-4.74-4.24-8.52-8.97-8.99zm0 11.01V22c4.74-.47 8.5-4.25 8.97-8.99h-8.97" styleClass="icon" translateX="-1.0" />
+                              <SVGPath content="M11 2v20c-5.07-.5-9-4.79-9-10s3.93-9.5 9-10zm2.03 0v8.99H22c-.47-4.74-4.24-8.52-8.97-8.99zm0 11.01V22c4.74-.47 8.5-4.25 8.97-8.99h-8.97" nodeOrientation="LEFT_TO_RIGHT" />
                            </graphic>
-                        </ToggleButton>
-                        <ToggleButton alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onMouseClicked="#goAgenda" prefHeight="50.0" prefWidth="295.0" styleClass="drawer-item" text="Agenda" toggleGroup="$team">
+                           <styleClass>
+                              <String fx:value="drawer-menu" />
+                              <String fx:value="menu-selected" />
+                           </styleClass>
+                        </TitledPane>
+                        <TitledPane alignment="BASELINE_RIGHT" contentDisplay="RIGHT" expanded="false" graphicTextGap="15.0" layoutX="10.0" layoutY="100.0" nodeOrientation="RIGHT_TO_LEFT" text="Custom Controls">
+                           <content>
+                              <VBox>
+                                 <children>
+                                    <ToggleButton alignment="BASELINE_LEFT" contentDisplay="RIGHT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#goCarousel" prefHeight="50.0" prefWidth="295.0" styleClass="drawer-item" text="Carousel">
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="team2" />
+                                       </toggleGroup>
+                                    </ToggleButton>
+                                    <ToggleButton alignment="BASELINE_LEFT" contentDisplay="RIGHT" graphicTextGap="15.0" layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onAction="#goCheckBox" prefHeight="50.0" prefWidth="295.0" styleClass="drawer-item" text="Check Box">
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="team21" />
+                                       </toggleGroup>
+                                    </ToggleButton>
+                                 </children>
+                              </VBox>
+                           </content>
                            <graphic>
-                              <SVGPath content="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z" styleClass="icon" />
+                              <SVGPath content="M2 12C2 6.48 6.48 2 12 2s10 4.48 10 10-4.48 10-10 10S2 17.52 2 12zm10 6c3.31 0 6-2.69 6-6s-2.69-6-6-6-6 2.69-6 6 2.69 6 6 6z" nodeOrientation="LEFT_TO_RIGHT" />
                            </graphic>
-                        </ToggleButton>
-                        <VBox prefHeight="1.0" prefWidth="249.0" style="-fx-background-color: -light-gray;" styleClass="border" />
+                           <styleClass>
+                              <String fx:value="drawer-menu" />
+                              <String fx:value="menu-selected" />
+                           </styleClass>
+                        </TitledPane>
                         <Label layoutX="10.0" layoutY="10.0" prefHeight="15.0" prefWidth="272.0" style="-fx-font-size: 14;" styleClass="text-info" text="Dashboard Api">
                            <padding>
                               <Insets bottom="10.0" left="20.0" top="10.0" />
@@ -161,7 +231,7 @@
                               <SVGPath content="M19,7H9C7.9,7,7,7.9,7,9v10c0,1.1,0.9,2,2,2h10c1.1,0,2-0.9,2-2V9C21,7.9,20.1,7,19,7z M19,9v2H9V9H19z M13,15v-2h2v2H13z M15,17v2h-2v-2H15z M11,15H9v-2h2V15z M17,13h2v2h-2V13z M9,17h2v2H9V17z M17,19v-2h2v2H17z M6,17H5c-1.1,0-2-0.9-2-2V5 c0-1.1,0.9-2,2-2h10c1.1,0,2,0.9,2,2v1h-2V5H5v10h1V17z" styleClass="icon" translateX="-1.0" />
                            </graphic>
                         </ToggleButton>
-                        <ToggleButton alignment="BASELINE_LEFT" graphicTextGap="15.0" layoutX="10.0" layoutY="278.0" mnemonicParsing="false" onMouseClicked="#goSales" prefHeight="50.0" prefWidth="295.0" styleClass="drawer-item" text="Pallete" toggleGroup="$team">
+                        <ToggleButton alignment="BASELINE_LEFT" graphicTextGap="15.0" layoutX="10.0" layoutY="278.0" mnemonicParsing="false" onMouseClicked="#goColors" prefHeight="50.0" prefWidth="295.0" styleClass="drawer-item" text="Pallete" toggleGroup="$team">
                            <graphic>
                               <SVGPath content="M12 22C6.49 22 2 17.51 2 12S6.49 2 12 2s10 4.04 10 9c0 3.31-2.69 6-6 6h-1.77c-.28 0-.5.22-.5.5 0 .12.05.23.13.33.41.47.64 1.06.64 1.67 0 1.38-1.12 2.5-2.5 2.5zm0-18c-4.41 0-8 3.59-8 8s3.59 8 8 8c.28 0 .5-.22.5-.5 0-.16-.08-.28-.14-.35-.41-.46-.63-1.05-.63-1.65 0-1.38 1.12-2.5 2.5-2.5H16c2.21 0 4-1.79 4-4 0-3.86-3.59-7-8-7z" styleClass="icon" translateX="-1.0" />
                            </graphic>

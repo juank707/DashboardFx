@@ -11,6 +11,8 @@ io/github/gleidson28/module/professional/ViewController.java
 io/github/gleidson28/global/plugin/LoadViews.java
  io.github.gleidson28.global.plugin.LoadViews
  io.github.gleidson28.global.plugin.LoadViews$1
+io/github/gleidson28/module/charts/PieChartController.java
+ io.github.gleidson28.module.charts.PieChartController
 io/github/gleidson28/global/enhancement/CrudView.java
  io.github.gleidson28.global.enhancement.CrudView
 io/github/gleidson28/global/enhancement/FluidView.java
@@ -55,8 +57,8 @@ io/github/gleidson28/global/model/Status.java
  io.github.gleidson28.global.model.Status$1
 io/github/gleidson28/module/layout/DrawerController.java
  io.github.gleidson28.module.layout.DrawerController
-io/github/gleidson28/module/layout/DrawerNavigate.java
- io.github.gleidson28.module.layout.DrawerNavigate
+io/github/gleidson28/global/enhancement/SelectedCell.java
+ io.github.gleidson28.global.enhancement.SelectedCell
 io/github/gleidson28/global/dao/AbstractDao.java
  io.github.gleidson28.global.dao.AbstractDao
 io/github/gleidson28/global/util/DrawerNavigate.java
@@ -94,6 +96,8 @@ io/github/gleidson28/global/exceptions/SQLQueryError.java
  io.github.gleidson28.global.exceptions.SQLQueryError
 io/github/gleidson28/global/enhancement/DataTableHandler.java
  io.github.gleidson28.global.enhancement.DataTableHandler
+io/github/gleidson28/module/charts/ScatterController.java
+ io.github.gleidson28.module.charts.ScatterController
 io/github/gleidson28/module/professional/IndexController.java
  io.github.gleidson28.module.professional.IndexController
  io.github.gleidson28.module.professional.IndexController$1
@@ -104,6 +108,8 @@ io/github/gleidson28/module/professional/IndexController.java
  io.github.gleidson28.module.professional.IndexController$5
 io/github/gleidson28/global/dao/ProfessionalPresenter.java
  io.github.gleidson28.global.dao.ProfessionalPresenter
+io/github/gleidson28/module/charts/LineChartController.java
+ io.github.gleidson28.module.charts.LineChartController
 io/github/gleidson28/global/model/SaleItem.java
  io.github.gleidson28.global.model.SaleItem
 io/github/gleidson28/global/factory/ActionFactory.java
@@ -123,12 +129,20 @@ io/github/gleidson28/module/professional/TeamController.java
  io.github.gleidson28.module.professional.TeamController
 io/github/gleidson28/global/popup/DashPopup.java
  io.github.gleidson28.global.popup.DashPopup
+io/github/gleidson28/module/layout/DrawerNavigate.java
+ io.github.gleidson28.module.layout.DrawerNavigate
+io/github/gleidson28/module/carousel/Carousel.java
+ io.github.gleidson28.module.carousel.Carousel
 io/github/gleidson28/global/model/Professional.java
  io.github.gleidson28.global.model.Professional
 io/github/gleidson28/global/enhancement/DataHandler.java
  io.github.gleidson28.global.enhancement.DataHandler
+io/github/gleidson28/module/charts/BubbleChartController.java
+ io.github.gleidson28.module.charts.BubbleChartController
 io/github/gleidson28/global/dao/Dao.java
  io.github.gleidson28.global.dao.Dao
+io/github/gleidson28/module/charts/BarChartController.java
+ io.github.gleidson28.module.charts.BarChartController
 io/github/gleidson28/global/creators/PopupCreator.java
  io.github.gleidson28.global.creators.PopupCreator
 io/github/gleidson28/global/dao/DaoUser.java
@@ -155,6 +169,8 @@ io/github/gleidson28/global/util/LanguageOption.java
  io.github.gleidson28.global.util.LanguageOption
 io/github/gleidson28/global/creators/AlertType.java
  io.github.gleidson28.global.creators.AlertType
+io/github/gleidson28/module/charts/StackedAreaChartController.java
+ io.github.gleidson28.module.charts.StackedAreaChartController
 io/github/gleidson28/global/factory/PriceFactory.java
  io.github.gleidson28.global.factory.PriceFactory
  io.github.gleidson28.global.factory.PriceFactory$1
@@ -165,6 +181,8 @@ io/github/gleidson28/global/exceptions/NavigationException.java
  io.github.gleidson28.global.exceptions.NavigationException
 io/github/gleidson28/module/professional/AvatarsContentController.java
  io.github.gleidson28.module.professional.AvatarsContentController
+io/github/gleidson28/module/charts/StackedBarChartController.java
+ io.github.gleidson28.module.charts.StackedBarChartController
 io/github/gleidson28/global/factory/ProfileFactory.java
  io.github.gleidson28.global.factory.ProfileFactory
  io.github.gleidson28.global.factory.ProfileFactory$1
@@ -178,5 +196,7 @@ io/github/gleidson28/global/util/CalcType.java
  io.github.gleidson28.global.util.CalcType
 io/github/gleidson28/global/model/Product.java
  io.github.gleidson28.global.model.Product
-io/github/gleidson28/global/enhancement/SelectedCell.java
- io.github.gleidson28.global.enhancement.SelectedCell
+io/github/gleidson28/module/color/Colors.java
+ io.github.gleidson28.module.color.Colors
+io/github/gleidson28/module/charts/AreaChartController.java
+ io.github.gleidson28.module.charts.AreaChartController

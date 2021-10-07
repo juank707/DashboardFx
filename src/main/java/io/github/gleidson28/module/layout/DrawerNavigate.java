@@ -120,6 +120,61 @@ public class DrawerNavigate implements Initializable {
     }
 
     @FXML
+    private void goCheckBox() throws NavigationException {
+        ViewManager.INSTANCE.setContent("checkbox");
+    }
+
+    @FXML
+    private void goCarousel() throws NavigationException {
+        ViewManager.INSTANCE.setContent("carousel");
+    }
+
+    @FXML
+    private void goAreaChart() throws NavigationException {
+        ViewManager.INSTANCE.setContent("area_chart");
+    }
+
+    @FXML
+    private void goBarChart() throws NavigationException {
+        ViewManager.INSTANCE.setContent("bar_chart");
+    }
+
+    @FXML
+    private void goBubbleChart() throws NavigationException {
+        ViewManager.INSTANCE.setContent("bubble_chart");
+    }
+
+    @FXML
+    private void goLineChart() throws NavigationException {
+        ViewManager.INSTANCE.setContent("line_chart");
+    }
+
+    @FXML
+    private void goPieChart() throws NavigationException {
+        ViewManager.INSTANCE.setContent("pie_chart");
+    }
+
+    @FXML
+    private void goScatter() throws NavigationException {
+        ViewManager.INSTANCE.setContent("scatter_chart");
+    }
+
+    @FXML
+    private void goStackedAreaChart() throws NavigationException {
+        ViewManager.INSTANCE.setContent("stacked_area_chart");
+    }
+
+    @FXML
+    private void goStackedBarChart() throws NavigationException {
+        ViewManager.INSTANCE.setContent("stacked_bar_chart");
+    }
+
+    @FXML
+    private void goColors() throws NavigationException {
+        ViewManager.INSTANCE.setContent("color");
+    }
+
+    @FXML
     private void goDataTable() throws NavigationException {
         ViewManager.INSTANCE.setContent("professional");
     }

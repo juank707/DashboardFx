@@ -47,6 +47,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(Main.class.getResource("/module/loader/loader.fxml"));
 
         App.INSTANCE.show(root);
+        App.INSTANCE.setHostServices(getHostServices());
 
         Thread thread = new Thread(() -> {
             Runnable updater = () -> {

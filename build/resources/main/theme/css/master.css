@@ -809,3 +809,30 @@
 .gn-carousel .container .wrapper .indicators .toggle-button {
     -fx-background-color : -light-gray;
 }
+
+.gn-carousel .container .right-button,
+.gn-carousel .container .left-button
+{
+  -fx-background-color : transparent;
+}
+
+.gn-carousel .container {
+    -fx-background-color : -foreground-color;
+}
+
+.gn-carousel .container .wrapper .indicators .toggle-button
+{
+    -fx-background-color : rgba(0,0,0,.2);
+    -fx-effect : none;
+    -fx-max-height : 3px;
+}
+
+.gn-carousel .container .wrapper .indicators .toggle-button:selected
+{
+  -fx-background-color : white;
+}
+
+.gn-carousel .container .button SVGPath {
+    -fx-fill : -text-color;
+    -fx-background-color : red;
+}

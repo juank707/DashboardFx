@@ -117,5 +117,6 @@
       <URL value="@../../theme/css/typographic.css" />
       <URL value="@../../theme/css/helpers.css" />
       <URL value="@../../theme/css/master.css" />
+      <URL value="@../../theme/css/custom-scroll.css" />
    </stylesheets>
 </StackPane>
