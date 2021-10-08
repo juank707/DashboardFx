@@ -21,6 +21,7 @@ import javafx.scene.Parent;
 
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.List;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
@@ -28,8 +29,12 @@ import java.nio.charset.Charset;
  */
 public class ViewConstructor {
 
-    private final Module module;
+    private final Module        module;
     private final FXMLLoader    loader;
+
+    ViewConstructor(Module view) {
+        this(view, null);
+    }
 
     ViewConstructor(Module view, FXMLLoader loader) {
         this.module = view;
@@ -38,6 +43,10 @@ public class ViewConstructor {
 
     public Module getModule() {
         return module;
+    }
+
+    public List<Module> getModule(Module module) {
+        return module.getViews();
     }
 
     public Object getController() {
@@ -55,6 +64,7 @@ public class ViewConstructor {
     public URL getLocation() {
         return loader.getLocation();
     }
+
 
 //    public FormView getFormController() {
 //        return loader.getController() instanceof FormView ? loader.getController() : null;

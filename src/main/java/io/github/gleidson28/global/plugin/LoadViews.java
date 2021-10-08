@@ -17,12 +17,16 @@
 package io.github.gleidson28.global.plugin;
 
 import io.github.gleidson28.App;
+import io.github.gleidson28.global.creators.AlertCreator;
+import io.github.gleidson28.global.creators.AlertType;
 import io.github.gleidson28.global.exceptions.NavigationException;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
+import org.controlsfx.control.BreadCrumbBar;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
@@ -60,7 +64,7 @@ public class LoadViews extends Service<Module> {
         }
     }
 
-    private void loadView(Module module, Label lbl){
+    private void loadView(Module module) throws IOException {
 
         FXMLLoader loader = new FXMLLoader();
         URL location = null;
@@ -74,18 +78,27 @@ public class LoadViews extends Service<Module> {
         if(module.getViews() != null) {
 
             for (Module v : module.getViews()) {
-                if (v.getFxml() != null && v.getFxml() != null) {
-                    location = getClass().getResource(path + builder + "/" + v.getFxml());
+
+                if (v.getFxml() != null) {
+                    location = getClass().getResource(path + builder + "/"
+                            + v.getFxml());
                 }
-                loadView(v, lbl);
+
+                v.setRoot(module);
+
+                loadView(v);
+
             }
+
         }
 
-        if(module.getDirectory() == null ){
-            location = LoadViews.class.getResource(path + builder + "/"  + module.getFxml());
+        if(module.getDirectory() == null ) {
+            location = LoadViews.class.getResource(path + builder + "/"
+                    + module.getFxml());
 
         } else if(module.getFxml() != null && module.getDirectory() != null){
-            location = getClass().getResource(path + builder + "/" + module.getFxml());
+            location = getClass().getResource(path + builder + "/"
+                    + module.getFxml());
         }
 
         if(module.getDirectory() != null) {
@@ -95,20 +108,20 @@ public class LoadViews extends Service<Module> {
             }
         }
 
-        if (location != null){
+
+        if ( location != null ) {
+
 //            loader.setCharset(StandardCharsets.UTF_8);
             loader.setLocation(location);
             loader.setResources(App.INSTANCE.getResourceBundle());
+            loader.load();
 
-            try {
-                loader.load();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            updateMessage("Loading Views [" + module.getName() + "]");
 
-            Platform.runLater(() -> lbl.setText("Carregando visualizações.. [" + module.getName() + "]"));
             ViewManager.INSTANCE.put(new ViewConstructor(module, loader));
+
         }
+
     }
 
     @Override
@@ -116,22 +129,40 @@ public class LoadViews extends Service<Module> {
         try {
             ViewManager.INSTANCE.navigate("layout");
             ViewManager.INSTANCE.setContent("dashboard");
+
+
         } catch (NavigationException e) {
             e.printStackTrace();
         }
     }
 
+    @Override
+    protected void cancelled() {
+        super.cancelled();
+    }
+
+    @Override
+    protected void failed() {
+        super.failed();
+
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("Error on loading view.");
+        alert.setContentText(super.getException().getMessage());
+        alert.show();
+
+    }
 
     @Override
     protected synchronized Task<Module> createTask() {
+
         return new Task<Module>() {
+
             @Override
-            protected Module call() {
+            protected Module call() throws IOException {
 
 
-                Label lbl = (Label) App.INSTANCE.getDecorator().lookup("#labelLoading");
-
-                Platform.runLater(() -> lbl.setText("Inicializando..."));
+               updateMessage("Starting...");
 
                 try {
                     Thread.sleep(1000);
@@ -139,7 +170,7 @@ public class LoadViews extends Service<Module> {
                     e.printStackTrace();
                 }
 
-                Platform.runLater(() -> lbl.setText("Carregando base de dados..."));
+                updateMessage("Loading database...");
 
 //                DaoManager.INSTANCE.loadItems();
 
@@ -149,13 +180,13 @@ public class LoadViews extends Service<Module> {
                     e.printStackTrace();
                 }
 
-                Platform.runLater(() -> lbl.setText("Carregando visualizações..."));
+                updateMessage("Carregando visualizações...");
 
                 for(Module module : modules){
-                    loadView(module, lbl);
+                    loadView(module);
                 }
 
-                Platform.runLater( () -> lbl.setText("Indo para tela principal :D"));
+                updateMessage("Going to main screen :D");
 
                 try {
                     Thread.sleep(2000);
@@ -165,5 +196,10 @@ public class LoadViews extends Service<Module> {
                 return null;
             }
         };
+    }
+
+    private void updateMessage(String message) {
+        if(lbl == null) lbl = (Label) App.INSTANCE.getDecorator().lookup("#labelLoading");
+        Platform.runLater( () -> lbl.setText(message));
     }
 }

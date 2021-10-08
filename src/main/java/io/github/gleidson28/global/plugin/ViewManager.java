@@ -26,12 +26,14 @@ import io.github.gleidson28.global.enhancement.FluidView;
 import io.github.gleidson28.global.model.Model;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
@@ -47,7 +49,7 @@ public enum ViewManager {
 
     private GNDecorator decorator;
     private ScrollPane  body;
-    private Label       title;
+    private HBox        crumb;
 
     private final HashMap<String, ViewConstructor> SCREENS = new HashMap<>();
 
@@ -78,6 +80,7 @@ public enum ViewManager {
         else {
 
             viewController.getRoot().layout();
+
             App.INSTANCE.setContent(viewController.getRoot());
 
             if (get(name).getController() instanceof FluidView){
@@ -107,6 +110,43 @@ public enum ViewManager {
         System.out.println("viewConstructor = " + viewConstructor.getModule());
     }
 
+    private void updateCrumb(Module module) {
+
+        if(module.getRoot() != null) {
+
+            Module root = module.getRoot();
+
+            Hyperlink link = new Hyperlink(root.getTitle() + " / ");
+
+            if(root.getFxml() != null) {
+                link.setOnAction( evnt -> {
+                    System.out.println(" = " + root.getName());
+                    try {
+                        ViewManager.INSTANCE.setContent(root.getName());
+                    } catch (NavigationException e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+
+            if (root.getViews() != null) {
+
+                updateCrumb(root);
+
+
+
+                crumb.getChildren().add(link);
+
+                if (root.getFxml() == null) {
+                    link.setDisable(true);
+                }
+
+            }
+
+        }
+
+
+    }
 
     public String setContent(String name, Model model) throws NavigationException {
 
@@ -116,10 +156,12 @@ public enum ViewManager {
 
         if(viewController != null) {
 
-            title.setText(viewController.getModule().getTitle());
+            crumb.getChildren().clear();
+            updateCrumb(viewController.getModule());
+
+            crumb.getChildren().add(new Hyperlink(viewController.getModule().getTitle()));
 
             body.setContent(viewController.getRoot());
-
 
             if(previous != null) {
 
@@ -169,7 +211,7 @@ public enum ViewManager {
     private void getContents() {
          decorator = App.INSTANCE.getDecorator();
          body = (ScrollPane) decorator.lookup("#body");
-         title = (Label) decorator.lookup("#title");
+         crumb = (HBox) decorator.lookup("#title");
     }
 
     // Implement in the future
@@ -199,6 +241,12 @@ public enum ViewManager {
 
     public Module getModule(String view) {
         return SCREENS.get(view).getModule();
+    }
+
+    public List<Module> getViews(String view) {
+
+        System.out.println(SCREENS.get(view));
+        return SCREENS.get(view).getModule().getViews();
     }
 
     public ViewConstructor getViewConstructor(String view) {

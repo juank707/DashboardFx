@@ -20,8 +20,19 @@ import io.github.gleidson28.decorator.GNDecorator;
 import javafx.application.HostServices;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -53,6 +64,30 @@ public enum App {
 
         decorator.setMinWidth(Double.parseDouble(getString("app.min.width")));
         decorator.setMinHeight(Double.parseDouble(getString("app.min.height")));
+
+        MenuItem menuItem = new MenuItem("Test");
+
+        GridPane titleContent = new GridPane();
+
+        titleContent.setGridLinesVisible(true);
+
+        HBox breadCrumbBar = new HBox();
+        breadCrumbBar.getChildren().add(new Hyperlink("Welcome"));
+
+        titleContent.add(breadCrumbBar, 0,0);
+
+        HBox badges = new HBox();
+        badges.getChildren().add(new Button("Badge"));
+
+        titleContent.getChildren().add(badges);
+
+        GridPane.setConstraints(badges, 1,0, 1,1, HPos.RIGHT, VPos.CENTER, Priority.ALWAYS, Priority.SOMETIMES);
+
+        badges.setAlignment(Pos.CENTER_RIGHT);
+
+        HBox.setHgrow(titleContent, Priority.ALWAYS);
+        decorator.getCustomControls().add(titleContent);
+
     }
 
     public void setContent(Parent content) {
@@ -100,7 +135,7 @@ public enum App {
 
         decorator.show();
 
-//        decorator.testWithScenicView();
+        decorator.testWithScenicView();
     }
 
     public Object getObject(String name) {

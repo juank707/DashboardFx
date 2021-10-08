@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import org.controlsfx.control.RangeSlider?>
+
+<StackPane fx:id="root" minHeight="200.0" prefHeight="374.0" prefWidth="357.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox StackPane.alignment="TOP_CENTER">
+         <children>
+            <VBox alignment="CENTER" minHeight="48.0" prefHeight="61.0" prefWidth="274.0">
+               <children>
+                  <Label style="-fx-font-weight: bold;" styleClass="h4" text="Filters" />
+               </children>
+               <styleClass>
+                  <String fx:value="border-b-1" />
+                  <String fx:value="border" />
+               </styleClass>
+            </VBox>
+            <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
+               <styleClass>
+                  <String fx:value="border" />
+                  <String fx:value="border-b-1" />
+               </styleClass>
+               <content>
+                  <VBox minHeight="40.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                     <children>
+                        <VBox prefHeight="73.0" prefWidth="262.0">
+                           <children>
+                              <Label text="Price:" />
+                              <RangeSlider highValue="100.0" highValueChanging="true" lowValue="0.0" lowValueChanging="true" majorTickUnit="10.0" max="100.0" minorTickCount="10" showTickLabels="true" showTickMarks="true" snapToTicks="true">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </VBox.margin>
+                              </RangeSlider>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </VBox>
+                        <VBox layoutX="10.0" layoutY="10.0" prefHeight="72.0" prefWidth="262.0">
+                           <children>
+                              <Label text="Rating:" />
+                              <RangeSlider blockIncrement="5.0" highValue="4.0" highValueChanging="true" lowValue="2.0" lowValueChanging="true" majorTickUnit="1.0" max="5.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </VBox.margin>
+                              </RangeSlider>
+                           </children>
+                        </VBox>
+                        <VBox layoutX="10.0" layoutY="49.0">
+                           <children>
+                              <Label text="Status:" />
+                           </children>
+                        </VBox>
+                        <GridPane alignment="CENTER" hgap="10.0" minHeight="40.0" prefHeight="43.0" prefWidth="279.0" vgap="10.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
+                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
+                              <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="25.0" minHeight="10.0" prefHeight="22.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <RadioButton mnemonicParsing="false" styleClass="radio-danger" text="Busy" GridPane.columnIndex="2">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="status" />
+                                 </toggleGroup>
+                              </RadioButton>
+                              <RadioButton mnemonicParsing="false" selected="true" styleClass="radio-success" text="Free" toggleGroup="$status" GridPane.columnIndex="1" />
+                              <RadioButton mnemonicParsing="false" styleClass="radio-amber" text="Unavailable" toggleGroup="$status" GridPane.columnIndex="3" GridPane.halignment="RIGHT" />
+                              <RadioButton mnemonicParsing="false" selected="true" text="All" toggleGroup="$status" />
+                           </children>
+                        </GridPane>
+                     </children>
+                  </VBox>
+               </content>
+            </ScrollPane>
+         </children>
+      </VBox>
+   </children>
+   <stylesheets>
+      <URL value="@../../../theme/css/material-color.css" />
+      <URL value="@../../../theme/css/skeleton.css" />
+      <URL value="@../../../theme/css/bootstrap.css" />
+      <URL value="@../../../theme/css/shape.css" />
+      <URL value="@../../../theme/css/typographic.css" />
+      <URL value="@../../../theme/css/helpers.css" />
+      <URL value="@../../../theme/css/master.css" />
+   </stylesheets>
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+</StackPane>

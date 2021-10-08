@@ -98,8 +98,8 @@ public class LayoutController implements Initializable {
     private void hideHamburger(){
         gridBar.setMinHeight(50);
         hamburger.setVisible(false);
-        lbl_title.setPrefHeight(50);
-        lbl_title.setPadding(new Insets(0, 0 ,0 ,10));
-        lbl_title.getStyleClass().removeAll("h4");
+//        lbl_title.setPrefHeight(50);
+//        lbl_title.setPadding(new Insets(0, 0 ,0 ,10));
+//        lbl_title.getStyleClass().removeAll("h4");
     }
 }

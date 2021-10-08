@@ -32,6 +32,8 @@ public class Module {
     private String          fxml;
     private List<Module>    views;
 
+    private Module          root;
+
     public String getTitle() {
         return title;
     }
@@ -72,11 +74,19 @@ public class Module {
         this.views = views;
     }
 
+    public Module getRoot() {
+        return root;
+    }
+
+    public void setRoot(Module root) {
+        this.root = root;
+    }
+
     @Override
     public String toString() {
         return new StringJoiner(", ", Module.class.getSimpleName() + "[", "]")
-                .add("title='" + title + "'")
                 .add("name='" + name + "'")
+                .add("title='" + title + "'")
                 .add("fxml='" + fxml + "'")
                 .add("directory='" + directory + "'")
                 .toString();

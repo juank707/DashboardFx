@@ -96,16 +96,6 @@ public class DrawerNavigate implements Initializable {
     @FXML
     private void goSales() throws NavigationException {
 
-
-    }
-
-    @FXML
-    private void goCashierCommand() throws NavigationException {
-    }
-    
-
-    @FXML
-    private void goSettings() throws NavigationException {
     }
 
     @FXML
@@ -121,7 +111,12 @@ public class DrawerNavigate implements Initializable {
 
     @FXML
     private void goCheckBox() throws NavigationException {
-        ViewManager.INSTANCE.setContent("checkbox");
+        ViewManager.INSTANCE.setContent("check-box");
+    }
+
+    @FXML
+    private void goPagination() throws NavigationException {
+        ViewManager.INSTANCE.setContent("pagination");
     }
 
     @FXML
@@ -175,8 +170,25 @@ public class DrawerNavigate implements Initializable {
     }
 
     @FXML
+    private void goPopupCreator() throws NavigationException {
+        ViewManager.INSTANCE.setContent("popup-creator");
+    }
+
+
+    @FXML
     private void goDataTable() throws NavigationException {
-        ViewManager.INSTANCE.setContent("professional");
+        ViewManager.INSTANCE.setContent("professional_index");
+
+    }
+
+    @FXML
+    private void goSettings() throws NavigationException {
+        ViewManager.INSTANCE.setContent("settings");
+    }
+
+    @FXML
+    private void goAbout() throws NavigationException {
+        ViewManager.INSTANCE.setContent("about");
     }
 
     @FXML

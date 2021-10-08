@@ -1,27 +1,6 @@
 
-- !!io.github.gleidson28.global.plugin.Module
-  name      : professional
-  title     : Professional
-  directory : professional
-  fxml      : professional_index.fxml
 
-- !!io.github.gleidson28.global.plugin.Module
-  name      : professional_view
-  title     : Professional
-  directory : professional
-  fxml      : professional_view.fxml
 
-- !!io.github.gleidson28.global.plugin.Module
-  name      : professional_register
-  title     : Professional
-  directory : professional
-  fxml      : professional_register.fxml
-
-- !!io.github.gleidson28.global.plugin.Module
-  name      : avatars_content
-  title     : Avatars Content
-  directory : professional
-  fxml      : avatars_content.fxml
 
 - !!io.github.gleidson28.global.plugin.Module
   name      : layout
@@ -40,28 +19,34 @@
   title     : Controls
   directory : controls
   views :
-    - name : button
-      title : Button
+    - name      : button
+      title     : Button
       directory : button
-      fxml : button.fxml
+      fxml      : button.fxml
+    - name  : check-box
+      title : Check Box
+      fxml  : checkbox.fxml
+
+
 
 - !!io.github.gleidson28.global.plugin.Module
-  name      : checkbox
-  title     : Check Box
+  name      : pagination
+  title     : Pagination
   directory : controls
-  fxml      : checkbox.fxml
+  fxml      : pagination.fxml
 
 - !!io.github.gleidson28.global.plugin.Module
-  name      : area_chart
-  title     : Area Chart
+  name      : charts
+  title     : Charts
   directory : charts
-  fxml      : areaChart.fxml
+  views     :
+    - name      : area_chart
+      title     : Area Chart
+      fxml      : areaChart.fxml
+    - name      : bar_chart
+      title     : Bar Chart
+      fxml      : barChart.fxml
 
-- !!io.github.gleidson28.global.plugin.Module
-  name      : bar_chart
-  title     : Bar Chart
-  directory : charts
-  fxml      : barChart.fxml
 
 - !!io.github.gleidson28.global.plugin.Module
   name      : bubble_chart
@@ -100,19 +85,54 @@
   fxml      : stackedBarChart.fxml
 
 - !!io.github.gleidson28.global.plugin.Module
-  name      : stacked_bar_chart
-  title     : Stacked Bar Chart
-  directory : charts
-  fxml      : stackedBarChart.fxml
-
-- !!io.github.gleidson28.global.plugin.Module
-  name      : color
-  title     : Material Color
-  directory : color
-  fxml      : colors.fxml
-
-- !!io.github.gleidson28.global.plugin.Module
   name      : carousel
   title     : Carousel
   directory : custom
   fxml      : carousel.fxml
+
+- !!io.github.gleidson28.global.plugin.Module
+  name: example
+  title: Examples
+  directory: examples
+  views:
+    - name: data_table
+      title: Data Table
+      directory: dataTable
+      views:
+        - name: professional_index
+          title: Index
+          fxml: professional_index.fxml
+          views :
+            - name: professional_view
+              title: View
+              fxml: professional_view.fxml
+            - name: professional_register
+              title: Register
+              fxml: professional_register.fxml
+            - name: avatars_content
+              title: Avatars Content
+              fxml: avatars_content.fxml
+
+- !!io.github.gleidson28.global.plugin.Module
+  title     : Utilities
+  directory : utilities
+  views :
+    - name  : color
+      title : Material Color
+      fxml  : colors.fxml
+    - name      : popup-creator
+      title     : Popup Creator
+      fxml      : popupCreator.fxml
+
+
+- !!io.github.gleidson28.global.plugin.Module
+  name      : settings
+  title     : Settings
+  directory : settings
+  fxml      : settings.fxml
+
+- !!io.github.gleidson28.global.plugin.Module
+  name      : about
+  title     : Settings
+  directory : about
+  fxml      : about.fxml

@@ -24,6 +24,8 @@ import javafx.scene.Parent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
@@ -44,7 +46,8 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        Parent root = FXMLLoader.load(Main.class.getResource("/module/loader/loader.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource(
+                "/module/loader/loader.fxml"));
 
         App.INSTANCE.show(root);
         App.INSTANCE.setHostServices(getHostServices());

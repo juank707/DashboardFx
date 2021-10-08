@@ -2153,8 +2153,23 @@ Text {
 *******************************************************************************/
 
 
+.tab-pane:top .tab-header-area .control-buttons-tab .container .tab-down-button {
+    -fx-border-color : -light-gray;
+    -fx-border-width : 0px 0px 0px 1px;
+    -fx-pref-width : 20px;
+    -fx-pref-height : 20px;
+    -fx-background-color : -background-color;
+}
+
+.tab-pane:top .tab-header-area .control-buttons-tab .container .tab-down-button .arrow {
+    -fx-scale-x :2px;
+    -fx-background-color : -icon-color;
+    -fx-shape : "M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z";
+}
+
 .tab-white
 {
+
     -fx-tab-max-height: 40px;
     -fx-tab-min-height: 40px;
 

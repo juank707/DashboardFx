@@ -836,3 +836,7 @@
     -fx-fill : -text-color;
     -fx-background-color : red;
 }
+
+#gn-custom-controls {
+    -fx-padding : 5 5 5 250; /* hack */
+}

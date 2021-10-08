@@ -419,11 +419,23 @@
 
 .check-rounded:determinate,
 .check-rounded:determinate .box,
-.check-rounded:determinate:selected .box
+.check-rounded:determinate:selected .box,
+.pag-rounded .pagination-control .control-box .number-button
 {
   -fx-background-radius : 100px;
   -fx-border-radius : 100px;
   -fx-padding :  3px;
+}
+
+.pag-triangle .pagination-control .control-box .number-button {
+  -fx-background-radius : 0px;
+  -fx-border-radius : 0px;
+  -fx-padding :  3px;
+  -fx-rotate : 45;
+}
+
+.pag-triangle .pagination-control .control-box .number-button .text {
+  -fx-rotate : -46;
 }
 
 /************************************************************************************
