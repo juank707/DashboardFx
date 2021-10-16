@@ -18,14 +18,11 @@ package io.github.gleidson28;
 
 import io.github.gleidson28.global.plugin.LoadViews;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
@@ -39,30 +36,29 @@ public class Main extends Application {
     }
 
     @Override
-    public void stop() throws Exception {
+    public void stop() {
         App.INSTANCE.store();
     }
 
     @Override
     public void start(Stage stage) throws IOException {
 
-        Parent root = FXMLLoader.load(getClass().getResource(
-                "/module/loader/loader.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/module/loader/loader.fxml"));
 
         App.INSTANCE.show(root);
         App.INSTANCE.setHostServices(getHostServices());
 
-        Thread thread = new Thread(() -> {
-            Runnable updater = () -> {
+//        Thread thread = new Thread(() -> {
+//            Runnable updater = () -> {
                 LoadViews loadViews = new LoadViews();
                 loadViews.start();
-            };
-            // UI update is run on the Application thread
-            Platform.runLater(updater);
-        });
-        // don't let thread prevent JVM shutdown
-        thread.setDaemon(true);
-        thread.start();
+//            };
+//             UI update is run on the Application thread
+//            Platform.runLater(updater);
+//        });
+//         don't let thread prevent JVM shutdown
+//        thread.setDaemon(true);
+//        thread.start();
 
     }
 }

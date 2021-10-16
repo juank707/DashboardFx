@@ -17,24 +17,23 @@
 package io.github.gleidson28;
 
 import io.github.gleidson28.decorator.GNDecorator;
+import io.github.gleidson28.global.badges.AlertBadge;
+import io.github.gleidson28.global.badges.MessageBadge;
+import io.github.gleidson28.global.badges.NotificationBadge;
 import javafx.application.HostServices;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import org.jetbrains.annotations.Contract;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.Locale;
 import java.util.Properties;
@@ -51,10 +50,10 @@ public enum App {
     private final Properties properties = new Properties();
     private final GNDecorator decorator = new GNDecorator();
 
-    private Locale locale = null;
-
     private final DoubleProperty width = new SimpleDoubleProperty();
     private final DoubleProperty height = new SimpleDoubleProperty();
+
+    private Locale locale = null;
 
     private HostServices hostServices = null;
 
@@ -65,35 +64,21 @@ public enum App {
         decorator.setMinWidth(Double.parseDouble(getString("app.min.width")));
         decorator.setMinHeight(Double.parseDouble(getString("app.min.height")));
 
-        MenuItem menuItem = new MenuItem("Test");
-
-        GridPane titleContent = new GridPane();
-
-        titleContent.setGridLinesVisible(true);
-
-        HBox breadCrumbBar = new HBox();
-        breadCrumbBar.getChildren().add(new Hyperlink("Welcome"));
-
-        titleContent.add(breadCrumbBar, 0,0);
-
         HBox badges = new HBox();
-        badges.getChildren().add(new Button("Badge"));
+        badges.setMaxHeight(20);
 
-        titleContent.getChildren().add(badges);
-
-        GridPane.setConstraints(badges, 1,0, 1,1, HPos.RIGHT, VPos.CENTER, Priority.ALWAYS, Priority.SOMETIMES);
-
+        badges.getStyleClass().add("badges");
+        badges.getChildren().addAll(new MessageBadge(), new NotificationBadge(), new AlertBadge());
         badges.setAlignment(Pos.CENTER_RIGHT);
-
-        HBox.setHgrow(titleContent, Priority.ALWAYS);
-        decorator.getCustomControls().add(titleContent);
-
+        HBox.setHgrow(badges, Priority.ALWAYS);
+        decorator.getCustomControls().add(badges);
     }
 
     public void setContent(Parent content) {
         decorator.setContent(content);
     }
 
+    @Contract(pure = true)
     public GNDecorator getDecorator() {
         return this.decorator;
     }
@@ -130,12 +115,10 @@ public enum App {
 
         decorator.fullBody();
         decorator.setContent(root);
-
         decorator.getIcons().add(new Image("/theme/img/logo4.png"));
-
         decorator.show();
 
-        decorator.testWithScenicView();
+//        decorator.testWithScenicView();
     }
 
     public Object getObject(String name) {
@@ -146,9 +129,7 @@ public enum App {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return properties.get(name);
-
     }
 
     public String getString(String name) {
@@ -175,7 +156,6 @@ public enum App {
     }
 
     public void store () {
-
         properties.stringPropertyNames().forEach(f -> properties.setProperty(f, properties.getProperty(f)));
 
         properties.setProperty("app.width", String.valueOf(decorator.getWidth()));

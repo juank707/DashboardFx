@@ -197,7 +197,6 @@ public class IndexController implements Initializable, FluidView {
 
         setup();
 
-
         Task<ObservableList<Professional>> load = professionalPresenter.getTask();
         RotateTransition rotate = new RotateTransition(Duration.seconds(10), loader);
 
@@ -423,6 +422,11 @@ public class IndexController implements Initializable, FluidView {
         App.INSTANCE.getDecorator().widthProperty().removeListener(resizeTable);
         App.INSTANCE.getDecorator().widthProperty().removeListener(resizeFields);
         App.INSTANCE.getDecorator().widthProperty().removeListener(resizeTitles);
+    }
+
+    @Override
+    public void relocate(double width) {
+
     }
 
     @FXML

@@ -17,23 +17,26 @@
 package io.github.gleidson28.global.plugin;
 
 import io.github.gleidson28.App;
-import io.github.gleidson28.global.enhancement.CrudView;
-import io.github.gleidson28.global.exceptions.NavigationException;
 import io.github.gleidson28.decorator.GNDecorator;
 import io.github.gleidson28.global.creators.PopupCreator;
+import io.github.gleidson28.global.enhancement.CrudView;
 import io.github.gleidson28.global.enhancement.FluidView;
-//import io.github.gleidson28.module.registers.employees.FormView;
+import io.github.gleidson28.global.exceptions.NavigationException;
 import io.github.gleidson28.global.model.Model;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.FlowPane;
 
 import java.util.HashMap;
 import java.util.List;
+
+//import io.github.gleidson28.module.registers.employees.FormView;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
@@ -49,7 +52,8 @@ public enum ViewManager {
 
     private GNDecorator decorator;
     private ScrollPane  body;
-    private HBox        crumb;
+    private FlowPane    crumb;
+    private Label       breadTitle;
 
     private final HashMap<String, ViewConstructor> SCREENS = new HashMap<>();
 
@@ -111,18 +115,15 @@ public enum ViewManager {
     }
 
     private void updateCrumb(Module module) {
-
         if(module.getRoot() != null) {
-
             Module root = module.getRoot();
-
             Hyperlink link = new Hyperlink(root.getTitle() + " / ");
+            link.getStyleClass().add("bread-link");
 
             if(root.getFxml() != null) {
-                link.setOnAction( evnt -> {
-                    System.out.println(" = " + root.getName());
+                link.setOnAction( event -> {
                     try {
-                        ViewManager.INSTANCE.setContent(root.getName());
+                        setContent(root.getName());
                     } catch (NavigationException e) {
                         e.printStackTrace();
                     }
@@ -130,22 +131,19 @@ public enum ViewManager {
             }
 
             if (root.getViews() != null) {
-
                 updateCrumb(root);
-
-
-
                 crumb.getChildren().add(link);
-
+                link.getStyleClass().add("bread-link");
                 if (root.getFxml() == null) {
                     link.setDisable(true);
                 }
-
             }
-
         }
+    }
 
-
+    public void setContent(Node node) {
+        getContents();
+        body.setContent(node);
     }
 
     public String setContent(String name, Model model) throws NavigationException {
@@ -159,7 +157,11 @@ public enum ViewManager {
             crumb.getChildren().clear();
             updateCrumb(viewController.getModule());
 
-            crumb.getChildren().add(new Hyperlink(viewController.getModule().getTitle()));
+            Hyperlink link = new Hyperlink(viewController.getModule().getTitle());
+            link.getStyleClass().add("bread-link");
+            crumb.getChildren().add(link);
+
+            breadTitle.setText(viewController.getModule().getTitle());
 
             body.setContent(viewController.getRoot());
 
@@ -171,6 +173,7 @@ public enum ViewManager {
 
             if (viewController.getController() instanceof FluidView) {
                 ((FluidView) viewController.getController()).onEnter();
+                ((FluidView) viewController.getController()).relocate(App.INSTANCE.getWidth());
             }
 
             if(model != null) {
@@ -200,18 +203,16 @@ public enum ViewManager {
         }
     }
 
-
-
     public String setContent(String name) throws NavigationException {
         return setContent(name, null);
-
     }
 
     //convenient method
     private void getContents() {
          decorator = App.INSTANCE.getDecorator();
          body = (ScrollPane) decorator.lookup("#body");
-         crumb = (HBox) decorator.lookup("#title");
+         crumb = (FlowPane) decorator.lookup(".breadCrumb");
+         breadTitle = (Label) decorator.lookup("#breadTitle");
     }
 
     // Implement in the future
@@ -245,7 +246,7 @@ public enum ViewManager {
 
     public List<Module> getViews(String view) {
 
-        System.out.println(SCREENS.get(view));
+
         return SCREENS.get(view).getModule().getViews();
     }
 

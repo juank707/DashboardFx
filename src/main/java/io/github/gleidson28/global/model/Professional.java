@@ -30,13 +30,25 @@ import java.math.BigDecimal;
 public class Professional extends User {
 
     private final ObjectProperty<Status> status = new SimpleObjectProperty<>();
-    private ObjectProperty<BigDecimal> price = new SimpleObjectProperty<>();
+    private final ObjectProperty<BigDecimal> price = new SimpleObjectProperty<>();
 
-    private StringProperty location = new SimpleStringProperty();
-    private StringProperty email = new SimpleStringProperty();
-    private StringProperty teams = new SimpleStringProperty();
+    private final StringProperty location = new SimpleStringProperty();
+    private final StringProperty email = new SimpleStringProperty();
+    private final StringProperty teams = new SimpleStringProperty();
 
     private FloatProperty rating = new SimpleFloatProperty();
+
+    private final BooleanProperty nameValidator = new SimpleBooleanProperty();
+    private final BooleanProperty lastNameValidator = new SimpleBooleanProperty();
+
+    public Professional() {
+        super.nameProperty().addListener((observable, oldValue, newValue) ->
+                nameValidator.setValue(newValue != null && newValue.length() > 3));
+
+        super.lastNameProperty().addListener((observable, oldValue, newValue) ->
+                lastNameValidator.setValue(newValue != null && newValue.length() > 3));
+    }
+
 
     public Status getStatus() {
         return status.get();
@@ -110,9 +122,18 @@ public class Professional extends User {
         this.teams.set(teams);
     }
 
+    public BooleanProperty nameValidatorProperty() {
+        return nameValidator;
+    }
+
+    public BooleanProperty lastNameValidatorProperty() {
+        return lastNameValidator;
+    }
+
     @Override
     public boolean isValid() {
-        return this.getName() != null && this.getName().length() >= 3
-                && this.getLastName() != null && this.getLastName().length() >= 3;
+        return nameValidator.get();
+//        return this.getName() != null && this.getName().length() >= 3
+//                && this.getLastName() != null && this.getLastName().length() >= 3;
     }
 }

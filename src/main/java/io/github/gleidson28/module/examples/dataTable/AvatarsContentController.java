@@ -18,6 +18,7 @@ package io.github.gleidson28.module.examples.dataTable;
 
 import io.github.gleidson28.App;
 import io.github.gleidson28.global.enhancement.Avatar;
+import io.github.gleidson28.global.exceptions.NavigationException;
 import io.github.gleidson28.global.plugin.ViewManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -72,5 +73,10 @@ public class AvatarsContentController implements Initializable {
                 }
             }
         });
+    }
+
+    @FXML
+    private void returnToRegister() throws NavigationException {
+
     }
 }

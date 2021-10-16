@@ -14,6 +14,7 @@ repositories {
     mavenCentral()
 }
 
+sourceCompatibility = '1.8'
 
 jar {
     manifest {
@@ -28,6 +29,7 @@ jar {
 
 dependencies {
     implementation 'org.jetbrains:annotations:20.1.0'
+
     compile group: 'org.yaml', name: 'snakeyaml', version: '1.26'
     compile 'io.github.typhon0:AnimateFX:1.2.1'
 
@@ -36,6 +38,7 @@ dependencies {
     implementation files('vendor/GNControls-1.1.8.jar')
 
     implementation 'org.jetbrains:annotations:19.0.0'
+
     implementation files('vendor/GNDecorator-0.3.3.jar')
     implementation files('vendor/mysql-connector-java-8.0.14.jar')
     implementation files('vendor/scenicView.jar')

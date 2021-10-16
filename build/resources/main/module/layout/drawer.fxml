@@ -23,7 +23,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.SVGPath?>
 
-<VBox id="drawer" alignment="TOP_CENTER" minWidth="250.0" prefHeight="979.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.gleidson28.module.layout.DrawerNavigate">
+<VBox id="drawer" minWidth="250.0" prefHeight="979.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.gleidson28.module.layout.DrawerNavigate">
    <styleClass>
       <String fx:value="border" />
       <String fx:value="border-r-1" />
@@ -98,13 +98,13 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </HBox>
-      <VBox fx:id="drawerBox" alignment="TOP_CENTER" prefHeight="512.0" prefWidth="249.0" VBox.vgrow="ALWAYS">
+      <VBox id="drawerBox" fx:id="drawerBox" alignment="TOP_CENTER" prefHeight="512.0" prefWidth="249.0" VBox.vgrow="ALWAYS">
          <children>
             <ScrollPane id="drawer-scroll" fx:id="drawerScroll" fitToHeight="true" fitToWidth="true" focusTraversable="false" prefHeight="469.0" prefWidth="249.0" styleClass="scroll" stylesheets="@../../theme/css/custom-scroll.css" VBox.vgrow="ALWAYS">
                <content>
-                  <VBox id="drawer-content" styleClass="drawer-content">
+                  <VBox id="drawer-content" alignment="TOP_CENTER" styleClass="drawer-content">
                      <children>
-                        <Label prefHeight="15.0" prefWidth="272.0" style="-fx-font-size: 14;" styleClass="text-info" text="Default">
+                        <Label prefHeight="38.0" prefWidth="326.0" style="-fx-font-size: 14;" styleClass="text-info" text="Main">
                            <padding>
                               <Insets bottom="10.0" left="20.0" top="10.0" />
                            </padding>
@@ -281,7 +281,7 @@
                   </VBox>
                </content>
             </ScrollPane>
-            <VBox alignment="BOTTOM_CENTER" maxHeight="90.0" prefHeight="93.0" prefWidth="247.0" VBox.vgrow="ALWAYS">
+            <VBox alignment="BOTTOM_CENTER" maxHeight="80.0" minHeight="-Infinity" prefHeight="80.0" prefWidth="247.0" VBox.vgrow="ALWAYS">
                <children>
                   <GridPane hgap="5.0" prefHeight="41.0" prefWidth="227.0">
                      <columnConstraints>

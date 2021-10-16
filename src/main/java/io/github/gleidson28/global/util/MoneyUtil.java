@@ -39,8 +39,8 @@ public class MoneyUtil {
         return formatter.format(value);
     }
 
-
     public static String parse(BigDecimal value) {
+        System.out.println(value);
         return getPure(value);
     }
 

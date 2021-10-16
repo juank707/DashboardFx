@@ -34,6 +34,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -70,17 +71,18 @@ public enum DrawerCreator {
     private final double barSize    = 40;
     private       boolean autoClose = true;
 
-    public void createDrawerRight(Node content){
+    private       boolean show      = false;
 
+    public void createDrawerRight(Node content){
+        createDrawerRight(content, 250d);
+    }
+
+    public void createDrawerRight(Node content, double size) {
         reset();
 
-//        customDialog.setStyle("-fx-background-color : -foreground-color; -fx-background-radius :  0;");
-//        foreground.getChildren().clear();
-//        foreground.getChildren().add(foreContent);
-//        foreContent.getChildren().clear();
-//        foreContent.getChildren().add(customDialog);
+        show = true;
 
-        customDialog.setPrefWidth(minDrawerSize);
+        customDialog.setPrefWidth(size);
 
         customDialog.getChildren().setAll(content);
 
@@ -107,6 +109,7 @@ public enum DrawerCreator {
         foreContent.setOnMouseClicked(event -> {
             if (event.getTarget() instanceof AnchorPane){
                 if(((AnchorPane) event.getTarget()).getId().equals("fore-content")) {
+                    show = false;
                     close.play();
                 }
             }
@@ -121,6 +124,8 @@ public enum DrawerCreator {
 //        App.decorator.hideCustomControls();
 
     }
+
+
 
     public void createDrawerLeft(Menu hamb, Node content){
         createDrawerLeft(content);
@@ -146,19 +151,13 @@ public enum DrawerCreator {
 
     public void createDrawerLeft(Node content){
         reset();
-//        foreground.getChildren().clear();
-//        foreground.getChildren().add(foreContent);
-//        foreContent.getChildren().clear();
-//        foreContent.getChildren().add(customDialog);
+
+        show = true;
 
         customDialog.setPrefWidth(minDrawerSize);
 
         customDialog.getChildren().setAll(content);
 
-//        if(!customDialog.getChildren().contains(content)) {
-//            customDialog.getChildren().clear();
-//            customDialog.getChildren().add(content);
-//        }
 
         organizeInLeft();
 
@@ -178,6 +177,7 @@ public enum DrawerCreator {
         foreContent.setOnMouseClicked(event -> {
             if (event.getTarget() instanceof AnchorPane){
                 if(((AnchorPane) event.getTarget()).getId().equals("fore-content")) {
+                    show = false;
                     close.play();
                 }
             }
@@ -411,7 +411,7 @@ public enum DrawerCreator {
     public void createPopup(StackPane content, boolean autoClose){
         createPopup(content);
 
-        if(autoClose){
+        if(autoClose) {
             foreContent.setOnMouseClicked(event -> {
                 if (event.getTarget() instanceof AnchorPane){
                     if(((AnchorPane) event.getTarget()).getId().equals("fore-content")) {
@@ -496,12 +496,6 @@ public enum DrawerCreator {
         double width = App.INSTANCE.getDecorator().getWidth();
         double height = App.INSTANCE.getDecorator().getHeight();
 
-//        if(width < GridFX.Type.XS.getValue()){
-////            customDialog.setMaxWidth(250);
-//            customDialog.setPrefWidth(250);
-////            customDialog.setMinWidth(250);
-//        }
-
         double x = ( width / 2) - ( customDialog.getPrefWidth() / 2);
         double y = ( height / 2 ) - (customDialog.getPrefHeight() / 2);
 
@@ -539,13 +533,19 @@ public enum DrawerCreator {
 
         close.setOnFinished(event -> {
             foreground.toBack();
-//            App.decorator.showCustomControls();
-//            App.decorator.unblockControls();
         });
 
         unlock();
         close.play();
 
+    }
+
+    public void closePopup(Button hamburger) {
+        foreContent.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+            hamburger.setVisible(true);
+            hamburger.toBack();
+
+        });
     }
 
     public void closePopup(AnimationFX animationFX){
@@ -587,15 +587,6 @@ public enum DrawerCreator {
         App.INSTANCE.getDecorator().lockControls();
     }
 
-    private void requestLayout(){
-//        System.out.println("PopupCreator.requestLayout");
-//        StackPane root = (StackPane) ((GNDecorator) App.INSTANCE.getProperties().get("app.decorator")).lookup("#content");
-
-    }
-
-    /**
-     * Some animations change the custom dialog format.
-     */
     private void reset(){
 
         foreground.setOnMouseClicked(null);
@@ -613,5 +604,9 @@ public enum DrawerCreator {
 
         customDialog.setStyle("-fx-background-color : -foreground-color; -fx-background-radius :  0;");
 
+    }
+
+    public boolean isShow() {
+        return show;
     }
 }

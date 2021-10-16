@@ -16,24 +16,17 @@
  */
 package io.github.gleidson28.module.layout;
 
-import io.github.gleidson28.global.creators.PopupCreator;
+import io.github.gleidson28.global.creators.DrawerCreator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
-import javafx.scene.text.Text;
-
-import java.util.stream.Collectors;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
@@ -103,7 +96,9 @@ public class DrawerController {
                 .forEach(e -> {
                     e.setToggleGroup(group);
                     e.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-//                            PopupCreator.INSTANCE.closePopup();
+                        if(DrawerCreator.INSTANCE.isShow()) {
+                            DrawerCreator.INSTANCE.closePopup();
+                        }
                     });
                     e.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
                         if (e.isSelected()) {
@@ -141,7 +136,9 @@ public class DrawerController {
                                     .map(c -> (ToggleButton) c)
                                     .forEach(c -> {
                                         c.addEventFilter(MouseEvent.MOUSE_CLICKED, ev ->{
-//                                        PopupCreator.INSTANCE.closePopup();
+                                          if(DrawerCreator.INSTANCE.isShow()) {
+                                                DrawerCreator.INSTANCE.closePopup();
+                                            }
                                         });
                                         c.setToggleGroup(group);
                                         this.group.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {

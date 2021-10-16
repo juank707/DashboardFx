@@ -24,9 +24,10 @@ import io.github.gleidson28.global.exceptions.NavigationException;
  */
 public interface FluidView {
 
-    abstract void onEnter() throws NavigationException;
+    void onEnter() throws NavigationException;
 
-    abstract void onExit();
+    void onExit();
 
+    void relocate(double width);
 
 }

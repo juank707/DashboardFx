@@ -20,6 +20,8 @@ import animatefx.animation.Pulse;
 import io.github.gleidson28.App;
 import io.github.gleidson28.global.plugin.ViewManager;
 import io.github.gleidson28.module.layout.LayoutController;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import org.controlsfx.control.PopOver;
@@ -33,6 +35,10 @@ public class DashPopup extends PopOver {
     private Node owner;
 
     public DashPopup(Node content) {
+        this(content, -1D);
+    }
+
+    public DashPopup(Node content, double width) {
 
         this.getRoot().getStylesheets().add(
                 DashPopup.class.getResource("/theme/css/poplight.css").toExternalForm());
@@ -47,12 +53,13 @@ public class DashPopup extends PopOver {
         this.setHeaderAlwaysVisible(false);
         this.setContentNode(content);
 
+        this.getRoot().setPrefWidth(width);
+        this.getRoot().setMaxWidth(width);
+
         this.setCornerRadius(0);
 
-//        this.setAnimated(false);
-
-
     }
+
 
     public void showOnWindow() {
 
@@ -74,7 +81,7 @@ public class DashPopup extends PopOver {
 
     public void showBottomRight(Node node) {
 
-        this.setArrowLocation(ArrowLocation.TOP_RIGHT);
+        this.setArrowLocation(ArrowLocation.TOP_LEFT);
 
         Bounds bounds = node.localToScreen(node.getBoundsInLocal());
 
@@ -90,6 +97,8 @@ public class DashPopup extends PopOver {
     }
 
     public void showTopRight(Node node, boolean shadow) {
+
+        this.setArrowLocation(ArrowLocation.TOP_RIGHT);
 
         Bounds bounds = node.localToScreen(node.getBoundsInLocal());
 
@@ -111,4 +120,40 @@ public class DashPopup extends PopOver {
             this.setOnHidden(event -> layoutController.foregroundClose());
         }
     }
+
+    public void showTopLeft(Node node) {
+        showTopLeft(node, false);
+    }
+
+    public void showTopLeft(Node node, boolean shadow) {
+
+        this.setArrowLocation(ArrowLocation.TOP_LEFT);
+
+        Bounds bounds = node.localToScreen(node.getBoundsInLocal());
+
+        this.setArrowLocation(ArrowLocation.TOP_RIGHT);
+
+        this.show(node, bounds.getMaxX() - bounds.getWidth() ,
+                (bounds.getMinY() + bounds.getHeight()) - bounds.getHeight() );
+
+        Node skinNode = this.getSkin().getNode();
+        new Pulse(skinNode).play();
+//
+        if(shadow) {
+            Pulse fadeInLeft = new Pulse();
+            fadeInLeft.setNode(getRoot());
+            fadeInLeft.play();
+
+            LayoutController layoutController = (LayoutController)
+                    ViewManager.INSTANCE.getController("layout");
+
+            layoutController.foregroundOpen();
+            this.setOnHidden(event -> layoutController.foregroundClose());
+        }
+    }
+
+    public void setDefaultAction(EventHandler<ActionEvent> event) {
+
+    }
+
 }
