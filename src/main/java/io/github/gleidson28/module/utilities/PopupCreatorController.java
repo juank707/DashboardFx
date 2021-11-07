@@ -16,7 +16,7 @@
  */
 package io.github.gleidson28.module.utilities;
 
-import io.github.gleidson28.global.creators.DrawerCreator;
+import io.github.gleidson28.global.creators.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -54,10 +54,9 @@ public class PopupCreatorController implements Initializable {
         btnInfo.getStyleClass().add("btn-info");
         btnInfo.setPrefWidth(100);
 
-        DrawerCreator.INSTANCE.createAlert(
-                DrawerCreator.AlertType.INFO,
-                "Alert Info",
-                "You create a alert info.",
+        AlertCreator.INSTANCE.createAlert(
+                AlertType.INFO, "Alert Info",
+                "You create a alert info",
                 btnInfo
         );
     }
@@ -68,8 +67,8 @@ public class PopupCreatorController implements Initializable {
         btnError.getStyleClass().add("btn-danger");
         btnError.setPrefWidth(100);
 
-        DrawerCreator.INSTANCE.createAlert(
-                DrawerCreator.AlertType.ERROR,
+        AlertCreator.INSTANCE.createAlert(
+                AlertType.ERROR,
                 "Alert Error",
                 "You create a alert error.",
                 btnError
@@ -82,8 +81,8 @@ public class PopupCreatorController implements Initializable {
         btnWarning.getStyleClass().add("btn-warning");
         btnWarning.setPrefWidth(100);
 
-        DrawerCreator.INSTANCE.createAlert(
-                DrawerCreator.AlertType.WARNING,
+        AlertCreator.INSTANCE.createAlert(
+                AlertType.WARNING,
                 "Alert Error",
                 "You create a alert error.",
                 btnWarning
@@ -96,10 +95,16 @@ public class PopupCreatorController implements Initializable {
         btnDone.getStyleClass().add("btn-success");
         btnDone.setPrefWidth(100);
 
-        DrawerCreator.INSTANCE.createAlert(
-                DrawerCreator.AlertType.DONE,
+        AlertCreator.INSTANCE.createAlert(
+                AlertType.DONE,
                 "Alert Error",
-                "You create a alert error.",
+                "You create a alert error." +
+                        "\"Lorem ipsum dolor color." +
+                        "\"Lorem ipsum dolor color." +
+                        "\"Lorem ipsum dolor color." +
+                        "\"Lorem ipsum dolor color.\"Lorem ipsum dolor color." +
+                        "\"Lorem ipsum dolor color.\"Lorem ipsum dolor color." +
+                        "",
                 btnDone
         );
     }
@@ -112,10 +117,36 @@ public class PopupCreatorController implements Initializable {
         btnCancel.getStyleClass().add("btn-flat");
 
 
-        DrawerCreator.INSTANCE.createDialog(
+        DialogCreator.INSTANCE.createDialog(
                 "This is a simple dialog",
                 "Lorem ipsum dolor color.",
+
                 btnOk, btnCancel
         );
+
+    }
+
+    @FXML
+    private void createSnackSuccess() {
+        SnackBarCreator.INSTANCE.createSnackBar("SnackBar Success",
+                SnackType.SUCCESS);
+    }
+
+    @FXML
+    private void createSnackWarning() {
+        SnackBarCreator.INSTANCE.createSnackBar("SnackBar Warning",
+                SnackType.WARNING);
+    }
+
+    @FXML
+    private void createSnackDanger() {
+        SnackBarCreator.INSTANCE.createSnackBar("SnackBar Danger",
+                SnackType.ERROR);
+    }
+
+    @FXML
+    private void createSnackInfo() {
+        SnackBarCreator.INSTANCE.createSnackBar("SnackBar Info",
+                SnackType.INFO);
     }
 }
