@@ -18,17 +18,18 @@ package io.github.gleidson28.module.examples.dataTable;
 
 import animatefx.animation.FadeInLeft;
 import animatefx.animation.FadeOutLeft;
-import io.github.gleidson28.App;
 import io.github.gleidson28.global.dao.ProfessionalPresenter;
+import io.github.gleidson28.global.enhancement.CrudView;
 import io.github.gleidson28.global.enhancement.DataHandler;
 import io.github.gleidson28.global.enhancement.FluidView;
+import io.github.gleidson28.global.enhancement.ObserverView;
 import io.github.gleidson28.global.exceptions.NavigationException;
 import io.github.gleidson28.global.factory.*;
+import io.github.gleidson28.global.model.Model;
 import io.github.gleidson28.global.model.Professional;
 import io.github.gleidson28.global.model.Status;
 import io.github.gleidson28.global.plugin.ViewManager;
 import io.github.gleidson28.global.popup.DashPopup;
-import io.github.gleidson28.global.util.MoneyUtil;
 import javafx.animation.FadeTransition;
 import javafx.animation.RotateTransition;
 import javafx.beans.binding.Bindings;
@@ -48,17 +49,14 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.SVGPath;
-import javafx.util.Callback;
 import javafx.util.Duration;
 import org.controlsfx.control.RangeSlider;
-import org.controlsfx.control.Rating;
 
 import java.math.BigDecimal;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
@@ -66,7 +64,7 @@ import java.util.function.Predicate;
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on  22/09/2020
  */
-public class IndexController implements Initializable, FluidView {
+public class IndexController implements Initializable, FluidView, CrudView, ObserverView {
 
     @FXML private StackPane root;
 
@@ -96,6 +94,7 @@ public class IndexController implements Initializable, FluidView {
     @FXML private HBox     boxControls;
     @FXML private HBox     boxSearch;
     @FXML private HBox     boxEntries;
+    @FXML private Label    columnOptions;
 
 
     @FXML private VBox content;
@@ -115,19 +114,18 @@ public class IndexController implements Initializable, FluidView {
 
     private final ProfessionalPresenter              professionalPresenter  = new ProfessionalPresenter();
 
-
     // Popup`s Fields
-    private RangeSlider price = new RangeSlider();
-    private RangeSlider rating = new RangeSlider();
 
+    private final RangeSlider price = new RangeSlider();
+    private final RangeSlider rating = new RangeSlider();
+    private final ToggleGroup status = new ToggleGroup();
 
-    private ToggleGroup status = new ToggleGroup();
-    private ListView<Professional> listView = new ListView<>();
-
+    private final ListView<Professional> listView = new ListView<>();
 
     private StackPane popupRoot;
+    private DataHandler<Professional> dataHandler;
 
-    private DataHandler dataHandler = null;
+    private StackPane boxColumnVisibility;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -139,6 +137,33 @@ public class IndexController implements Initializable, FluidView {
                 pagination, entries, legend,
                 filteredItems);
 
+
+        boxColumnVisibility = createColumnFilter();
+
+    }
+
+    @FXML
+    private void openBoxColumnVisibility() {
+        DashPopup dashPopup = new DashPopup(boxColumnVisibility);
+        dashPopup.showTopRight(columnOptions);
+    }
+
+    private StackPane createColumnFilter() {
+        StackPane root = new StackPane();
+        VBox box = new VBox();
+        box.setPadding(new Insets(5D));
+
+        box.setSpacing(10D);
+
+        for(TableColumn column : table.getColumns()) {
+            CheckBox checkBox = new CheckBox();
+            checkBox.setText(column.getText());
+            checkBox.selectedProperty().bindBidirectional(column.visibleProperty());
+            box.getChildren().add(checkBox);
+        }
+
+        root.getChildren().add(box);
+        return root;
     }
 
     private void setup() {
@@ -151,24 +176,27 @@ public class IndexController implements Initializable, FluidView {
         columnStatus.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getStatus()));
         columnStatus.setCellFactory(new StatusFactory<>());
 
-        columnPrice.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getPrice()));
+        columnPrice.setCellValueFactory(param ->
+                new ReadOnlyObjectWrapper<>(param.getValue().getPrice()));
         columnPrice.setCellFactory(new MonetaryFactory<>());
 
-        columnRating.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getRating()));
+        columnRating.setCellValueFactory(param ->
+                new ReadOnlyObjectWrapper<>(param.getValue().getRating()));
         columnRating.setCellFactory(new RatingFactory<>());
 
         columnLocation.setCellValueFactory(cellData -> cellData.getValue().locationProperty());
 
-        columnEmail.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getEmail()));
+        columnEmail.setCellValueFactory(param ->
+                new ReadOnlyObjectWrapper<>(param.getValue().getEmail()));
         columnEmail.setCellFactory(new EmailFactory<>());
 
         actions.setCellValueFactory(new DefaultValueFactory<>());
         actions.setCellFactory(new ActionFactory<>());
 
         nameFilter.bind(Bindings.createObjectBinding( () ->
-                        product -> product.getName().toLowerCase().contains(search.getText().toLowerCase()),
+                        product -> product.getName().toLowerCase()
+                                .contains(search.getText().toLowerCase()),
                 search.textProperty()));
-
 
         rangeFilter.bind(Bindings.createObjectBinding( () ->
                         professional -> professional.getPrice() != null && price.getLowValue() <= professional.getPrice().doubleValue() &&  professional.getPrice().doubleValue() <= price.getHighValue(),
@@ -191,7 +219,7 @@ public class IndexController implements Initializable, FluidView {
     }
 
     private void configTable() {
-        popupRoot = createRootPopup();
+        popupRoot = new FilterRoot(price, rating, status);
 
         new FadeInLeft(loader).play();
 
@@ -218,113 +246,9 @@ public class IndexController implements Initializable, FluidView {
 
         load.setOnSucceeded(event -> new FadeOutLeft(loader).play());
 
-//            Thread thread = new Thread(load);
-//            thread.setDaemon(true);
-//            thread.start();
-
         listView. setStyle("-fx-fixed-cell-size : 60px;");
 
-        listView.setCellFactory(new Callback<ListView<Professional>, ListCell<Professional>>() {
-            @Override
-            public ListCell<Professional> call(ListView<Professional> param) {
-                return new ListCell<Professional>() {
-                    @Override
-                    protected void updateItem(Professional item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if(item != null) {
-
-                            HBox body = new HBox();
-                            Circle clip = new Circle();
-
-                            clip.setStroke(Color.WHITE);
-                            clip.setStrokeWidth(0.6);
-
-                            ImagePattern imagePattern = new ImagePattern(item.getAvatar("50"));
-
-                            clip.setFill(imagePattern);
-                            double frac = 20;
-
-                            clip.setRadius(frac);
-                            clip.setCenterX(frac);
-                            clip.setCenterY(frac);
-
-
-                            ////////////////////
-
-                            GridPane content = new GridPane();
-                            Label name = new Label(item.getName());
-                            name.setStyle("-fx-font-weight : bold; ");
-                            Label price = new Label(MoneyUtil.format(item.getPrice()));
-                            Rating rating = new Rating();
-                            rating.setRating(item.getRating());
-                            rating.setTranslateX(-35D);
-                            rating.setScaleX(0.6);
-                            rating.setScaleY(0.6);
-
-                            Label status = new Label();
-                            status.setAlignment(Pos.CENTER);
-                            status.setMinSize(20,20);
-                            status.setPadding(new Insets(3));
-                            status.setStyle("-fx-background-radius : 20px;");
-
-                            status.getStyleClass().add("lbl-status");
-                            status.setText(item.getStatus().toString());
-
-                            String _default = "-fx-text-fill : white; " +
-                                    "-fx-border-width : 2px;  -fx-border-color : white;";
-
-                            switch (item.getStatus()) {
-
-                                case UNAVAILABLE: status.setStyle("-fx-background-color : -amber; " + _default);
-                                    break;
-                                case FREE:  status.setStyle("-fx-background-color : -success; " + _default);
-                                    break;
-                                default:  status.setStyle("-fx-background-color : -grapefruit; " + _default);
-                                    break;
-                            }
-
-                            content.setPadding(new Insets(5));
-
-                            content.getChildren().addAll(name, price,  status);
-
-                            GridPane.setConstraints(name, 0, 0, 1, 1,HPos.LEFT, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
-                            GridPane.setConstraints(price, 0, 1, 1, 1,HPos.LEFT, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
-                            GridPane.setConstraints(status, 1, 0, 1, 2,HPos.LEFT, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
-
-//                            content.setGridLinesVisible(true);
-
-                            Button view = new Button();
-                            view.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-                            SVGPath icon = new SVGPath();
-                            icon.setContent("M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 " +
-                                    "2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z");
-                            view.setGraphic(icon);
-                            icon.setRotate(90);
-
-                            view.getStyleClass().addAll("round","btn-small", "btn-action");
-
-                            view.setMinHeight(40D);
-                            view.setPrefHeight(40D);
-
-                            body.getChildren().addAll(clip, content, view);
-                            body.setAlignment(Pos.CENTER);
-
-                            HBox.setHgrow(content, Priority.ALWAYS);
-
-                            setGraphic(body);
-                            setItem(item);
-                            setText(null);
-
-
-                        } else {
-                            setItem(null);
-                            setGraphic(null);
-                            setText(null);
-                        }
-                    }
-                };
-            }
-        });
+        listView.setCellFactory(new OptionListFactory());
 
         Thread thread = new Thread(load);
         thread.setName("Loading data table [Professional]");
@@ -338,11 +262,33 @@ public class IndexController implements Initializable, FluidView {
         if(filteredItems.isEmpty()) {
             configTable();
         }
-
-        App.INSTANCE.getDecorator().widthProperty().addListener(resizeTable);
-        App.INSTANCE.getDecorator().widthProperty().addListener(resizeFields);
-        App.INSTANCE.getDecorator().widthProperty().addListener(resizeTitles);
     }
+
+
+    @Override
+    public void onExit() {
+
+    }
+
+    @FXML
+    private void goRegister() throws NavigationException {
+        ViewManager.INSTANCE.setContent("professional_register", new Professional());
+    }
+
+    @FXML
+    private void openFilterPopup() {
+        DashPopup p = new DashPopup(popupRoot);
+        p.showBottomRight(btnFilter);
+//        p.showOnWindow();
+    }
+
+    @Override
+    public void setModel(Model model) {
+        Professional professional = (Professional) model;
+        table.refresh();
+        dataHandler.pagination();
+    }
+
 
     private final ChangeListener<Number> resizeTitles = new ChangeListener<Number>() {
         @Override
@@ -385,7 +331,6 @@ public class IndexController implements Initializable, FluidView {
     private final ChangeListener<Number> resizeTable = new ChangeListener<Number>() {
         @Override
         public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-
             if(newValue.doubleValue() <= 800) {
                 if(content.getChildren().contains(table)) {
                     content.getChildren().remove(table);
@@ -393,6 +338,8 @@ public class IndexController implements Initializable, FluidView {
                     VBox.setVgrow(listView, Priority.ALWAYS);
                     content.getChildren().add(listView);
                     columnRating.setVisible(false);
+
+                    boxEntries.getChildren().remove(columnOptions);
 
                 }
 
@@ -408,172 +355,27 @@ public class IndexController implements Initializable, FluidView {
                 columnLocation.setVisible(false);
                 columnRating.setVisible(true);
 
-            } else {
+            } else if(newValue.doubleValue() > 1200) {
+
+                if (!content.getChildren().contains(table)) {
+                    content.getChildren().remove(listView);
+                    content.getChildren().add(table);
+                    dataHandler.setDataControl(table);
+                }
+
                 columnEmail.setVisible(true);
                 columnRating.setVisible(true);
-                columnLocation.setVisible(false);
+                columnLocation.setVisible(true);
+
+                if(!boxEntries.getChildren().contains(columnOptions))
+                    boxEntries.getChildren().addAll(columnOptions);
+
             }
         }
     };
 
-
     @Override
-    public void onExit() {
-        App.INSTANCE.getDecorator().widthProperty().removeListener(resizeTable);
-        App.INSTANCE.getDecorator().widthProperty().removeListener(resizeFields);
-        App.INSTANCE.getDecorator().widthProperty().removeListener(resizeTitles);
+    public List<ChangeListener<Number>> getListeners() {
+        return Arrays.asList(resizeTable, resizeFields, resizeTitles);
     }
-
-    @Override
-    public void relocate(double width) {
-
-    }
-
-    @FXML
-    private void goRegister() throws NavigationException {
-        ViewManager.INSTANCE.setContent("professional_register", new Professional());
-    }
-
-    @FXML
-    private void openFilterPopup() {
-        DashPopup p = new DashPopup(popupRoot);
-        p.showBottomRight(btnFilter);
-//        p.showOnWindow();
-    }
-
-    private StackPane createRootPopup() {
-        StackPane root = new StackPane();
-
-        root.setMinHeight(200D);
-        root.setPrefSize(350, 370);
-        root.setPadding(new Insets(20));
-
-        root.getChildren().add(createBody());
-        return root;
-    }
-
-    private VBox createBody() {
-        VBox body = new VBox();
-
-        body.getChildren().addAll(createTitle(), createContent());
-
-        return body;
-    }
-
-    private VBox createTitle() {
-        VBox content = new VBox();
-
-        content.setAlignment(Pos.CENTER);
-        content.getStyleClass().addAll("border-b-1", "border");
-        content.setMinHeight(48);
-        content.setPrefSize(274,61);
-
-        Label title = new Label("Filters");
-
-        title.getStyleClass().add("h4");
-        title.setStyle("-fx-font-weight : bold;");
-        content.getChildren().addAll(title);
-        return content;
-    }
-
-    private ScrollPane createContent() {
-        ScrollPane root = new ScrollPane();
-        root.setFitToWidth(true);
-        VBox.setVgrow(root, Priority.ALWAYS);
-
-        VBox content = new VBox();
-        content.setSpacing(10D);
-
-        // Price
-        VBox boxPrice = new VBox();
-        boxPrice.setPrefHeight(70);
-        Label lblPrice = new Label("Price:");
-        boxPrice.getChildren().addAll(lblPrice, price);
-        VBox.setMargin(boxPrice, new Insets(10, 0, 0,0));
-        boxPrice.setFillWidth(true);
-        VBox.setMargin(price, new Insets(5));
-
-        price.setBlockIncrement(10);
-        price.setLowValue(0);
-        price.setMajorTickUnit(10);
-        price.setMax(100);
-        price.setMin(0);
-        price.setMinorTickCount(10);
-        price.setShowTickLabels(true);
-        price.setShowTickMarks(true);
-        price.setSnapToTicks(true);
-        price.setHighValue(100);
-
-        // Rating
-        VBox boxRating = new VBox();
-        boxRating.setPrefHeight(70);
-        Label lblRating = new Label("Rating:");
-        boxRating.getChildren().addAll(lblRating, rating);
-        VBox.setMargin(boxRating, new Insets(10, 0, 0,0));
-        boxRating.setFillWidth(true);
-        VBox.setMargin(rating, new Insets(5));
-
-        rating.setBlockIncrement(1);
-        rating.setLowValue(0);
-        rating.setMajorTickUnit(1);
-        rating.setMax(5);
-        rating.setMin(0);
-        rating.setMinorTickCount(1);
-        rating.setShowTickLabels(true);
-        rating.setShowTickMarks(true);
-        rating.setSnapToTicks(true);
-        rating.setHighValue(5);
-
-        // Status
-        VBox boxStatus = new VBox();
-        boxStatus.setPrefHeight(70);
-        Label lblStatus = new Label("Status:");
-
-        VBox.setMargin(lblStatus, new Insets(0, 0, 10, 0));
-
-        boxStatus.getChildren().addAll(lblStatus);
-
-        VBox.setMargin(boxStatus, new Insets(10, 0, 0,0));
-        boxStatus.setFillWidth(true);
-
-        GridPane gridContent = new GridPane();
-        gridContent.setAlignment(Pos.CENTER);
-
-        RadioButton all = new RadioButton("All");
-        all.setUserData(Status.ALL);
-        all.setSelected(true);
-        RadioButton free = new RadioButton("Free");
-        free.setUserData(Status.FREE);
-        free.getStyleClass().addAll("radio-success");
-        RadioButton busy = new RadioButton("Busy");
-        busy.setUserData(Status.BUSY);
-        busy.getStyleClass().addAll("radio-danger");
-        RadioButton unavailable = new RadioButton("Unavailable");
-        unavailable.setUserData(Status.UNAVAILABLE);
-        unavailable.getStyleClass().addAll("radio-amber");
-
-        all.setToggleGroup(status);
-        free.setToggleGroup(status);
-        busy.setToggleGroup(status);
-        unavailable.setToggleGroup(status);
-
-        gridContent.add(all, 0, 0);
-        gridContent.add(free, 1, 0);
-        gridContent.add(busy, 2, 0);
-        gridContent.add(unavailable, 3, 0);
-
-        gridContent.setHgap(10);
-
-        GridPane.setHalignment(busy, HPos.CENTER);
-        GridPane.setHalignment(free, HPos.CENTER);
-        GridPane.setHalignment(unavailable, HPos.RIGHT);
-
-        boxStatus.getChildren().addAll(gridContent);
-
-        content.getChildren().addAll(boxPrice, boxRating, boxStatus);
-        root.setContent(content);
-
-        return root;
-    }
-
 }

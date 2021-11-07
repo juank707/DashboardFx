@@ -20,6 +20,7 @@ import com.gn.control.GNMonetaryField;
 import io.github.gleidson28.App;
 import io.github.gleidson28.GNAvatarView;
 import io.github.gleidson28.global.converters.MonetaryStringConverter;
+import io.github.gleidson28.global.creators.DialogCreator;
 import io.github.gleidson28.global.creators.DrawerCreator;
 import io.github.gleidson28.global.dao.ProfessionalPresenter;
 import io.github.gleidson28.global.enhancement.Avatar;
@@ -32,12 +33,15 @@ import io.github.gleidson28.global.model.Status;
 import io.github.gleidson28.global.plugin.ViewManager;
 import io.github.gleidson28.global.popup.DashPopup;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -73,9 +77,13 @@ public class RegisterController implements Initializable, FluidView, CrudView {
     @FXML private GNMonetaryField tfPrice;
 
     @FXML private Text teamsText;
+    @FXML private Text skillsText;
+
     @FXML private Rating rating;
     @FXML private ToggleGroup status;
     @FXML private GNAvatarView avatarView;
+    @FXML private Button btnTeams;
+    @FXML private Button btnSkills;
 
 
     private Professional professional = new Professional();
@@ -88,7 +96,7 @@ public class RegisterController implements Initializable, FluidView, CrudView {
         }
     });
 
-    @Override
+
     public void relocate(double width) {
 
         if(width < 1222) {
@@ -143,6 +151,7 @@ public class RegisterController implements Initializable, FluidView, CrudView {
             String size = String.valueOf(newValue.intValue());
             lastNameLength.setText(size + max);
         });
+
     }
 
     @Override
@@ -178,7 +187,7 @@ public class RegisterController implements Initializable, FluidView, CrudView {
 
     @FXML
     private void back() throws NavigationException {
-        ViewManager.INSTANCE.setContent("professional_index");
+        ViewManager.INSTANCE.setContent("professional_index", professional);
     }
 
     @Override
@@ -218,11 +227,197 @@ public class RegisterController implements Initializable, FluidView, CrudView {
     private void save() throws NavigationException  {
 
         if(this.professional.isValid()) {
-            if(this.professional.getId() == 0) new ProfessionalPresenter().save(professional);
+
+            if(this.professional.getId() == 0) {
+
+                new ProfessionalPresenter().save(professional);
+
+//                DrawerCreator.INSTANCE.createTrayNotification(
+//                        "Save Successful",
+//                        "The professional " + professional.getName() + " saved."
+//                );
+
+                Button btnOk = new Button("OK");
+                Button btnCancel = new Button("Cancel");
+                btnOk.getStyleClass().add("btn-flat");
+                btnCancel.getStyleClass().add("btn-flat");
+
+
+                DialogCreator.INSTANCE.createDialog(
+                        "Save Successful",
+                        "The professional " + professional.getName() + " saved.",
+                        btnOk
+                );
+
+
+            }
             else new ProfessionalPresenter().edit(professional);
+//            DrawerCreator.INSTANCE.createTrayNotification(
+//                    "Edit Successful",
+//                    "The professional " + professional.getName() + " edited."
+//            );
+            Button btnOk = new Button("OK");
+            Button btnCancel = new Button("Cancel");
+            btnOk.getStyleClass().add("btn-flat");
+            btnCancel.getStyleClass().add("btn-flat");
+
+
+            DialogCreator.INSTANCE.createDialog(
+                    "Edit Successful",
+                    "The professional " + professional.getName() + " edited.",
+                    btnOk
+            );
 
             back();
         }
+    }
+
+    @FXML
+    private void openTeamPopup() {
+        DashPopup p = new DashPopup(
+                createRootPopup(FXCollections.observableArrayList(
+                        "Creative", "Support", "Engineer"), teamsText));
+        p.showTopRight(btnTeams);
+
+    }
+
+    @FXML
+    private void openSkillPopup() {
+        DashPopup p = new DashPopup(
+                createRootPopup(FXCollections.observableArrayList(
+                        "PHP", "Android", "UX Designer", "Java"),
+                        skillsText));
+        p.showTopRight(btnSkills);
+
+    }
+
+    private StackPane createRootPopup(ObservableList<String> items, Text text) {
+        StackPane root = new StackPane();
+
+        root.setMinHeight(200D);
+        root.setPrefSize(250, 370);
+        root.setPadding(new Insets(20));
+
+        root.getChildren().add(createBody(items, text));
+        return root;
+    }
+
+    private VBox createBody(ObservableList<String> items, Text text) {
+        VBox body = new VBox();
+
+        body.getChildren().addAll(
+                createTitle("Teams"),
+                createContent(items, text)
+        );
+
+        return body;
+    }
+
+    private VBox createTitle(String text) {
+        VBox content = new VBox();
+
+        content.setAlignment(Pos.CENTER);
+        content.getStyleClass().addAll("border-b-1", "border");
+        content.setMinHeight(48);
+        content.setPrefSize(274,61);
+
+        Label title = new Label(text);
+
+        title.getStyleClass().add("h4");
+        title.setStyle("-fx-font-weight : bold;");
+        content.getChildren().addAll(title);
+        return content;
+    }
+
+    private VBox createContent(ObservableList<String> items, Text text) {
+
+        VBox root = new VBox();
+        VBox.setVgrow(root, Priority.ALWAYS);
+
+        // Price
+        HBox controls = new HBox();
+        controls.setMinHeight(40);
+
+        TextField search = new TextField();
+        search.setPromptText("Teams");
+        search.getStyleClass().addAll("field-outlined");
+        search.setMinHeight(40);
+        search.setPrefHeight(40);
+        controls.getChildren().addAll(search);
+        HBox.setHgrow(search, Priority.ALWAYS);
+
+        HBox buttons = new HBox();
+        Button btnPlus = new Button();
+        btnPlus.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+        btnPlus.getStyleClass().addAll("round", "btn-mint");
+        btnPlus.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        btnPlus.setStyle("-fx-pref-height : 30px; -fx-pref-width : 30px;");
+
+        SVGPath iconPlus = new SVGPath();
+        iconPlus.setContent("M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z");
+        iconPlus.setStyle("-fx-fill : white;");
+        btnPlus.setGraphic(iconPlus);
+
+        SVGPath iconP = new SVGPath();
+        iconP.setContent("M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z");
+        iconP.setStyle("-fx-fill : white;");
+
+        Button btnDelete = new Button();
+        btnDelete.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+        btnDelete.getStyleClass().addAll("round", "btn-danger");
+        btnDelete.setMinSize(30, 30);
+        btnDelete.setStyle("-fx-pref-height : 30px; -fx-pref-width : 30px;");
+        btnDelete.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        SVGPath iconDelete = new SVGPath();
+        iconDelete.setContent("M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z");
+        iconDelete.setStyle("-fx-fill : white;");
+        btnDelete.setGraphic(iconDelete);
+        buttons.setSpacing(10);
+
+        ListView<String> lvTeams = new ListView<>();
+
+//        lvTeams.getItems().addAll("Creative", "Support", "Engineer");
+        lvTeams.getItems().addAll(items);
+
+        btnPlus.setOnMouseClicked(event -> {
+            if(!search.getText().isEmpty() || search.getText() != null) {
+                lvTeams.getItems().add(search.getText());
+            }
+        });
+
+        buttons.getChildren().addAll(btnPlus, btnDelete);
+        controls.getChildren().addAll(buttons);
+
+        VBox.setMargin(controls, new Insets(10,0,10,10));
+        ScrollPane content = new ScrollPane();
+        content.setFitToWidth(true);
+        content.setFitToHeight(true);
+
+        content.setContent( lvTeams );
+
+        Button add = new Button("Add");
+        add.setMinHeight(40);
+        add.setPrefWidth(100);
+        add.setStyle("-fx-font-weight : bold;");
+
+        add.setOnMouseClicked(event -> {
+
+            if(lvTeams.getSelectionModel().getSelectedItem() != null) {
+                if (text.getText().isEmpty()) {
+                    text.setText(text.getText().concat(lvTeams.getSelectionModel().getSelectedItem()));
+                } else {
+                    text.setText(text.getText().concat(", " +
+                            lvTeams.getSelectionModel().getSelectedItem()));
+                }
+            }
+        });
+
+        VBox.setMargin(controls, new Insets(10,0,10,10));
+
+        add.setGraphic(iconP);
+        root.setAlignment(Pos.CENTER);
+        root.getChildren().addAll(controls, content, add);
+        return root;
     }
 }
 
