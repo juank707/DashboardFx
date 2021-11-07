@@ -64,6 +64,7 @@ public class LoadViews extends Service<Module> {
         if(module.getDirectory() != null ) {
             builder.append("/").append(module.getDirectory());
         }
+//        System.out.println(module.getFxml());
 
         if(module.getViews() != null) {
             for (Module v : module.getViews()) {
@@ -95,15 +96,23 @@ public class LoadViews extends Service<Module> {
             }
         }
 
-        if ( location != null ) {
+
+
+        if ( location != null && module.getFxml() != null) {
 //            loader.setCharset(StandardCharsets.UTF_8);
             loader.setLocation(location);
 //            loader.setResources(App.INSTANCE.getResourceBundle());
+
+//            System.out.println(ViewManager.INSTANCE.contains(module.getName()));
+//            System.out.println(module.getName());
+//            System.out.println(module.getFxml());
+
             try {
                 loader.load();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
             updateMessage("Loading Views [" + module.getName() + "]");
             ViewManager.INSTANCE.put(new ViewConstructor(module, loader));
         } else if(module.getFxml() != null) {
@@ -117,7 +126,7 @@ public class LoadViews extends Service<Module> {
     protected void succeeded() {
         try {
             ViewManager.INSTANCE.navigate("layout");
-            ViewManager.INSTANCE.setContent("dashboard");
+//            ViewManager.INSTANCE.setContent("dashboard");
         } catch (NavigationException e) {
             e.printStackTrace();
         }
@@ -127,8 +136,9 @@ public class LoadViews extends Service<Module> {
     protected Task<Module> createTask() {
 
         return new Task<Module>() {
+
             @Override
-            protected Module call() throws IOException {
+            protected Module call() {
 
                updateMessage("Starting...");
 

@@ -21,8 +21,10 @@ import io.github.gleidson28.decorator.GNDecorator;
 import io.github.gleidson28.global.creators.PopupCreator;
 import io.github.gleidson28.global.enhancement.CrudView;
 import io.github.gleidson28.global.enhancement.FluidView;
+import io.github.gleidson28.global.enhancement.ObserverView;
 import io.github.gleidson28.global.exceptions.NavigationException;
 import io.github.gleidson28.global.model.Model;
+import javafx.beans.value.ChangeListener;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -68,14 +70,11 @@ public enum ViewManager {
         }
     }
 
-
     public void previous() throws NavigationException {
         setContent(previous);
     }
 
     public void navigate(String name) throws NavigationException {
-
-//        GNDecorator decorator = App.INSTANCE.getDecorator();
 
         ViewConstructor viewController = get(name);
 
@@ -89,6 +88,7 @@ public enum ViewManager {
 
             if (get(name).getController() instanceof FluidView){
                 ( (FluidView) viewController.getController()).onEnter();
+
             }
 
             if(viewController.getRoot().lookup("#defaultButton") != null) {
@@ -105,14 +105,6 @@ public enum ViewManager {
         }
     }
 
-    public void setContent1(String module, String name) {
-        getContents();
-
-        System.out.println("name = " + name);
-        ViewConstructor viewConstructor = getWithUpdate(name);
-
-        System.out.println("viewConstructor = " + viewConstructor.getModule());
-    }
 
     private void updateCrumb(Module module) {
         if(module.getRoot() != null) {
@@ -141,12 +133,25 @@ public enum ViewManager {
         }
     }
 
+    @Deprecated
     public void setContent(Node node) {
         getContents();
         body.setContent(node);
     }
 
-    public String setContent(String name, Model model) throws NavigationException {
+    public String setContent(String name) throws NavigationException {
+        return setContent(name,  null, null);
+    }
+
+    public String setContent(String view, Model model) throws NavigationException {
+        return setContent(view, model, null);
+    }
+
+    public String setContent(String view, String title) throws NavigationException {
+        return setContent(view, null, title);
+    }
+
+    private String setContent(String name, Model model, String title) throws NavigationException {
 
         getContents();
 
@@ -160,20 +165,45 @@ public enum ViewManager {
             Hyperlink link = new Hyperlink(viewController.getModule().getTitle());
             link.getStyleClass().add("bread-link");
             crumb.getChildren().add(link);
+            link.setDisable(true);
 
-            breadTitle.setText(viewController.getModule().getTitle());
+            if(title != null)
+                breadTitle.setText(title);
+            else
+                breadTitle.setText(viewController.getModule().getTitle());
 
             body.setContent(viewController.getRoot());
 
             if(previous != null) {
 
-                if (get(previous).getController() instanceof FluidView)
+                Object controller = get(previous).getController();
+
+                if (controller instanceof FluidView)
                     ((FluidView) get(previous).getController()).onExit();
+
+                if (controller instanceof ObserverView) {
+
+                    for(ChangeListener<Number> l : ((ObserverView) controller).getListeners()) {
+                        App.INSTANCE.getDecorator().widthProperty().removeListener(l);
+                    }
+
+                }
+
             }
 
             if (viewController.getController() instanceof FluidView) {
                 ((FluidView) viewController.getController()).onEnter();
-                ((FluidView) viewController.getController()).relocate(App.INSTANCE.getWidth());
+
+                if (viewController.getController() instanceof ObserverView) {
+                    for (ChangeListener<Number> l : ((ObserverView) viewController.getController()).getListeners()) {
+                        // fire listeners
+                        l.changed(App.INSTANCE.widthProperty(), App.INSTANCE.getWidth(), App.INSTANCE.getWidth() );
+
+                        App.INSTANCE.widthProperty().addListener(l);
+
+                    }
+                }
+
             }
 
             if(model != null) {
@@ -198,14 +228,17 @@ public enum ViewManager {
             }
 
             return viewController.getModule().getTitle();
+
         } else {
-            throw new NavigationException("NAVIGATION", String.format("The ViewController '%s' was not encountered.", name));
+
+            throw new NavigationException("NAVIGATION",
+                    String.format("The ViewController '%s' was not encountered.", name));
+
         }
     }
 
-    public String setContent(String name) throws NavigationException {
-        return setContent(name, null);
-    }
+
+
 
     //convenient method
     private void getContents() {
@@ -216,7 +249,7 @@ public enum ViewManager {
     }
 
     // Implement in the future
-    private boolean isMobile(){
+    private boolean isMobile() {
         return decorator.getWidth() < 600;
     }
 
@@ -245,8 +278,6 @@ public enum ViewManager {
     }
 
     public List<Module> getViews(String view) {
-
-
         return SCREENS.get(view).getModule().getViews();
     }
 
@@ -268,5 +299,9 @@ public enum ViewManager {
 
     public int size() {
         return SCREENS.size();
+    }
+
+    public boolean contains(String name) {
+        return SCREENS.containsKey(name);
     }
 }
