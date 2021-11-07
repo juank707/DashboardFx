@@ -124,44 +124,70 @@ public class DrawerController {
 
                 });
 
-            drawerContent.getChildren()
-                    .stream()
-                    .filter(e -> e instanceof TitledPane)
-                    .map(e -> (TitledPane) e)
-                    .forEach(e -> {
-                        if (e.getContent() instanceof VBox) {
-                            ((VBox) e.getContent()).getChildren()
-                                    .stream()
-                                    .filter(c -> c instanceof ToggleButton)
-                                    .map(c -> (ToggleButton) c)
-                                    .forEach(c -> {
-                                        c.addEventFilter(MouseEvent.MOUSE_CLICKED, ev ->{
-                                          if(DrawerCreator.INSTANCE.isShow()) {
-                                                DrawerCreator.INSTANCE.closePopup();
-                                            }
-                                        });
-                                        c.setToggleGroup(group);
-                                        this.group.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-                                            if(newValue != null) {
-                                                if (((VBox) e.getContent()).getChildren().contains(newValue)) {
-                                                    e.getStyleClass().addAll("menu-selected");
-                                                } else e.getStyleClass().removeAll("menu-selected");
-                                            }
-                                        });
+        drawerContent.getChildren()
+                .stream()
+                .filter(e -> e instanceof TitledPane)
+                .map(e -> (TitledPane) e).filter(e -> e.getContent() instanceof VBox)
+                    .forEach(e -> ((VBox) e.getContent()).getChildren()
+                .stream()
+                .filter(c -> c instanceof ToggleButton)
+                .map(c -> (ToggleButton) c)
+                .forEach(c -> {
 
-                                        ToggleButton toggleButton = new ToggleButton();
-                                        toggleButton.setText(c.getText());
-                                        toggleButton.setToggleGroup(group);
-                                        toggleButton.setOnMouseClicked(c.getOnMouseClicked());
-                                        toggleButton.setOnAction(c.getOnAction());
-                                        toggleButton.getStyleClass().setAll(c.getStyleClass());
-                                        toggleButton.setContentDisplay(c.getContentDisplay());
-                                        toggleButton.setNodeOrientation(NodeOrientation.INHERIT);
-                                        toggleButton.setPrefWidth(this.drawerBox.getPrefWidth());
-                                        items.add(toggleButton);
-                                    });
+
+
+                    c.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+                        if (c.isSelected()) event.consume();
+
+                        if (DrawerCreator.INSTANCE.isShow()) {
+                            DrawerCreator.INSTANCE.closePopup();
+                        }
+
+                    });
+
+                    c.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+                        if (c.isSelected()) event.consume();
+                    });
+
+                    c.setToggleGroup(group);
+
+                    SVGPath icon = new SVGPath();
+                    icon.setContent("M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z");
+
+                    c.setGraphic(icon);
+                    c.setContentDisplay(ContentDisplay.TEXT_ONLY);
+                    icon.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
+//
+                    c.selectedProperty().addListener((observable, oldValue, newValue) -> {
+                        if (newValue) {
+                            c.setContentDisplay(ContentDisplay.RIGHT);
+                        }
+                        else c.setContentDisplay(ContentDisplay.TEXT_ONLY);
+                    });
+
+                    this.group.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+                        if (newValue != null) {
+                            if (((VBox) e.getContent()).getChildren().contains(newValue)) {
+                                e.getStyleClass().addAll("menu-selected");
+                            } else {
+                                e.getStyleClass().removeAll("menu-selected");
+                            }
                         }
                     });
+
+                    ToggleButton toggleButton = new ToggleButton();
+                    toggleButton.setText(c.getText());
+                    toggleButton.setToggleGroup(group);
+                    toggleButton.setOnMouseClicked(c.getOnMouseClicked());
+                    toggleButton.setOnAction(c.getOnAction());
+                    toggleButton.getStyleClass().setAll(c.getStyleClass());
+                    toggleButton.setContentDisplay(c.getContentDisplay());
+                    toggleButton.setNodeOrientation(NodeOrientation.INHERIT);
+                    toggleButton.setPrefWidth(this.drawerBox.getPrefWidth());
+
+
+                    items.add(toggleButton);
+                }));
 
         }
 
@@ -169,9 +195,7 @@ public class DrawerController {
             return items;
         }
 
-
         private void barFiltered(String filter){
-
             filteredList.setPredicate(s -> s.getText().toUpperCase().contains(filter.toUpperCase()));
             scroll.setContent(filter(filteredList));
         }

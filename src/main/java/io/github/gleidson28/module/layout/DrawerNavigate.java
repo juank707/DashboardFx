@@ -25,24 +25,32 @@ package io.github.gleidson28.module.layout;
 //import impl.com.calendarfx.view.SpeedSkin;
 
 import io.github.gleidson28.GNAvatarView;
-import io.github.gleidson28.global.dao.UserPresenter;
+import io.github.gleidson28.global.enhancement.FluidView;
 import io.github.gleidson28.global.exceptions.NavigationException;
-import io.github.gleidson28.global.model.User;
 import io.github.gleidson28.global.plugin.ViewManager;
+import io.github.gleidson28.global.properties.ColorSelector;
+import io.github.gleidson28.global.properties.Selector;
+import io.github.gleidson28.global.properties.TypeSelector;
+import io.github.gleidson28.global.properties.SizeSelector;
+import io.github.gleidson28.module.controls.LayoutController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on  14/09/2020
  */
-public class DrawerNavigate implements Initializable {
+public class DrawerNavigate implements Initializable, FluidView {
 
     @FXML private VBox drawerBox;
     @FXML private HBox searchBox;
@@ -53,13 +61,22 @@ public class DrawerNavigate implements Initializable {
 
     @FXML private GNAvatarView avatarView;
 
+    private LayoutController layoutController;
 
-//    private SpeedAgenda speedAgenda;
+    private Properties properties = new Properties();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         new DrawerController(drawerBox, searchBox);
+
+        try {
+            InputStream input = new FileInputStream("app/controls.properties");
+            properties.load(input);
+            input.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 //        if(path == null) {
 //            path = "app/media/img/avatars/man@400.png";
@@ -74,23 +91,12 @@ public class DrawerNavigate implements Initializable {
 
 
 //        avatarView.setImage(new Image( new UserPresenter().getActive().getAvatar("50")));
-//
 
-
-
-    }
-
-    @FXML
-    private void goAgenda(){
 
     }
 
     @FXML private void goDashboard() throws NavigationException {
         ViewManager.INSTANCE.setContent("dashboard");
-    }
-
-    @FXML
-    private void goCashier() throws NavigationException {
     }
 
     @FXML
@@ -109,15 +115,9 @@ public class DrawerNavigate implements Initializable {
         ViewManager.INSTANCE.setContent("button");
     }
 
-    @FXML
-    private void goCheckBox() throws NavigationException {
-        ViewManager.INSTANCE.setContent("check-box");
-    }
 
-    @FXML
-    private void goPagination() throws NavigationException {
-        ViewManager.INSTANCE.setContent("pagination");
-    }
+
+
 
     @FXML
     private void goCarousel() throws NavigationException {
@@ -193,7 +193,69 @@ public class DrawerNavigate implements Initializable {
 
     @FXML
     private void openOptions() {
+
+    }
+
+    private void configLayoutControl(Control control, Selector... selectors) throws NavigationException {
+
+        if(layoutController == null) {
+            layoutController = (LayoutController) ViewManager.INSTANCE.getController("control-layout");
+        }
+
+        String className = control.getClass().getSimpleName();
+
+        ViewManager.INSTANCE.setContent("control-layout", className);
+
+        layoutController.setControl(
+                control,
+                properties.getProperty(className + ".about"),
+                selectors
+        );
+    }
+
+    @FXML
+    private void goCheckBox() throws NavigationException {
+        CheckBox checkBox = new CheckBox("CheckBox");
+        checkBox.getProperties().putIfAbsent("prefix", "check-");
+        configLayoutControl(
+                checkBox,
+                new ColorSelector(
+                        checkBox,
+                        "Primary", "Info", "Success", "Warning", "Danger", "Secondary"
+                ),
+                new TypeSelector(
+                        checkBox,
+                        "Rounded", "Flat", "Task"
+                ),
+                new SizeSelector(checkBox, "small")
+        );
+    }
+
+    @FXML
+    private void goPagination() throws NavigationException {
+        Pagination pagination = new Pagination();
+        pagination.getProperties().putIfAbsent("prefix", "pag-");
+        configLayoutControl(
+                pagination,
+                new ColorSelector(
+                        pagination,
+                        "Primary", "Info", "Success", "Warning", "Danger", "Secondary"
+                ),
+                new TypeSelector(
+                        pagination,
+                        "Rounded", "Triangle"
+                )
+        );
     }
 
 
+    @Override
+    public void onEnter() {
+
+    }
+
+    @Override
+    public void onExit() {
+
+    }
 }
