@@ -27,6 +27,9 @@
         - name : pagination
           title : Pagination
           fxml : pagination.fxml
+        - name: control-layout
+          title: Control Layout
+          fxml: controlLayout.fxml
     - name : charts
       title : Charts
       directory : charts
