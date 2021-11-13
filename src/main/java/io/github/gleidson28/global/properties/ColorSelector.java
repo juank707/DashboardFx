@@ -109,8 +109,6 @@ public class ColorSelector extends Selector {
             content.getChildren().add(color);
             GridPane.setConstraints(color, _column, _row );
 
-            System.out.println("i = " + i);
-
             if(i.equalsIgnoreCase("info"))
                 group.selectToggle(color);
 
@@ -124,5 +122,10 @@ public class ColorSelector extends Selector {
     @Override
     public void setAside(PropertyAside aside) {
         this.aside = aside;
+    }
+
+    @Override
+    public void reset() {
+
     }
 }

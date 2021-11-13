@@ -32,6 +32,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
@@ -39,6 +40,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -79,7 +82,8 @@ public class DataHandler<E extends Model> {
 
     public DataHandler(Control dataControl, Hyperlink first, Hyperlink last,
                        Pagination pagination, ComboBox<Integer> entries, Label legend,
-                       FilteredList<E> filteredList, ResourceBundle bundle) {
+                       FilteredList<E> filteredList, ResourceBundle bundle)
+    {
 
         if (!(dataControl instanceof TableView) && !(dataControl instanceof ListView)) {
             try {
@@ -89,10 +93,9 @@ public class DataHandler<E extends Model> {
             }
         }
 
-
         if(entries.getItems().size() == 0) {
             entries.getItems().setAll(5, 10, 50, 100);
-            entries.setValue(10);
+            entries.setValue(5);
         }
 
         entries.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -100,7 +103,7 @@ public class DataHandler<E extends Model> {
                 pagination(pagination.getCurrentPageIndex(), newValue);
             }
         });
-
+//
 //        pagination
         this.dataControl = dataControl;
         this.entries = entries;
@@ -111,30 +114,31 @@ public class DataHandler<E extends Model> {
         this.filteredList = filteredList;
         this.bundle.set(bundle);
 
-        // For hacking and tests
+//        // For hacking and tests
         container = (HBox) pagination.getParent();
         paginationParent = (GridPane) container.getParent();
-
+//
         first.setMinWidth(0D);
         last.setMinWidth(0D);
 
-        addPagination();
-//        updatePagination(converter.size());
+////        updatePagination(converter.size());
         if(filteredList != null)
-        updatePagination(filteredList.size()); // Testing
+            updatePagination(filteredList.size()); // Testing
 
         if(filteredList != null)
-        pagination(0, entries.getValue());
+            pagination(1, entries.getValue());
 
         first.addEventHandler(ActionEvent.ACTION,
-                event -> pagination(0, entries.getValue()));
+                event -> goFirst());
 
         last.addEventHandler(ActionEvent.ACTION,
-                event -> pagination(maxPages, entries.getValue()));
+                event -> goLast());
 
         if(filteredList != null) {
             setFilteredList(filteredList);
         }
+
+        addPagination();
 
         this.first.setDisable(true);
 
@@ -146,6 +150,7 @@ public class DataHandler<E extends Model> {
             first.setText("First");
             last.setText("Last");
         }
+
     }
 
     public void removeCheckBoxColumn() {
@@ -163,6 +168,14 @@ public class DataHandler<E extends Model> {
         }
     }
 
+    public void goFirst() {
+        pagination.setCurrentPageIndex(0);
+    }
+
+    public void goLast() {
+       pagination.setCurrentPageIndex(maxPages);
+    }
+
     private ChangeListener<Boolean> checkObserver;
 
     public void setDataControl(Control dataControl) {
@@ -175,17 +188,17 @@ public class DataHandler<E extends Model> {
             pagination(0, entries.getValue());
     }
 
+    public void addCheckBoxColumn() {
 
-    public void setFilteredList(FilteredList<E> filteredList) {
-
-        this.filteredList = filteredList;
+        TableColumn<E, Boolean> columnSelected = new TableColumn<>();
 
         if(filteredList != null) {
 
             filteredList.addListener((ListChangeListener<E>) c -> {
                 if (c.next()) {
                     if (c.wasAdded()) {
-                        c.getAddedSubList().stream().filter(e -> e instanceof SelectedCell).forEach(e ->
+                        c.getAddedSubList().stream().filter(
+                                e -> e instanceof SelectedCell).forEach(e ->
                                 ((SelectedCell) e).selectedProperty().addListener(checkObserver));
                     }
                 }
@@ -193,138 +206,164 @@ public class DataHandler<E extends Model> {
 
             filteredList.stream().filter(filter -> filter instanceof SelectedCell).forEach(c ->
                     ((SelectedCell) c).selectedProperty().addListener(checkObserver));
-
-            filteredList.getSource().addListener((ListChangeListener<E>) c -> {
-                if (c.next()) {
-                    if (c.wasAdded()) {
-                        if(dataControl instanceof TableView) {
-                            TableView table = (TableView) dataControl;
-                            if (table.getItems().size() <= entries.getValue()) {
-                                pagination();
-                            } else pagination(maxPages, entries.getValue());
-                        } else if(dataControl instanceof ListView) {
-                            ListView list = (ListView) dataControl;
-                            if (list.getItems().size() <= entries.getValue()) {
-                                pagination();
-                            } else pagination(maxPages, entries.getValue());
-                        }
-
-                    }
-                }
-            });
-
-            updatePagination(filteredList.size());
-            pagination(0, entries.getValue());
-
-            filteredList.predicateProperty().addListener((observable, oldValue, newValue) -> pagination());
         }
+
+        double size = 40D;
+        columnSelected.setMinWidth(size);
+        columnSelected.setPrefWidth(size);
+        columnSelected.setMaxWidth(size);
+//        columnSelected.setResizable(false);
+
+        columnSelected.setCellValueFactory(call -> ((SelectedCell) call.getValue()).selectedProperty());
+
+        columnSelected.setCellFactory(CheckBoxTableCell.forTableColumn(columnSelected));
+        columnSelected.setUserData("check-column");
+
+        TableView table = (TableView) dataControl;
+
+        table.getColumns().add(0, columnSelected);
+
+        AtomicBoolean onCheck = new AtomicBoolean(false);
+
+        checkBox = new CheckBox();
+        columnSelected.setGraphic(checkBox);
+
+        checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            for (Object c : table.getItems() ) {
+                onCheck.set(true);
+                if(c instanceof SelectedCell) ((SelectedCell) c).setSelected(newValue);
+            }
+            onCheck.set(false);
+        });
+
+        checkObserver = (observable, oldValue, newValue) -> {
+            AtomicInteger count = new AtomicInteger();
+            AtomicBoolean hasOne = new AtomicBoolean(false);
+
+            if(!onCheck.get()) {
+                table.getItems().forEach( c -> {
+                    if(c instanceof SelectedCell) {
+                        if (((SelectedCell) c).selectedProperty().get()) {
+                            count.getAndIncrement();
+                            hasOne.set(true);
+                        }
+                    }
+                });
+
+                if (count.get() == table.getItems().size()) {
+                    checkBox.setSelected(true);
+                    checkBox.setIndeterminate(false);
+                } else if (hasOne.get()) {
+                    checkBox.setIndeterminate(true);
+                } else {
+                    checkBox.setSelected(false);
+                    checkBox.setIndeterminate(false);
+                }
+            };
+        };
 
     }
 
+
+    private void setFilteredList(FilteredList<E> filteredList) {
+
+        this.filteredList = filteredList;
+
+        if(filteredList != null) {
+
+            filteredList.getSource().addListener((ListChangeListener<E>) c -> {
+                if (c.next()) {
+                    pagination();
+                }
+            });
+//
+            filteredList.predicateProperty().addListener((observable, oldValue, newValue) ->
+                    pagination());
+        }
+//
+    }
+
+    public void pagination(int index) {
+        pagination(index, entries.getValue());
+    }
+
     public void pagination(int index, int limit){
-        pag = true;
+//        pag = true;
 
         if (checkBox != null) {
             checkBox.setIndeterminate(false);
             checkBox.setSelected(false);
         }
 
-        if(isFiltered()){
-            paginationFilter(filteredList, index);
-        } else {
-            int size = filteredList.size();
+        int size = filteredList.size();
+        ObservableList<E> data = null;
 
-            ObservableList<E> data = null;
+        if(dataControl instanceof TableView) {
+            data = ((TableView<E>) dataControl).getItems();
+        } else data = ((ListView<E>) dataControl).getItems();
 
-            if(dataControl instanceof TableView) {
-                data = ((TableView<E>) dataControl).getItems();
-            } else data = ((ListView<E>) dataControl).getItems();
+        List<E> list = filteredList.
+                stream()
+                .skip((long) index * limit)  // Equivalent to SQL's offset
+                .limit(limit) // Equivalent to SQL's limit
+                .collect(Collectors.toList());
 
-            List<E> list = filteredList.
-                    stream()
-                    .skip((long) index * limit)  // Equivalent to SQL's offset
-                    .limit(limit) // Equivalent to SQL's limit
-                    .collect(Collectors.toList());
+        data = FXCollections.observableArrayList(list);
 
-            data = FXCollections.observableArrayList(list);
+        if(dataControl instanceof TableView) {
+            ((TableView<E>) dataControl).setItems(data);
+        } else ((ListView<E>) dataControl).setItems(data);
 
-            if(dataControl instanceof TableView) {
-                ((TableView<E>) dataControl).setItems(data);
-            } else ((ListView<E>) dataControl).setItems(data);
-
-            altLegend(
-                    index == 0 ? data.isEmpty() ? 0 : index + 1
-                            : ((index + 1) * entries.getValue()) - (entries.getValue() - 1),
-                    index == 0 ? data.size() : (entries.getValue() * pagination.getCurrentPageIndex()) + data.size(),
-                    size
-            );
+        altLegend(
+                index == 0 ? data.isEmpty() ? 0 : index + 1
+                        : ((index + 1) * entries.getValue()) - (entries.getValue() - 1),
+                index == 0 ? data.size() : (entries.getValue() * pagination.getCurrentPageIndex()) + data.size(),
+                size
+        );
 
 
-            updatePagination(size);
+        updatePagination(size);
 
-            if(index >= 0)
-                pagination.setCurrentPageIndex(index);
-
-        }
-        pag = false;
     }
 
-    public void pagination(){
+    public void pagination() {
         pagination(pagination.getCurrentPageIndex(), entries.getValue());
     }
 
-    private void paginationFilter(ObservableList<E> filtered, int index) {
+    private void addPagination() {
 
-        pag = true;
-        int newList = index * entries.getValue();
-        List<E> subList;
-        subList = filtered.subList(Math.min(newList, filtered.size()), Math.min(filtered.size(), newList + entries.getValue()));
+        pagination.currentPageIndexProperty().addListener(
 
-        ObservableList<E> newData = FXCollections.observableArrayList(subList);
+                (ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
 
-        if(dataControl instanceof TableView) ((TableView) dataControl).setItems(newData);
-        else ((ListView) dataControl).setItems(newData);
+                    pagination(newValue.intValue(), entries.getValue());
 
-
-        updatePagination(filtered.size());
-
-        altLegend(
-                subList.size() == 0 ? 0 :
-                        index == 0 ? index + 1 : ( (index+1) * entries.getValue()) - (entries.getValue() - 1),
-                index == 0 ? subList.size() : (entries.getValue() * pagination.getCurrentPageIndex()) + subList.size(),
-                filtered.size(),
-                filtered.size()
-        );
-
-        pagination.setCurrentPageIndex(index);
-
-        pag = false;
-    }
-
-    private void addPagination(){
-        pagination.setCurrentPageIndex(0);
-        pagination.currentPageIndexProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-
-            pagination(newValue.intValue(), entries.getValue());
-            first.setDisable(newValue.intValue() == 0);
-            last.setDisable(newValue.intValue() == pagination.getPageCount() - 1);
+                    first.setDisable(newValue.intValue() == 0);
+                    last.setDisable(newValue.intValue() == pagination.getPageCount() - 1);
 
         });
+
+        pagination.setCurrentPageIndex(0);
+
     }
 
-    private void updatePagination(int size){
+
+    public void updatePagination(int size) {
 
         Platform.runLater(() -> {
 
             int deff = 5;
 
             double division = size % entries.getValue();
-            maxPages = division == 0 ? ( size / entries.getValue() ) : ( size / entries.getValue() ) + 1;
+            maxPages = division == 0 ? ( size / entries.getValue() ) :
+                    ( size / entries.getValue() ) + 1;
 
             pagination.setPageCount(maxPages);
 
             hidePagination(maxPages < 2);
+
             if(filteredList.size() > 0) {
+
                 pagination.setMaxPageIndicatorCount(Math.min(maxPages, deff));
                 int count = 3;
                 int width = 26;
@@ -332,10 +371,9 @@ public class DataHandler<E extends Model> {
                 pagination.setPrefWidth((pagination.getMaxPageIndicatorCount() + count) * width);
                 pagination.setMaxWidth((pagination.getMaxPageIndicatorCount() + count) * width);
             }
+
         });
-
     }
-
 
     private void hidePagination(boolean hide) {
         paginationParent.setVisible(!hide);
@@ -352,9 +390,16 @@ public class DataHandler<E extends Model> {
                 );
             } else {
 
+//                legend.setText(
+//                        "Showing "
+//                                + init + " to "
+//                                + end + " of "
+//                                + total
+//                                + " entries."
+//                );
                 legend.setText(
-                        "Showing "
-                                + init + " to "
+
+                                + init + " - "
                                 + end + " of "
                                 + total
                                 + " entries."
@@ -403,7 +448,7 @@ public class DataHandler<E extends Model> {
     @Deprecated
     public void refresh(){
         setBundle(ResourceBundle.getBundle(this.bundle.get().getBaseBundleName(), Locale.getDefault()));
-        pagination();
+//        pagination();
     }
 
 //    public void addFilter(Bindin)

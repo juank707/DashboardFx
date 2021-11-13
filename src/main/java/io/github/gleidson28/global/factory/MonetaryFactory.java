@@ -32,11 +32,16 @@ public class MonetaryFactory<E extends Professional> implements Callback<TableCo
 
     @Override
     public TableCell<E, BigDecimal> call(TableColumn<E, BigDecimal> param) {
+
         return new TableCell<E, BigDecimal>() {
+
             @Override
             protected void updateItem(BigDecimal item, boolean empty) {
+
                 super.updateItem(item, empty);
+
                 if(item != null) {
+                    System.out.println("item = " + item);
                     setText(MoneyUtil.format(item));
                     setItem(item);
                     setGraphic(null);

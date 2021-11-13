@@ -46,6 +46,7 @@
                                        <tooltip>
                                           <Tooltip text="Empty Tooltip" />
                                        </tooltip></CheckBox>
+
                                  </children>
                               </HBox>
                            </children>

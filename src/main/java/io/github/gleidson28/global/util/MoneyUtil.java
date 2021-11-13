@@ -40,7 +40,6 @@ public class MoneyUtil {
     }
 
     public static String parse(BigDecimal value) {
-        System.out.println(value);
         return getPure(value);
     }
 

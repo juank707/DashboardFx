@@ -16,6 +16,7 @@
  */
 package io.github.gleidson28.global.model;
 
+import io.github.gleidson28.global.enhancement.SelectedCell;
 import javafx.beans.property.*;
 
 import java.math.BigDecimal;
@@ -27,7 +28,7 @@ import java.math.BigDecimal;
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on  10/04/2019
  */
-public class Professional extends User {
+public class Professional extends User implements SelectedCell {
 
     private final ObjectProperty<Status> status = new SimpleObjectProperty<>();
     private final ObjectProperty<BigDecimal> price = new SimpleObjectProperty<>();
@@ -38,15 +39,17 @@ public class Professional extends User {
 
     private FloatProperty rating = new SimpleFloatProperty();
 
+    private final BooleanProperty selected = new SimpleBooleanProperty();
+
     private final BooleanProperty nameValidator = new SimpleBooleanProperty();
     private final BooleanProperty lastNameValidator = new SimpleBooleanProperty();
 
     public Professional() {
         super.nameProperty().addListener((observable, oldValue, newValue) ->
-                nameValidator.setValue(newValue != null && newValue.length() > 3));
+                nameValidator.setValue(newValue != null && newValue.length() > 2));
 
         super.lastNameProperty().addListener((observable, oldValue, newValue) ->
-                lastNameValidator.setValue(newValue != null && newValue.length() > 3));
+                lastNameValidator.setValue(newValue != null && newValue.length() > 2));
     }
 
 
@@ -132,8 +135,23 @@ public class Professional extends User {
 
     @Override
     public boolean isValid() {
-        return nameValidator.get();
+        return nameValidator.and(lastNameValidator).get();
 //        return this.getName() != null && this.getName().length() >= 3
 //                && this.getLastName() != null && this.getLastName().length() >= 3;
+    }
+
+    @Override
+    public BooleanProperty selectedProperty() {
+        return selected;
+    }
+
+    @Override
+    public boolean isSelected() {
+        return selected.get();
+    }
+
+    @Override
+    public void setSelected(boolean selected) {
+        this.selected.set(selected);
     }
 }

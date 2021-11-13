@@ -16,7 +16,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.TextFlow?>
 
-<StackPane id="root" alignment="TOP_LEFT" prefHeight="670.0" prefWidth="1241.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.gleidson28.module.layout.LayoutController">
+<StackPane id="root" fx:id="root" alignment="TOP_LEFT" prefHeight="670.0" prefWidth="1241.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.gleidson28.module.layout.LayoutController">
    <children>
       <StackPane id="foreground" fx:id="foreground" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #00000048;">
          <children>
@@ -51,7 +51,7 @@
 
 
       </StackPane>
-      <StackPane id="content" style="-fx-background-color: white;" StackPane.alignment="TOP_LEFT">
+      <StackPane id="scene" fx:id="scene" style="-fx-background-color: white;" StackPane.alignment="TOP_LEFT">
          <children>
             <BorderPane fx:id="main" StackPane.alignment="TOP_LEFT">
                <center>
@@ -89,7 +89,7 @@
                         </FlowPane>
                         <ScrollPane id="body" fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
                            <content>
-                              <fx:include source="../examples/dataTable/professional_index.fxml" />
+                              <fx:include source="../main/dashboard.fxml" />
                            </content></ScrollPane>
                      </children>
                      <BorderPane.margin>

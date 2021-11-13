@@ -20,7 +20,6 @@ import com.gn.GNCarousel;
 import core.CurveFittedAreaChart;
 import core.DonutChart;
 import io.github.gleidson28.global.enhancement.FluidView;
-import io.github.gleidson28.global.exceptions.NavigationException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -266,17 +265,12 @@ public class Dashboard implements Initializable, FluidView {
     }
 
     @Override
-    public void onEnter() throws NavigationException {
+    public void onEnter()  {
 
     }
 
     @Override
     public void onExit() {
-
-    }
-
-    @Override
-    public void relocate(double width) {
 
     }
 }

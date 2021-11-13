@@ -56,10 +56,6 @@ public class ClearableSkin extends SkinAction {
         );
     }
 
-    public void test() {
-        System.out.println("Eh a sua mae.");
-    }
-
     @Override
     void mousePressed() {
     }

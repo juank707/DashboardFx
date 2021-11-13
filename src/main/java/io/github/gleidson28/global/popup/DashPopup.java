@@ -98,7 +98,7 @@ public class DashPopup extends PopOver {
 
     public void showTopRight(Node node, boolean shadow) {
 
-        this.setArrowLocation(ArrowLocation.TOP_RIGHT);
+        this.setArrowLocation(ArrowLocation.TOP_LEFT);
 
         Bounds bounds = node.localToScreen(node.getBoundsInLocal());
 

@@ -28,6 +28,4 @@ public interface FluidView {
 
     void onExit();
 
-    void relocate(double width);
-
 }

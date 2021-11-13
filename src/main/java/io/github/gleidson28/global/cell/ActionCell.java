@@ -130,7 +130,7 @@ public class ActionCell<E extends Model> extends HBox implements DefaultCell<E> 
         this.getChildren().addAll(btnView, btnEdit, btnDelete);
 
 
-        btnDelete.setOnMouseClicked(event -> tableView.getItems().remove(item.get()));
+//        btnDelete.setOnMouseClicked(event -> tableView.getItems().remove(item.get()));
 
 //        btnView.setOnMouseClicked(event -> {
 //            try {

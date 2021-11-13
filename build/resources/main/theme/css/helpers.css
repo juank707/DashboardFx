@@ -1,8 +1,12 @@
-.raised:pressed, .raised:focused{
+
+.btn-raised:pressed, .btn-raised:focused,
+.raised:pressed, .raised:focused {
   -fx-effect: dropshadow( gaussian , rgba(0,0,0,.2) , 18, 0 , 0 , 10 );
 }
 
-.raised {
+.raised,
+.btn-raised
+{
   -fx-effect: dropshadow( gaussian , rgba(0,0,0,.3) , 15, 0 , 0 , 4 );
 }
 

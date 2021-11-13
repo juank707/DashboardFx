@@ -80,7 +80,7 @@ case "`uname`" in
     ;;
 esac
 
-CLASSPATH=$APP_HOME/lib/DashboardFx-2.2.1.jar:$APP_HOME/lib/GNControls-1.1.8.jar:$APP_HOME/lib/GNDecorator-0.3.3.jar:$APP_HOME/lib/mysql-connector-java-8.0.14.jar:$APP_HOME/lib/scenicView.jar:$APP_HOME/lib/controlsfx-8.40.17.jar:$APP_HOME/lib/CurvedFittedAreaChart.jar:$APP_HOME/lib/fontawesomefx-8.9.jar:$APP_HOME/lib/jfoenix-8.0.7.jar:$APP_HOME/lib/GNCarousel-2.1.51.jar:$APP_HOME/lib/colors-1.4.jar:$APP_HOME/lib/snakeyaml-1.26.jar:$APP_HOME/lib/AnimateFX-1.2.1.jar:$APP_HOME/lib/GNAvatarView-1.0.5.jar:$APP_HOME/lib/annotations-20.1.0.jar
+CLASSPATH=$APP_HOME/lib/DashboardFx-2.2.1.jar:$APP_HOME/lib/GNControls-1.1.8.jar:$APP_HOME/lib/GNDecorator-0.3.3.jar:$APP_HOME/lib/mysql-connector-java-8.0.14.jar:$APP_HOME/lib/scenicView.jar:$APP_HOME/lib/controlsfx-8.40.17.jar:$APP_HOME/lib/CurvedFittedAreaChart.jar:$APP_HOME/lib/fontawesomefx-8.9.jar:$APP_HOME/lib/jfoenix-8.0.7.jar:$APP_HOME/lib/GNCarousel-2.1.51.jar:$APP_HOME/lib/colors-1.4.jar:$APP_HOME/lib/TrayNotification.jar:$APP_HOME/lib/snakeyaml-1.26.jar:$APP_HOME/lib/AnimateFX-1.2.1.jar:$APP_HOME/lib/GNAvatarView-1.0.5.jar:$APP_HOME/lib/annotations-20.1.0.jar
 
 
 # Determine the Java command to use to start the JVM.

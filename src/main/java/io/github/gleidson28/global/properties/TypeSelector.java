@@ -96,4 +96,9 @@ public class TypeSelector extends Selector {
     public void setAside(PropertyAside aside) {
         this.aside = aside;
     }
+
+    @Override
+    public void reset() {
+
+    }
 }

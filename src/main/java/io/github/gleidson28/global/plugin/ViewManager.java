@@ -182,28 +182,23 @@ public enum ViewManager {
                     ((FluidView) get(previous).getController()).onExit();
 
                 if (controller instanceof ObserverView) {
-
                     for(ChangeListener<Number> l : ((ObserverView) controller).getListeners()) {
                         App.INSTANCE.getDecorator().widthProperty().removeListener(l);
                     }
-
                 }
 
             }
 
             if (viewController.getController() instanceof FluidView) {
                 ((FluidView) viewController.getController()).onEnter();
+            }
 
-                if (viewController.getController() instanceof ObserverView) {
-                    for (ChangeListener<Number> l : ((ObserverView) viewController.getController()).getListeners()) {
-                        // fire listeners
-                        l.changed(App.INSTANCE.widthProperty(), App.INSTANCE.getWidth(), App.INSTANCE.getWidth() );
-
-                        App.INSTANCE.widthProperty().addListener(l);
-
-                    }
+            if (viewController.getController() instanceof ObserverView) {
+                for (ChangeListener<Number> l : ((ObserverView) viewController.getController()).getListeners()) {
+                    // fire listeners
+                    l.changed(App.INSTANCE.widthProperty(), App.INSTANCE.getWidth(), App.INSTANCE.getWidth() );
+                    App.INSTANCE.widthProperty().addListener(l);
                 }
-
             }
 
             if(model != null) {

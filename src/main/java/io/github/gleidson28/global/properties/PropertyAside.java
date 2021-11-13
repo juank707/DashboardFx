@@ -37,19 +37,13 @@ import java.util.List;
  */
 public class PropertyAside extends ScrollPane {
 
-    private final VBox body = new VBox();
     private final VBox customSelectors = new VBox();
 
-    private SVGPath  icon       = new SVGPath();
-    private Label    title      = new Label();
-
-    private TextArea styleArea  = new TextArea();
-    private TextArea javaArea  = new TextArea();
-    private TextArea fxmlArea  = new TextArea();
+    private final TextArea styleArea  = new TextArea();
+    private final TextArea javaArea  = new TextArea();
+    private final TextArea fxmlArea  = new TextArea();
 
     private Control control;
-
-//    private final ObservableList<Selector> customSelectors = FXCollections.observableArrayList();
 
     private final ObservableList<String> styleClass = FXCollections.observableArrayList();
 
@@ -69,12 +63,14 @@ public class PropertyAside extends ScrollPane {
         javaArea.setEditable(false);
         fxmlArea.setEditable(false);
 
+        SVGPath icon = new SVGPath();
         icon.setContent(" M2.53 19.65l1.34.56v-9.03l-2.43 5.86c-.41 1.02.08 2.19 1.09 2.61zm19.5-3.7L17.07 3.98c-.31-.75-1.04-1.21-1.81-1.23-.26 0-.53.04-.79.15L7.1 5.95c-.75.31-1.21 1.03-1.23 1.8-.01.27.04.54.15.8l4.96 11.97c.31.76 1.05 1.22 1.83 1.23.26 0 .52-.05.77-.15l7.36-3.05c1.02-.42 1.51-1.59 1.09-2.6zm-9.2 3.8L7.87 7.79l7.35-3.04h.01l4.95 11.95-7.35 3.05z M5.88 19.75c0 1.1.9 2 2 2h1.45l-3.45-8.34v6.34z");
 
+        Label title = new Label();
         title.setGraphic(icon);
         title.getStyleClass().add("h3");
 
-        title.setText("Style");
+        title.setText("Css Style");
         title.setGraphicTextGap(10D);
 
         icon.setStyle("-fx-fill : -text-color;");
@@ -82,6 +78,7 @@ public class PropertyAside extends ScrollPane {
 //        BorderPane.setMargin(this, new Insets(20));
         this.setPadding(new Insets(20));
 
+        VBox body = new VBox();
         body.getChildren().add(title);
         body.getChildren().add(1, customSelectors);
         body.getChildren().addAll(createSeparator(), createBox("StyleClass", "Your StyleClass", BoxType.STYLE));
@@ -150,7 +147,7 @@ public class PropertyAside extends ScrollPane {
     private VBox createBox(String title, String prompt, BoxType type, String text) {
         VBox box = new VBox();
 
-        box.setMinHeight(100);
+        box.setMinHeight(200);
 
         StackPane content = new StackPane();
 
@@ -170,8 +167,7 @@ public class PropertyAside extends ScrollPane {
         btnCopy.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         btnCopy.getStyleClass().add("btn-flat");
         SVGPath iconCopy = new SVGPath();
-        iconCopy.setContent("M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 " +
-                ".9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z");
+        iconCopy.setContent("M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z");
         iconCopy.getStyleClass().add("icon");
 
         btnCopy.setGraphic(iconCopy);

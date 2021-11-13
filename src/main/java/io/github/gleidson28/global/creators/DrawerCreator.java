@@ -17,32 +17,25 @@
 package io.github.gleidson28.global.creators;
 
 import animatefx.animation.AnimationFX;
-import animatefx.animation.BounceIn;
-import animatefx.animation.BounceOut;
-import animatefx.animation.Pulse;
 import io.github.gleidson28.App;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
+import javafx.geometry.VPos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * System creator of popups and drawers-popups
@@ -125,8 +118,6 @@ public enum DrawerCreator {
 
     }
 
-
-
     public void createDrawerLeft(Menu hamb, Node content){
         createDrawerLeft(content);
         hamb.getGraphic().setVisible(false);
@@ -194,303 +185,6 @@ public enum DrawerCreator {
 
     }
 
-    public enum AlertType {
-        DONE, INFO, WARNING, ERROR
-    }
-
-    public void createDialog(String title, String message, Button... actions){
-        reset();
-        VBox body = new VBox();
-        Label _title = new Label(title);
-        _title.setWrapText(true);
-        Text _message = new Text(message);
-        TextFlow textFlow = new TextFlow(_message);
-        HBox _actions = new HBox(actions);
-
-        _title.getStyleClass().add("h3");
-        _message.getStyleClass().add("h4");
-
-        body.getChildren().setAll(_title, textFlow, _actions);
-
-        body.setSpacing(5D);
-        body.setPadding(new Insets(20D, 5, 20,20));
-
-        VBox.setVgrow(textFlow, Priority.ALWAYS);
-        VBox.setMargin(textFlow, new Insets(10, 0, 0, 10));
-        _actions.setSpacing(5D);
-        _actions.setAlignment(Pos.CENTER_RIGHT);
-
-        BounceOut bounceOut = new BounceOut(customDialog);
-        bounceOut.getTimeline().setOnFinished(event1 -> foreground.toBack());
-
-        _actions.getChildren().stream().map(e -> (Button) e).forEach(c -> {
-            c.setPrefWidth(100);
-            c.addEventFilter(ActionEvent.ACTION, event -> bounceOut.play());
-        });
-
-        foreground.setOnMouseClicked(null);
-
-        customDialog.getChildren().setAll(body);
-        customDialog.setPrefSize(400, 200);
-
-        for(Button action : actions){
-            action.getStyleClass().add("btn-flat");
-//            action.setStyle("-fx-text-fill : -text-color;");
-        }
-
-        organizeInCenter();
-
-        BounceIn bounceIn = new BounceIn(customDialog);
-        foreground.toFront();
-        bounceIn.play();
-
-    }
-
-
-    public void createAlert(AlertType alertType, String title, String message, Button... actions) {
-        reset();
-        VBox content = new VBox();
-        content.setPrefSize(500,300);
-//        content.setMaxWidth(200);
-        content.setAlignment(Pos.CENTER);
-
-        content.getChildren().setAll(
-                createAlertHeader(alertType),
-                createContent(title, message),
-                createActions(alertType, actions)
-        );
-
-        customDialog.setStyle("-fx-background-color : -foreground-color; -fx-background-radius : 10 10 10 10;");
-
-        customDialog.setPrefSize(content.getPrefWidth(), content.getPrefHeight());
-//        customDialog.setMinSize(content.getPrefWidth(), content.getPrefHeight());
-//        customDialog.setMaxSize(content.getPrefWidth(), content.getPrefHeight());
-
-        customDialog.getChildren().setAll(content);
-
-        organizeInCenter();
-
-        BounceIn bounceIn = new BounceIn(customDialog);
-        foreground.toFront();
-        bounceIn.play();
-
-        foreground.setOnMouseClicked(null);
-
-
-    }
-
-    private VBox createAlertHeader(AlertType type){
-//        App.getDecorator().block();
-        VBox header = new VBox();
-//        header.minWidthProperty().bind(customDialog.minWidthProperty());
-        header.setMinHeight(120);
-        header.setAlignment(Pos.CENTER);
-//        VBox.setVgrow(header, Priority.ALWAYS);
-
-        ImageView icon = null;
-        Color color = null;
-
-        switch (type){
-            case INFO:
-                color = Color.web("#33B5E5");
-                icon = new ImageView(new Image("/theme/img/info_48dp.png"));
-                break;
-            case WARNING:
-                color = Color.web("#FC6E51");
-                icon = new ImageView(new Image("/theme/img/warning_48dp.png"));
-                break;
-            case ERROR:
-                color = Color.web("#ED5565");
-                icon = new ImageView(new Image("/theme/img/error_48dp.png"));
-                break;
-            case DONE:
-                color = Color.web("#02C852");
-                icon = new ImageView(new Image("/theme/img/done_48dp.png"));
-                break;
-        }
-        header.setBackground(new Background(new BackgroundFill(color, new CornerRadii(
-                10,false), Insets.EMPTY)));
-
-        icon.setPreserveRatio(true);
-        icon.setSmooth(true);
-        icon.setFitWidth(151);
-        icon.setFitHeight(78);
-
-        header.getChildren().add(icon);
-        return header;
-    }
-
-    private static VBox  createContent(String title, String message){
-        VBox container = new VBox();
-        container.setAlignment(Pos.TOP_CENTER);
-        container.setSpacing(20D);
-
-        VBox.setVgrow(container, Priority.ALWAYS);
-
-        VBox.setMargin(container, new Insets(10,0,0,0));
-
-        Label lblTitle = new Label(title);
-        lblTitle.getStyleClass().add("h2");
-
-        Label text = new Label();
-        text.setWrapText(true);
-        text.setText(message);
-        text.setAlignment(Pos.CENTER);
-
-        container.getChildren().addAll(lblTitle, text);
-
-        return container;
-    }
-
-    private HBox createActions(AlertType alertType, Button... actions){
-        HBox _actions = new HBox();
-        _actions.setMinSize(50, 73);
-        _actions.setAlignment(Pos.CENTER);
-        VBox.setMargin(_actions, new Insets(10, 10, 10, 10));
-        _actions.setSpacing(5D);
-
-        _actions.getChildren().setAll(actions);
-
-
-        List result = _actions.getChildren().stream()                // convert list to stream
-                .filter(line -> line instanceof Button)     // we dont like mkyong
-                .collect(Collectors.toList());              // collect the output and convert streams to a List
-
-        result.forEach(
-                c -> {
-
-                    Button b = (Button) c;
-                    if(b.getId() != null) {
-                        if(b.getId().equals("defaultButton")) {
-
-                                // reset default button
-                                b.setDefaultButton(false);
-                                b.setDefaultButton(true);
-                                b.requestFocus();
-
-                            b.requestLayout();
-                            b.requestFocus();
-                        }
-                    }
-                }
-        );                //output : spring, node
-
-        _actions.getChildren().forEach( e -> e.addEventFilter(ActionEvent.ACTION, event -> {
-            BounceOut bounceOut = new BounceOut(customDialog);
-
-            bounceOut.getTimeline().setOnFinished(ev -> {
-                foreground.toBack();
-////                App.decorator.unblockControls();
-            });
-            bounceOut.play();
-
-        }));
-
-        switch (alertType){
-            case ERROR:
-                _actions.getChildren().forEach(c -> c.getStyleClass().addAll("btn-out", "btn-danger"));
-            break;
-            case WARNING:
-                _actions.getChildren().forEach(c -> c.getStyleClass().addAll("btn-out", "btn-warning"));
-                break;
-
-            case INFO:
-                _actions.getChildren().forEach(c -> c.getStyleClass().addAll("btn-out", "btn-info"));
-                break;
-
-            case DONE:
-                _actions.getChildren().forEach(c -> c.getStyleClass().addAll("btn-out", "btn-success"));
-                break;
-        }
-
-        _actions.getChildren().stream().filter(e -> e instanceof Button).forEach(e -> ((Button) e).setPrefWidth(60));
-        return _actions;
-    }
-
-
-    public void createPopup(StackPane content, boolean autoClose){
-        createPopup(content);
-
-        if(autoClose) {
-            foreContent.setOnMouseClicked(event -> {
-                if (event.getTarget() instanceof AnchorPane){
-                    if(((AnchorPane) event.getTarget()).getId().equals("fore-content")) {
-                        close.play();
-                    }
-                }
-
-                unlock();
-            });
-        }
-    }
-
-    public void createPopup(StackPane content){
-        reset();
-        customDialog.getChildren().setAll(content);
-        customDialog.setPrefSize(content.getPrefWidth(), content.getPrefHeight());
-        organizeInCenter();
-        foreground.toFront();
-
-        open.getKeyFrames().clear();
-        close.getKeyFrames().clear();
-
-//        App.INSTANCE.getDecorator().lockControls();
-
-//        content.requestLayout();
-        content.requestFocus();
-        open.play();
-
-    }
-
-    public void createPopup(StackPane content, AnimationFX animationFX, Button defaultButton) {
-        createPopup(content, animationFX);
-        defaultButton.setDefaultButton(true);
-    }
-
-    public void createPopup(StackPane content, AnimationFX animationFX){
-        reset();
-
-        customDialog.getChildren().clear();
-        customDialog.getChildren().add(content);
-
-        customDialog.setPrefSize(content.getPrefWidth(), content.getPrefHeight());
-        organizeInCenter();
-
-        animationFX.setNode(content);
-
-        if(animationFX instanceof Pulse) {
-            animationFX.setSpeed(1.8);
-        } else animationFX.setSpeed(1.2);
-
-        foreground.toFront();
-
-        content.requestFocus();
-        content.requestLayout();
-
-        if(content.lookup("#search") != null) {
-            TextField field = (TextField) content.lookup("#search");
-            field.requestFocus();
-        }
-
-        animationFX.play();
-
-        foreground.requestFocus();
-        foreground.requestLayout();
-
-
-        if(content.lookup("#defaultButton") != null) {
-
-            Button btn =  ((Button) content.lookup("#defaultButton"));
-            btn.requestFocus();
-            btn.requestLayout();
-            // reset default button
-            btn.setDefaultButton(false);
-            btn.setDefaultButton(true);
-            btn.requestFocus();
-        }
-
-    }
-
     private void organizeInCenter(){
 
         double width = App.INSTANCE.getDecorator().getWidth();
@@ -516,11 +210,20 @@ public enum DrawerCreator {
 
     }
 
-    private void organizeInLeft(){
+    private void organizeInLeft() {
         AnchorPane.clearConstraints(customDialog);
         AnchorPane.setTopAnchor(customDialog, 0D);
         AnchorPane.setLeftAnchor(customDialog, 0D);
         AnchorPane.setBottomAnchor(customDialog, 0D);
+    }
+
+    private void organizeInBottom() {
+
+        AnchorPane.clearConstraints(customDialog);
+        AnchorPane.setLeftAnchor(customDialog, 0D);
+        AnchorPane.setRightAnchor(customDialog, 0D);
+        AnchorPane.setBottomAnchor(customDialog, 5D);
+
     }
 
     private void defineContents(){
@@ -609,4 +312,73 @@ public enum DrawerCreator {
     public boolean isShow() {
         return show;
     }
+
+    public void createTrayNotification(String title, String msg) {
+
+        Stage stage = new Stage();
+
+        stage.initStyle(StageStyle.UNDECORATED);
+
+        HBox rootNode = new HBox();
+        StackPane root = new StackPane(rootNode);
+        rootNode.setPrefSize(420,90);
+
+        root.setStyle("-fx-border-width : 1 1 1 10; -fx-border-color : -success;");
+
+        stage.setScene(new Scene(root));
+
+        stage.getScene().getStylesheets().addAll(
+                DrawerCreator.class.getResource("/theme/css/typographic.css")
+                        .toExternalForm(),
+                DrawerCreator.class.getResource("/theme/css/fonts.css")
+                        .toExternalForm(),
+                DrawerCreator.class.getResource("/theme/css/material-color.css")
+                        .toExternalForm()
+        );
+
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+
+        double x = screenBounds.getMinX() + screenBounds.getWidth() - rootNode.getPrefWidth() - 2.0D;
+        double y = screenBounds.getMinY() + screenBounds.getHeight() - rootNode.getPrefHeight() - 2.0D;
+
+        Label lblTitle = new Label(title);
+        lblTitle.getStyleClass().addAll("h3");
+        Label lblMessage = new Label(msg);
+        lblMessage.getStyleClass().addAll("h4");
+
+        Label lblClose = new Label("Close");
+
+        StackPane imageIcon = new StackPane();
+        imageIcon.setStyle("-fx-background-color : -success; -fx-shape : 'M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z';");
+        imageIcon.setPrefSize(65, 90);
+
+        GridPane.setMargin(imageIcon, new Insets(20));
+
+        GridPane grid = new GridPane();
+//        grid.setGridLinesVisible(true);
+        grid.setHgap(20);
+
+        rootNode.getChildren().addAll(grid);
+
+        grid.add(imageIcon, 0, 0, 1, 2);
+        grid.add(lblTitle, 1, 0);
+
+        GridPane.setConstraints(lblTitle, 1, 0, 1, 1, HPos.LEFT, VPos.TOP, Priority.ALWAYS, Priority.ALWAYS);
+
+        grid.add(lblMessage, 1, 1);
+
+        GridPane.setConstraints(lblMessage, 1, 1, 1, 1, HPos.LEFT, VPos.TOP, Priority.ALWAYS, Priority.ALWAYS);
+
+        HBox.setHgrow(grid, Priority.ALWAYS);
+
+        stage.setAlwaysOnTop(true);
+
+        stage.setX(x);
+        stage.setY(y);
+
+        stage.show();
+    }
+
+
+
 }

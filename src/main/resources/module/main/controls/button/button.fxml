@@ -30,7 +30,7 @@
                      <children>
                         <VBox alignment="CENTER_LEFT">
                            <children>
-                              <Label prefHeight="58.0" prefWidth="99.0" text="Types" >
+                              <Label prefHeight="58.0" prefWidth="99.0" text="Types">
                                  <styleClass>
                                     <String fx:value="h3" />
                                     <String fx:value="title" />
@@ -68,8 +68,8 @@
                                     <Button mnemonicParsing="false" prefHeight="54.0" prefWidth="40.0" styleClass="round" text="R" />
                                     <Button fx:id="btn" mnemonicParsing="false" prefHeight="54.0" prefWidth="95.0" styleClass="rounded" text="Rounded" />
                                     <Button mnemonicParsing="false" prefHeight="54.0" prefWidth="100.0" text="Default" />
-                                    <Button mnemonicParsing="false" prefHeight="54.0" prefWidth="100.0" styleClass="deep-button" text="Deep" />
-                                    <Button mnemonicParsing="false" prefHeight="54.0" prefWidth="100.0" styleClass="raised" text="Raised" />
+                                    <Button mnemonicParsing="false" prefHeight="54.0" prefWidth="100.0" styleClass="btn-deep" text="Deep" />
+                                    <Button mnemonicParsing="false" prefHeight="54.0" prefWidth="100.0" styleClass="btn-raised" text="Raised" />
                                     <Button mnemonicParsing="false" prefHeight="54.0" prefWidth="100.0" styleClass="btn-outlined" text="Outlined" />
                                  </children>
                               </FlowPane>

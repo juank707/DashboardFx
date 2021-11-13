@@ -76,6 +76,7 @@ public enum AlertCreator {
 
         root.setStyle("-fx-background-color : transparent;");
         content.setStyle("-fx-background-color : -background-color; -fx-background-radius : 10 10 0 0;");
+
         root.setPrefSize(500,300);
 //        content.setMaxWidth(200);
         content.setAlignment(Pos.CENTER);
@@ -91,11 +92,16 @@ public enum AlertCreator {
 
         getContents();
 
+        if(decorator.getWidth() < 600) {
+            content.setMaxWidth(decorator.getWidth() - 20);
+        }
+
         content.getChildren().setAll(
                 createAlertHeader(alertType),
                 createContent(title, message),
                 createActions(alertType, actions)
         );
+
 
         if(root.getScene() == null) {
             stage.setScene(scene);

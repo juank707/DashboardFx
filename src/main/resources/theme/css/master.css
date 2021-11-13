@@ -840,3 +840,24 @@
 .bread-link {
     -fx-font-size : 14px;
 }
+
+.table-view .virtual-flow .clipped-container .sheet .table-row-cell .table-column .check-box:determinate .box {
+      -fx-background-color : transparent;
+        -fx-border-color : -medium-gray;
+}
+
+.table-view .virtual-flow .clipped-container .sheet .table-row-cell .table-column .check-box:determinate:selected .box {
+      -fx-background-color : -base;
+        -fx-border-color : -base;
+}
+
+.table-view .virtual-flow .clipped-container .sheet .table-row-cell:selected .table-column .check-box:determinate .box {
+      -fx-background-color : transparent;
+      -fx-border-color : white;
+}
+
+.check-box:determinate .box {
+    -fx-background-color : transparent;
+    -fx-border-color : -medium-gray;
+}
+

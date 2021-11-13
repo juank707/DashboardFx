@@ -30,7 +30,6 @@ import javafx.concurrent.Task;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,7 +42,7 @@ import java.util.List;
 public final class DaoProfessional extends AbstractDao<Professional> {
 
     private final ListProperty<Professional> professionals =
-            new SimpleListProperty<>(FXCollections.observableArrayList());
+            new SimpleListProperty<>(DaoProfessional.class, "ListProfessionals", FXCollections.observableArrayList());
 
     private static DaoProfessional instance;
 
@@ -55,13 +54,10 @@ public final class DaoProfessional extends AbstractDao<Professional> {
     }
 
     private DaoProfessional() {
-        professionals.get().addListener(new ListChangeListener<Professional>() {
-            @Override
-            public void onChanged(Change<? extends Professional> c) {
-                if(c.next()) {
-                    if(c.wasRemoved()) {
-                        delete(c.getRemoved());
-                    }
+        professionals.get().addListener((ListChangeListener<Professional>) c -> {
+            if(c.next()) {
+                if(c.wasRemoved()) {
+                    delete(c.getRemoved());
                 }
             }
         });
@@ -77,6 +73,8 @@ public final class DaoProfessional extends AbstractDao<Professional> {
     public boolean delete(Professional model) {
         connect();
         PreparedStatement prepare = prepare("delete from professional where id = " + model.getId());
+//        professionals.remove(model);
+
         try {
             return prepare.execute();
         } catch (SQLException throwables) {
@@ -108,8 +106,16 @@ public final class DaoProfessional extends AbstractDao<Professional> {
             prepare.setString(5, String.valueOf(Status.convertChar(professional.getStatus())));
             prepare.setFloat(6, professional.getRating());
 
-            if(prepare.execute())
-                professionals.get().add(professional);
+            prepare.execute();
+
+            prepare = prepare("select LAST_INSERT_ID()");
+            prepare.execute();
+
+            while (prepare.getResultSet().next()) {
+                professional.setId(prepare.getResultSet().getInt(1));
+            }
+
+            professionals.get().add(professional);
 
         } catch (SQLException e) {
             e.printStackTrace();

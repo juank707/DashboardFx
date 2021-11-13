@@ -112,6 +112,10 @@ public enum PopupCreator {
             root.setUserData(root.getPrefWidth());
         }
 
+        if(decorator.getWidth() < 600) {
+            root.setMaxWidth(decorator.getWidth() - 20);
+        }
+
         if(root.getPrefWidth() > decorator.getWidth()) {
             root.setPrefWidth(decorator.getWidth() - 20);
         } else {

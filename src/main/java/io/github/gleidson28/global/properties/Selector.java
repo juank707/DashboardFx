@@ -27,6 +27,8 @@ public abstract class Selector extends VBox {
 
     public abstract void setAside(PropertyAside aside);
 
+    public abstract void reset();
+
     protected VBox createSeparator() {
         VBox separator = new VBox();
 

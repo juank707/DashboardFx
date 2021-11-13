@@ -111,4 +111,5 @@ public class Model {
 
         return model != null && this.getId() == model.getId();
     }
+
 }

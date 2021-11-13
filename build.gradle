@@ -49,6 +49,8 @@ dependencies {
     implementation files('vendor/GNCarousel-2.1.51.jar')
     implementation files('vendor/colors-1.4.jar')
 
+    implementation files('vendor/TrayNotification.jar')
+
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }

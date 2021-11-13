@@ -348,6 +348,9 @@ Text {
   -fx-shape : "M9.005,17.766l13.759,14.739h1.716L49.02,0l10.298,8.488L25.997,50.453h-3.629L0,26.897L9.005,17.766z";
 }
 
+.button {
+    -fx-skin : none;
+}
 
 /************************************************************************************
 *
@@ -487,6 +490,14 @@ Text {
     -fx-opacity: .4;
 }
 
+.choice-box .context-menu .menu-item:checked .left-container .radio {
+    -fx-background-color : -text-color;
+}
+
+.choice-box .context-menu .menu-item:focused:checked .left-container .radio {
+    -fx-background-color : white;
+}
+
 
 .combo-box-base  {
     -fx-border-width : 1px;
@@ -572,6 +583,11 @@ Text {
     -fx-padding: 0.58333275em 1.333332em 0.58333275em 1.333332em;  /*7 16 7 16 */
 }
 
+.context-menu .menu-item .icon
+{
+    -fx-fill : -text-color;
+}
+
 .context-menu .menu-item:hover,
 .context-menu .menu-item:hover .label {
     -fx-background-color : -base;
@@ -585,6 +601,7 @@ Text {
 }
 
 
+
 .context-menu .menu-item .label {
     -fx-padding : 5px;
 }
@@ -593,7 +610,6 @@ Text {
 .context-menu .menu-item .icon
 {
     -fx-padding : 2px;
-    -fx-fill : -text-color;
 }
 
 .context-menu .menu-item .label .text,
@@ -602,6 +618,20 @@ Text {
 {
     -fx-background-color : white;
     -fx-fill : -text-color;
+}
+
+.context-menu .menu-item:focused .label .text {
+    -fx-fill : -text-color;
+}
+
+.context-menu .menu-item:hover:focused .icon,
+.context-menu .menu-item:focused .icon,
+.context-menu .menu-item:selected .icon,
+.context-menu .menu-item:selected .stack-pane,
+.context-menu .menu-item:selected StackPane,
+.context-menu .menu-item:focused .label .text
+{
+    -fx-fill : white;
 }
 
 .context-menu .menu-item .left-container .radio SVGPath {
@@ -627,6 +657,10 @@ Text {
     -fx-background-color : -dark-gray;
 }
 
+.context-menu .menu-item:focused,
+.context-menu .menu-item:focused .label {
+        -fx-background-color : -base;
+}
 
 .combo-box-base,
 .combo-box-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell
@@ -634,11 +668,6 @@ Text {
   -fx-font-family : Roboto;
   -fx-text-fill : -text-color;
 }
-
-
-
-
-
 
 /* TODO: try to scope the menu-item style to the contextmenu */
 .menu-item {
@@ -1637,14 +1666,14 @@ Text {
 
     -fx-effect : null;
     -fx-text-fill : white;
-    -fx-background-color : -primary;
+    -fx-background-color : -base;
     -fx-fill : WHITE;
 }
 
 .toggle-light:hover,
 .toggle-light:hover SVGPath
 {
-  -fx-background-color : derive(-primary, 70%);
+  -fx-background-color : -base;
   -fx-text-fill : WHITE;
   -fx-fill : white;
 }
@@ -2376,23 +2405,16 @@ Text {
 }
 
 
+
 .table-view .column-header-background .show-hide-columns-button
 {
     -fx-background-color : transparent;
-    -fx-padding : 1px;
-    -fx-background-insets : 0px;
-}
 
-.table-view .column-header-background .show-hide-columns-button .show-hide-column-image
-{
-    -fx-background-insets : 0px;
-    -fx-padding : 2.3px;
-    -fx-scale-x : 3.4px;
-    -fx-translate-x : -10px;
-    -fx-background-color : -icon-color;
-    -fx-shape : "M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z";
+
 
 }
+
+
 
 .table-view:row-selection:constrained-resize .virtual-flow {
     -fx-padding : 10px;
@@ -2500,7 +2522,7 @@ Text {
   -fx-shape: "M-78,640l-6-5.5v-3l6,5l0,0l6-5v3L-78,640L-78,640z";
 }
 
-.deep-button {
+.btn-deep {
     -fx-padding: 8 10 10 10;
     -fx-background-insets: 0,0 0 2 0, 0 0 2 0, 0 0 2 0;
     -fx-background-color : derive(-base, -40%), derive(-base, -40%), derive(-base, -40%), -base;

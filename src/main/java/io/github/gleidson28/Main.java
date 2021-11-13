@@ -18,6 +18,7 @@ package io.github.gleidson28;
 
 import io.github.gleidson28.global.plugin.LoadViews;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
@@ -48,17 +49,17 @@ public class Main extends Application {
         App.INSTANCE.show(root);
         App.INSTANCE.setHostServices(getHostServices());
 
-//        Thread thread = new Thread(() -> {
-//            Runnable updater = () -> {
+        Thread thread = new Thread(() -> {
+            Runnable updater = () -> {
                 LoadViews loadViews = new LoadViews();
                 loadViews.start();
-//            };
+            };
 //             UI update is run on the Application thread
-//            Platform.runLater(updater);
-//        });
+            Platform.runLater(updater);
+        });
 //         don't let thread prevent JVM shutdown
-//        thread.setDaemon(true);
-//        thread.start();
+        thread.setDaemon(true);
+        thread.start();
 
     }
 }

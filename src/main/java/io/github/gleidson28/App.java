@@ -22,6 +22,7 @@ import io.github.gleidson28.global.badges.MessageBadge;
 import io.github.gleidson28.global.badges.NotificationBadge;
 import javafx.application.HostServices;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -81,6 +82,10 @@ public enum App {
     @Contract(pure = true)
     public GNDecorator getDecorator() {
         return this.decorator;
+    }
+
+    public ReadOnlyDoubleProperty widthProperty() {
+        return this.decorator.widthProperty();
     }
 
     public void setHostServices(HostServices hostServices) {

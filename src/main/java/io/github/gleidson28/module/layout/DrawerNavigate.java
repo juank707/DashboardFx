@@ -16,35 +16,24 @@
  */
 package io.github.gleidson28.module.layout;
 
-//import com.calendarfx.view.CalendarView;
-//import com.calendarfx.view.CalendarView;
-//import com.calendarfx.model.Calendar;
-//import com.calendarfx.model.CalendarSource;
-//import com.calendarfx.view.CalendarView;
-//import com.calendarfx.view.SpeedAgenda;
-//import impl.com.calendarfx.view.SpeedSkin;
-
 import io.github.gleidson28.GNAvatarView;
 import io.github.gleidson28.global.enhancement.FluidView;
 import io.github.gleidson28.global.exceptions.NavigationException;
 import io.github.gleidson28.global.plugin.ViewManager;
-import io.github.gleidson28.global.properties.ColorSelector;
-import io.github.gleidson28.global.properties.Selector;
-import io.github.gleidson28.global.properties.TypeSelector;
-import io.github.gleidson28.global.properties.SizeSelector;
+import io.github.gleidson28.global.properties.*;
 import io.github.gleidson28.module.controls.LayoutController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.SVGPath;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Properties;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
@@ -109,11 +98,6 @@ public class DrawerNavigate implements Initializable, FluidView {
         ViewManager.INSTANCE.setContent("dashboard");
     }
 
-
-    @FXML
-    private void goButton() throws NavigationException {
-        ViewManager.INSTANCE.setContent("button");
-    }
 
 
 
@@ -196,10 +180,11 @@ public class DrawerNavigate implements Initializable, FluidView {
 
     }
 
-    private void configLayoutControl(Control control, Selector... selectors) throws NavigationException {
+    private void configLayoutControl(Control control, List<Tab> tabs, Selector... selectors) throws NavigationException {
 
         if(layoutController == null) {
-            layoutController = (LayoutController) ViewManager.INSTANCE.getController("control-layout");
+            layoutController = (LayoutController)
+                    ViewManager.INSTANCE.getController("control-layout");
         }
 
         String className = control.getClass().getSimpleName();
@@ -208,6 +193,7 @@ public class DrawerNavigate implements Initializable, FluidView {
 
         layoutController.setControl(
                 control,
+                tabs,
                 properties.getProperty(className + ".about"),
                 selectors
         );
@@ -219,6 +205,7 @@ public class DrawerNavigate implements Initializable, FluidView {
         checkBox.getProperties().putIfAbsent("prefix", "check-");
         configLayoutControl(
                 checkBox,
+                Collections.singletonList(new Tab("Skin")),
                 new ColorSelector(
                         checkBox,
                         "Primary", "Info", "Success", "Warning", "Danger", "Secondary"
@@ -237,6 +224,7 @@ public class DrawerNavigate implements Initializable, FluidView {
         pagination.getProperties().putIfAbsent("prefix", "pag-");
         configLayoutControl(
                 pagination,
+                Collections.singletonList(new Tab("Skin")),
                 new ColorSelector(
                         pagination,
                         "Primary", "Info", "Success", "Warning", "Danger", "Secondary"
@@ -247,6 +235,43 @@ public class DrawerNavigate implements Initializable, FluidView {
                 )
         );
     }
+
+
+    @FXML
+    private void goButton() throws NavigationException {
+
+        Button button = new Button("Button");
+
+        SVGPath iconCopy = new SVGPath();
+        iconCopy.setContent("M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z");
+        iconCopy.getStyleClass().add("icon");
+
+//        button.setGraphic(iconCopy);
+        button.setPrefSize(80, 60);
+
+        button.getProperties().putIfAbsent("prefix", "btn-");
+
+        configLayoutControl(
+                button,
+                Arrays.asList(
+                        new Tab("Skin"),
+                        new Tab("Lead Icon")
+                ),
+                new ColorSelector(
+                        button,
+                        "Primary", "Info", "Success", "Warning", "Danger", "Secondary"
+                ),
+                new TypeSelector(
+                        button,
+                        "Flat", "Round", "Rounded", "Deep",
+                        "Raised", "Outlined"
+                ),
+                new SizeSelector(button, "medium")
+
+        );
+
+    }
+
 
 
     @Override

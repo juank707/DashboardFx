@@ -18,22 +18,25 @@ package io.github.gleidson28.module.utilities;
 
 import eu.hansolo.colors.ColorHelper;
 import eu.hansolo.colors.MaterialDesign;
+import io.github.gleidson28.App;
+import io.github.gleidson28.global.creators.SnackBarCreator;
+import io.github.gleidson28.global.creators.SnackType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.geometry.*;
 import javafx.scene.Cursor;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Locale;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -55,9 +58,149 @@ public class Colors implements Initializable {
     @FXML private GridPane grid;
     @FXML private VBox boxColor;
     @FXML private TextField textColor;
+    @FXML private TilePane tiles;
+
+    private Properties properties = new Properties();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        try {
+            InputStream input = new FileInputStream("app/colors.properties");
+            properties.load(input);
+            input.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        return properties.getProperty(name);
+//        config();
+
+        createContent();
+    }
+
+    private void createContent() {
+        tiles.getChildren().clear();
+
+        properties.stringPropertyNames().forEach( f -> {
+
+            String color = f.contains("/") ? f.substring(f.lastIndexOf("-")) : f;
+
+            VBox child = new VBox();
+            child.setPrefWidth(200);
+
+            HBox headColor = new HBox();
+
+            int tileWidth = 200;
+            int tileHeight = 50;
+
+            Pane left = new Pane();
+            left.setPrefSize(tileWidth, tileHeight);
+            left.setStyle("-fx-background-radius :  10 0 0 0; -fx-background-color : derive(" + color + ", -10%);");
+
+            Pane center = new Pane();
+            center.setPrefSize(tileWidth, tileHeight);
+            center.setStyle("-fx-background-color : " + color + ";");
+            Pane right = new Pane();
+            right.setPrefSize(tileWidth, tileHeight);
+            right.setStyle("-fx-background-radius : 0 10 0 0; -fx-background-color : derive(" + color + ", 20%);");
+
+            headColor.getChildren().addAll(left, center, right);
+
+            VBox content = new VBox();
+            content.setPadding(new Insets(5D));
+
+            Label title = new Label(f);
+            title.getStyleClass().addAll("h3", "title");
+
+            GridPane colorText = new GridPane();
+            colorText.getChildren().addAll(new Label("-10%"),new Label(f), new Label("20%"));
+            GridPane.setConstraints(colorText.getChildren().get(0), 0,0, 1, 1, HPos.CENTER, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
+            GridPane.setConstraints(colorText.getChildren().get(1), 1,0, 1, 1, HPos.CENTER, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
+            GridPane.setConstraints(colorText.getChildren().get(2), 2,0, 1, 1, HPos.CENTER, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
+
+            content.getChildren().addAll(title, colorText);
+
+            child.getChildren().addAll(headColor, content);
+
+            child.setStyle(" -fx-background-radius : 10px; -fx-background-color : white; ");
+            child.getStyleClass().add("elevator");
+
+            ContextMenu contextMenu = new ContextMenu();
+            MenuItem name = new MenuItem("Hexadecimal");
+            MenuItem background = new MenuItem("Background");
+            MenuItem border = new MenuItem("Border");
+            MenuItem fill = new MenuItem("Fill");
+            MenuItem text = new MenuItem("Text");
+            MenuItem java = new MenuItem("Java");
+
+            contextMenu.getItems().addAll(name, background, border, fill, text, java);
+
+            name.setOnAction(event -> {
+                toClipBoard( "Hexadecimal : " + formatHexString(Color.web(properties.getProperty(color))));
+            });
+
+            background.setOnAction(event -> {
+                toClipBoard(createCopyString("background", color));
+            });
+
+            border.setOnAction(event -> {
+                toClipBoard( "-fx-border-color : derive(" + color + ", -10%);\n-fx-background-color : " + color + ";\n-fx-background-color : derive(" + color + ", 20%);");
+            });
+
+            fill.setOnAction(event -> {
+                toClipBoard( createCopyString("fill", color) );
+            });
+
+            text.setOnAction(event -> {
+                toClipBoard(createCopyString("text", color));
+            });
+
+            java.setOnAction(event -> {
+                toClipBoard( "Color.web(\"" + formatHexString(Color.web(properties.getProperty(color))) +"\");");
+            });
+
+
+            child.setOnMousePressed(event -> {
+                    if(event.isSecondaryButtonDown()) {
+
+                    Bounds bounds = child.localToScreen(child.getBoundsInLocal());
+                    contextMenu.show(App.INSTANCE.getDecorator().getWindow(),
+                            bounds.getMinX() + 20, bounds.getMaxY() - 40
+                    );
+                }
+            });
+
+            tiles.getChildren().add(child);
+
+        });
+    }
+
+    private String createCopyString(String selector, String color) {
+        return  "-fx-" + selector + "-color : derive(" + color + ", -10%);\n-fx-" + selector + "-color : " + color + ";\n-fx-" + selector + "-color : derive(" + color + ", 20%);";
+    }
+
+    private void toClipBoard(String copy) {
+
+        Clipboard clipboard  = Clipboard.getSystemClipboard();
+        ClipboardContent clipContent = new ClipboardContent();
+        clipContent.putString(copy);
+        clipboard.setContent(clipContent);
+
+        SnackBarCreator.INSTANCE.createSnackBar("Copied to clipboard", SnackType.INFO);
+    }
+
+    private static String formatHexString(Color c) {
+        if (c != null) {
+            return String.format((Locale) null, "#%02x%02x%02x",
+                    Math.round(c.getRed() * 255),
+                    Math.round(c.getGreen() * 255),
+                    Math.round(c.getBlue() * 255));
+        } else {
+            return null;
+        }
+    }
+
+    private void config() {
         int  col  = 0;
         int  row  = 1;
 
@@ -147,9 +290,9 @@ public class Colors implements Initializable {
             boolean finalIsBox = isBox;
             toggle.setOnMouseEntered(event -> {
                 if(finalIsBox){
-                toggle.setBackground(new Background(new BackgroundFill(color.get(), new CornerRadii(10), Insets.EMPTY)));
-                toggle.setStyle("-fx-background-radius : 10px; -fx-background-color : " + formatHexString(color.get())
-                        + ";");
+                    toggle.setBackground(new Background(new BackgroundFill(color.get(), new CornerRadii(10), Insets.EMPTY)));
+                    toggle.setStyle("-fx-background-radius : 10px; -fx-background-color : " + formatHexString(color.get())
+                            + ";");
                 }
             });
 
@@ -184,17 +327,5 @@ public class Colors implements Initializable {
         grid.setVgap(1);
         grid.getRowConstraints().clear();
         grid.getColumnConstraints().clear();
-
-    }
-
-    private static String formatHexString(Color c) {
-        if (c != null) {
-            return String.format((Locale) null, "#%02x%02x%02x",
-                    Math.round(c.getRed() * 255),
-                    Math.round(c.getGreen() * 255),
-                    Math.round(c.getBlue() * 255));
-        } else {
-            return null;
-        }
     }
 }
