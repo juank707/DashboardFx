@@ -25,11 +25,14 @@ import java.math.BigDecimal;
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on  24/01/2021
  */
-public class MonetaryStringConverter extends StringConverter<BigDecimal> {
+public class MoneyStringConverter extends StringConverter<BigDecimal> {
 
     @Override
     public String toString(BigDecimal object) {
+
+
         if (object != null) {
+            System.out.println("object = " + MoneyUtil.parse(object));
             return MoneyUtil.format(object);
         } else {
             return MoneyUtil.format(BigDecimal.ZERO);
@@ -38,7 +41,10 @@ public class MonetaryStringConverter extends StringConverter<BigDecimal> {
 
     @Override
     public BigDecimal fromString(String string) {
+
+
         if (string != null && !string.isEmpty()) {
+            System.out.println("ssss = " + MoneyUtil.get(string));
             return MoneyUtil.get(string);
         } else {
             return BigDecimal.ZERO;
