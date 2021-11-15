@@ -24,8 +24,10 @@ import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
@@ -48,6 +50,12 @@ public class LayoutController implements Initializable, ObserverView {
     @FXML private Text about;
     @FXML private VBox header;
     @FXML private TabPane tabs;
+
+    @FXML private Tab skin;
+
+    @FXML private GridPane grid;
+
+    @FXML private VBox box;
 
     private final Button        hamburger   = new Button();
     private final PropertyAside aside       = new PropertyAside();
@@ -85,18 +93,47 @@ public class LayoutController implements Initializable, ObserverView {
             DrawerCreator.INSTANCE.createDrawerLeft(aside);
         });
 
+//        box.getChildren().forEach( child -> {
+//            GridPane newChild = (GridPane) child;
+//            newChild.widthProperty().addListener((observable, oldValue, newValue) -> {
+//                AtomicInteger inc = new AtomicInteger();
+//                if(newValue.doubleValue() < 425D) {
+//                    newChild.getChildren().forEach( f -> {
+//                        newChild.getColumnConstraints().clear();
+//                        GridPane.setConstraints(
+//                                f,0,
+//                                inc.getAndIncrement(),1, 1,
+//                                HPos.LEFT, VPos.CENTER, Priority.ALWAYS, Priority.SOMETIMES
+//                        );
+//                    });
+//                } else {
+//                    newChild.getChildren().forEach( f -> {
+//                        newChild.getRowConstraints().clear();
+//                        GridPane.setConstraints(f, inc.getAndIncrement(),0,1, 1,
+//                                HPos.LEFT, VPos.CENTER, Priority.ALWAYS, Priority.SOMETIMES
+//                        );
+//                    });
+//                }
+//            });
+//        });
+
+
     }
 
-    public void setControl(Control control, List<Tab> tabs, String about, Selector... selectors) {
+    public void setControl(Control control,  String about, Selector... selectors) {
+        setControl(control, null, selectors);
+    }
+
+    public void setControl(Control control, Parent parent, String about, Selector... selectors) {
 
         title.setText(control.getClass().getSimpleName());
 
         this.about.setText(about);
 
 //        this.tabs.getTabs().remove(1, this.tabs.getTabs().size());
-        this.tabs.getTabs().addAll(tabs);
 
-
+        if(parent != null)
+            skin.setContent(parent);
 
         aside.clear();
         aside.setControl(control);
@@ -112,11 +149,6 @@ public class LayoutController implements Initializable, ObserverView {
         body.setLeft(aside);
     }
 
-    private void createTab(Control control) {
-        if(control instanceof Button) {
-
-        }
-    }
 
     @Override
     public List<ChangeListener<Number>> getListeners() {

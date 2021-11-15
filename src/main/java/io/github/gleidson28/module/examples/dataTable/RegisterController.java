@@ -16,10 +16,9 @@
  */
 package io.github.gleidson28.module.examples.dataTable;
 
-import com.gn.control.GNMonetaryField;
 import io.github.gleidson28.App;
 import io.github.gleidson28.GNAvatarView;
-import io.github.gleidson28.global.converters.MonetaryStringConverter;
+import io.github.gleidson28.global.converters.MoneySimpleStringConverter;
 import io.github.gleidson28.global.creators.DialogCreator;
 import io.github.gleidson28.global.creators.DrawerCreator;
 import io.github.gleidson28.global.dao.ProfessionalPresenter;
@@ -74,7 +73,7 @@ public class RegisterController implements Initializable, FluidView, CrudView {
     @FXML private Label nameLength;
     @FXML private Label lastNameLength;
 
-    @FXML private GNMonetaryField tfPrice;
+    @FXML private TextField tfPrice;
 
     @FXML private Text teamsText;
     @FXML private Text skillsText;
@@ -204,7 +203,7 @@ public class RegisterController implements Initializable, FluidView, CrudView {
         errorLastName.visibleProperty().bind(professional
                 .lastNameValidatorProperty().not());
 
-        tfPrice.textProperty().bindBidirectional(professional.priceProperty(), new MonetaryStringConverter());
+        tfPrice.textProperty().bindBidirectional(professional.priceProperty(), new MoneySimpleStringConverter());
 
         teamsText.textProperty().bindBidirectional(professional.teamsProperty());
         rating.ratingProperty().bindBidirectional(professional.ratingProperty());
