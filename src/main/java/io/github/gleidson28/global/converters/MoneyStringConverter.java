@@ -32,7 +32,6 @@ public class MoneyStringConverter extends StringConverter<BigDecimal> {
 
 
         if (object != null) {
-            System.out.println("object = " + MoneyUtil.parse(object));
             return MoneyUtil.format(object);
         } else {
             return MoneyUtil.format(BigDecimal.ZERO);
