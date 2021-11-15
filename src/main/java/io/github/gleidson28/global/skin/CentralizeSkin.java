@@ -35,7 +35,7 @@ import javafx.scene.control.SkinBase;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.text.Text;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -46,11 +46,11 @@ import java.util.List;
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on  14/12/2018
  */
-public class SwipeSkin extends ButtonSkin {
+public class CentralizeSkin extends ButtonSkin {
 
     private Paint firstColor;
 
-    private final StackPane rect = new StackPane();
+    private final StackPane rect =  new StackPane();
 
     private final ObjectProperty<Duration> velocity =
             new SimpleObjectProperty<>(this, "velocity",
@@ -66,7 +66,7 @@ public class SwipeSkin extends ButtonSkin {
         }
 
         @Override public Object getBean() {
-            return SwipeSkin.this;
+            return CentralizeSkin.this;
         }
 
         @Override public String getName() {
@@ -74,12 +74,10 @@ public class SwipeSkin extends ButtonSkin {
         }
     };
 
-    private StyleableObjectProperty<Paint> transitionColor ;
+    private StyleableObjectProperty<Paint> transitionColor;
 
-    public SwipeSkin(Button control) {
+    public CentralizeSkin(Button control) {
         super(control);
-
-
 
         rect.setShape(null);
 
@@ -89,24 +87,17 @@ public class SwipeSkin extends ButtonSkin {
         rect.setPrefHeight(Region.USE_COMPUTED_SIZE);
         rect.setMaxHeight(Region.USE_COMPUTED_SIZE);
 
-//        getChildren().clear();
-
         getChildren().add(rect);
-//        getChildren().add(title);
-        Text title;
-        if (getSkinnable().getChildrenUnmodifiable().get(1) instanceof Text)
-            title = (Text) getSkinnable().getChildrenUnmodifiable().get(1);
-        else title = (Text) getSkinnable().getChildrenUnmodifiable().get(0);
+
         rect.toBack();
 
-//        getSkinnable().getGraphic().toFront();
+        Rectangle clip = new Rectangle();
+        clip.setArcWidth(0);
+        clip.setArcHeight(0);
+        getSkinnable().setClip(clip);
 
-//        getSkinnable().getChildrenUnmodifiable().get(0).toFront();
-//        title.toFront();
-
-
-
-//        velocity.bind( ((GNButton)getSkinnable()).transitionDurationProperty());
+        clip.widthProperty().bind(getSkinnable().widthProperty());
+        clip.heightProperty().bind(getSkinnable().heightProperty());
 
 
         Timeline timeEntered = new Timeline();
@@ -120,56 +111,52 @@ public class SwipeSkin extends ButtonSkin {
             }
         });
 
-        rect.borderProperty().bind(getSkinnable().borderProperty());
 
         pseudoClassStateChanged(ANIMATED_PSEUDO_CLASS, animated.get());
 
-            getSkinnable().setOnMouseEntered(event -> {
+        getSkinnable().setOnMouseEntered(event -> {
             timeEntered.getKeyFrames().clear();
-
             pseudoClassStateChanged(ANIMATED_PSEUDO_CLASS, true);
 
-
             timeEntered.getKeyFrames().addAll(
-                    new KeyFrame(Duration.ZERO, new KeyValue(rect.prefWidthProperty(), rect.getPrefWidth())),
-                    new KeyFrame(Duration.ZERO, new KeyValue(rect.maxWidthProperty(), rect.getPrefWidth())),
-                    new KeyFrame(Duration.ZERO, new KeyValue(getSkinnable().textFillProperty(), getSkinnable().getTextFill())),
+                    new KeyFrame(Duration.ZERO, new KeyValue(rect.prefWidthProperty(), 0)),
+                    new KeyFrame(Duration.ZERO, new KeyValue(rect.maxWidthProperty(), 0)),
 
-                    new KeyFrame(velocity.get(), new KeyValue(rect.prefWidthProperty(), getSkinnable().getWidth())),
-                    new KeyFrame(velocity.get(), new KeyValue(rect.maxWidthProperty(), getSkinnable().getWidth()))
-//                    new KeyFrame(velocity.get(), new KeyValue(getSkinnable().textFillProperty(), ((GNButton) getSkinnable()).getTransitionText()))
-//
+                    new KeyFrame(velocity.get(), new KeyValue(rect.maxWidthProperty(), getSkinnable().getWidth())),
+                    new KeyFrame(velocity.get(), new KeyValue(rect.prefWidthProperty(), getSkinnable().getWidth()))
+
             );
 
-            if (timeExited.getStatus() == Animation.Status.RUNNING){
-                timeExited.stop();
+            if(timeEntered.getStatus() == Animation.Status.RUNNING){
+                timeEntered.playFromStart();
+                return;
             }
 
             timeEntered.play();
 
         });
 
-            getSkinnable().setOnMouseExited(event -> {
-                timeExited.getKeyFrames().clear();
-                pseudoClassStateChanged(ANIMATED_PSEUDO_CLASS, false);
-                timeExited.getKeyFrames().addAll(
-                        new KeyFrame(Duration.ZERO, new KeyValue(rect.prefWidthProperty(), rect.getPrefWidth())),
-                        new KeyFrame(Duration.ZERO, new KeyValue(rect.maxWidthProperty(), rect.getPrefWidth())),
-                        new KeyFrame(Duration.ZERO, new KeyValue(getSkinnable().textFillProperty(), getSkinnable().getTextFill())),
+        getSkinnable().setOnMouseExited(event -> {
 
-                        new KeyFrame(velocity.get(), new KeyValue(rect.prefWidthProperty(), 0D)),
-                        new KeyFrame(velocity.get(), new KeyValue(rect.maxWidthProperty(), 0D)),
-                        new KeyFrame(velocity.get(), new KeyValue(getSkinnable().textFillProperty(), firstColor))
+            timeExited.getKeyFrames().clear();
+            pseudoClassStateChanged(ANIMATED_PSEUDO_CLASS, false);
 
-                );
+            timeExited.getKeyFrames().addAll(
 
-                if (timeEntered.getStatus() == Animation.Status.RUNNING) {
-                    timeEntered.stop();
-                }
+                    new KeyFrame(Duration.ZERO, new KeyValue(rect.prefWidthProperty(), getSkinnable().getWidth())),
+                    new KeyFrame(Duration.ZERO, new KeyValue(rect.maxWidthProperty(), getSkinnable().getWidth())),
 
-                timeExited.play();
-            });
+                    new KeyFrame(velocity.get(), new KeyValue(rect.maxWidthProperty(), 0)),
+                    new KeyFrame(velocity.get(), new KeyValue(rect.prefWidthProperty(), 0))
 
+            );
+
+            if(timeExited.getStatus() == Animation.Status.RUNNING){
+                timeExited.playFromStart();
+                return;
+            }
+            timeExited.play();
+        });
 
         this.transitionColor = new SimpleStyleableObjectProperty<Paint>(TRANSITION_COLOR, this, "transitionColor");
 
@@ -178,32 +165,26 @@ public class SwipeSkin extends ButtonSkin {
         });
     }
 
-    @Override
-    protected void layoutChildren(double contentX, double contentY, double contentWidth, double contentHeight) {
-        super.layoutChildren(contentX, contentY, contentWidth, contentHeight);
-        layoutInArea(
-                rect,
-                contentX - (snappedLeftInset() + rect.getBorder().getInsets().getRight()),
-                contentY - snappedTopInset() ,
-                contentWidth + (snappedRightInset() + snappedLeftInset()),
-                contentHeight + (snappedBottomInset() + snappedTopInset()) + bottomLabelPadding(),
-                0,
-                HPos.LEFT,  VPos.CENTER);
 
+    @Override
+    protected void layoutChildren(double x, double y, double w, double h) {
+        super.layoutChildren(x, y, w, h);
+        layoutInArea(rect, x, y, w, h, 0,
+                HPos.CENTER, VPos.CENTER);
     }
 
     private static final CssMetaData<Button, Paint> TRANSITION_COLOR =
             new CssMetaData<Button, Paint>("-gn-transition-color", PaintConverter.getInstance(), Color.RED) {
                 @Override
                 public boolean isSettable(Button styleable) {
-                    return ( (SwipeSkin) styleable.getSkin()).transitionColor == null ||
-                            !( (SwipeSkin) styleable.getSkin()).transitionColor.isBound();
+                    return ( (CentralizeSkin) styleable.getSkin()).transitionColor == null ||
+                            !( (CentralizeSkin) styleable.getSkin()).transitionColor.isBound();
                 }
 
                 @Override
                 public StyleableProperty<Paint> getStyleableProperty(Button styleable) {
-                    if (styleable.getSkin() instanceof SwipeSkin) {
-                        return ( (SwipeSkin) styleable.getSkin() ).transitionColorProperty();
+                    if (styleable.getSkin() instanceof CentralizeSkin) {
+                        return ( (CentralizeSkin) styleable.getSkin() ).transitionColorProperty();
                     } else return null;
                 }
             };
