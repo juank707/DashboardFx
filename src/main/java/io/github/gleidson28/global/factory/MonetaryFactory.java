@@ -41,7 +41,6 @@ public class MonetaryFactory<E extends Professional> implements Callback<TableCo
                 super.updateItem(item, empty);
 
                 if(item != null) {
-                    System.out.println("item = " + item);
                     setText(MoneyUtil.format(item));
                     setItem(item);
                     setGraphic(null);
