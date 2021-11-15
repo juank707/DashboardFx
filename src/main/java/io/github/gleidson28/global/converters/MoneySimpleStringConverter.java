@@ -29,8 +29,6 @@ public class MoneySimpleStringConverter extends StringConverter<BigDecimal> {
 
     @Override
     public String toString(BigDecimal object) {
-
-
         if (object != null) {
             return MoneyUtil.parse(object);
         } else {
@@ -40,10 +38,7 @@ public class MoneySimpleStringConverter extends StringConverter<BigDecimal> {
 
     @Override
     public BigDecimal fromString(String string) {
-
-
         if (string != null && !string.isEmpty()) {
-            System.out.println("ssss = " + MoneyUtil.get(string));
             return MoneyUtil.get(string);
         } else {
             return BigDecimal.ZERO;
