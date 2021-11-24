@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<StackPane prefHeight="742.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <stylesheets>
+      <URL value="@../../../../theme/css/material-color.css" />
+      <URL value="@../../../../theme/css/skeleton.css" />
+      <URL value="@../../../../theme/css/light.css" />
+      <URL value="@../../../../theme/css/bootstrap.css" />
+      <URL value="@../../../../theme/css/shape.css" />
+      <URL value="@../../../../theme/css/typographic.css" />
+      <URL value="@../../../../theme/css/helpers.css" />
+      <URL value="@../../../../theme/css/master.css" />
+   </stylesheets>
+   <children>
+      <ScrollPane fitToHeight="true" fitToWidth="true">
+         <content>
+            <VBox fx:id="box11">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="50.0" />
+               </padding>
+               <children>
+                  <TilePane>
+                     <children>
+                        <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0">
+                           <children>
+                              <TextFlow prefWidth="200.0" textAlignment="CENTER">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="h4" text=".btn-ripple" />
+                                 </children>
+                              </TextFlow>
+                              <Button mnemonicParsing="false" prefHeight="41.0" prefWidth="115.0" styleClass="btn-ripple" text="Ripple" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <TextFlow prefWidth="200.0" textAlignment="CENTER">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="h4" text=".btn-swipe" />
+                                 </children>
+                              </TextFlow>
+                              <Button mnemonicParsing="false" prefHeight="41.0" prefWidth="115.0" styleClass="btn-swipe-diagonal" text="Swipe Diagonal" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <TextFlow prefWidth="200.0" textAlignment="CENTER">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="h4" text=".btn-swipe-diagonal" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" top="10.0" />
+                                 </padding>
+                              </TextFlow>
+                              <Button mnemonicParsing="false" prefHeight="41.0" prefWidth="115.0" styleClass="btn-swipe" text="Swipe" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <TextFlow prefWidth="200.0" textAlignment="CENTER">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="h4" text=".btn-alternate" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" top="10.0" />
+                                 </padding>
+                              </TextFlow>
+                              <Button mnemonicParsing="false" prefHeight="41.0" prefWidth="115.0" styleClass="btn-alternate" text="Alternate" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <TextFlow prefWidth="200.0" textAlignment="CENTER">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="h4" text=".btn-corner" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" top="10.0" />
+                                 </padding>
+                              </TextFlow>
+                              <Button mnemonicParsing="false" prefHeight="41.0" prefWidth="115.0" styleClass="btn-corner" text="Corners" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <TextFlow prefWidth="200.0" textAlignment="CENTER">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="h4" text=".btn-centralize" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" top="10.0" />
+                                 </padding>
+                              </TextFlow>
+                              <Button mnemonicParsing="false" prefHeight="41.0" prefWidth="115.0" styleClass="btn-centralize" text="Centralize" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" layoutX="210.0" layoutY="94.0">
+                           <children>
+                              <TextFlow prefWidth="200.0" textAlignment="CENTER">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="h4" text=".btn-smoosh" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" top="10.0" />
+                                 </padding>
+                              </TextFlow>
+                              <Button mnemonicParsing="false" prefHeight="41.0" prefWidth="115.0" styleClass="btn-smoosh" text="Smoosh" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </TilePane>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </children>
+</StackPane>

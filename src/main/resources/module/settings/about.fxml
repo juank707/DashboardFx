@@ -27,17 +27,17 @@
                         <VBox>
                            <children>
                               <Label fx:id="fullName" style="-fx-font-weight: bold; -fx-text-fill: -base;" styleClass="h3" text="DashboardFx V2" />
-                              <Label text="UI Designer" />
+                              <Label styleClass="h5" text="UI Designer" />
                            </children>
                         </VBox>
                         <VBox spacing="10.0">
                            <children>
-                              <Label style="-fx-text-fill: -text-color;" text="Bookmark">
+                              <Label style="-fx-text-fill: -text-color;" styleClass="h5" text="Bookmark">
                                  <graphic>
                                     <SVGPath content="M19 3H5v18l7-3 7 3V3z" style="-fx-fill: -icon-color;" />
                                  </graphic>
                               </Label>
-                              <Label style="-fx-text-fill: -text-color;" text="Mato Grosso, MT">
+                              <Label style="-fx-text-fill: -text-color;" styleClass="h5" text="Mato Grosso, MT">
                                  <graphic>
                                     <SVGPath content="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" style="-fx-fill: -icon-color;" />
                                  </graphic>
@@ -83,7 +83,7 @@
                         </GridPane>
                         <TextFlow prefHeight="58.0" prefWidth="216.0">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: -text-color;" text="DashboardFx is a project for multiples porpuses and helps others, developers, to initiate with this skeleton and theme&#10;Contains a material design based on bootstrap, google guidelines and all most samples on the web.&#10;" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: -text-color;" styleClass="h5" text="DashboardFx is a project for multiples porpuses and helps others, developers, to initiate with this skeleton and theme&#10;Contains a material design based on bootstrap, google guidelines and all most samples on the web.&#10;" />
                            </children>
                         </TextFlow>
                      </children>
@@ -113,24 +113,24 @@
             </VBox>
             <VBox spacing="10.0">
                <children>
-                  <Label layoutX="10.0" layoutY="10.0" style="-fx-font-weight: bold; -fx-text-fill: -text-color;" text="UI/UX" />
-                  <Label layoutX="10.0" layoutY="27.0" style="-fx-font-weight: bold; -fx-text-fill: -text-color;" text="Web - Design" />
-                  <Label layoutX="10.0" layoutY="44.0" style="-fx-font-weight: bold; -fx-text-fill: -text-color;" text="Print &amp; Editorial" />
+                  <Label layoutX="10.0" layoutY="10.0" style="-fx-font-weight: bold; -fx-text-fill: -text-color;" styleClass="h5" text="UI/UX" />
+                  <Label layoutX="10.0" layoutY="27.0" style="-fx-font-weight: bold; -fx-text-fill: -text-color;" styleClass="h5" text="Web - Design" />
+                  <Label layoutX="10.0" layoutY="44.0" style="-fx-font-weight: bold; -fx-text-fill: -text-color;" styleClass="h5" text="Print &amp; Editorial" />
                   <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="55.0" spacing="5.0">
                      <children>
-                        <Label style="-fx-font-weight: bold; -fx-text-fill: -text-color;" text="Java" />
+                        <Label style="-fx-font-weight: bold; -fx-text-fill: -text-color;" styleClass="h5" text="Java" />
                         <JFXProgressBar prefHeight="0.0" prefWidth="521.0" progress="0.75" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="263.0" spacing="5.0">
                      <children>
-                        <Label style="-fx-font-weight: bold; -fx-text-fill: -text-color;" text="JavaFx" />
+                        <Label style="-fx-font-weight: bold; -fx-text-fill: -text-color;" styleClass="h5" text="JavaFx" />
                         <JFXProgressBar prefHeight="0.0" prefWidth="521.0" progress="0.85" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" spacing="5.0">
                      <children>
-                        <Label style="-fx-font-weight: bold; -fx-text-fill: -text-color;" text="JFXCss" />
+                        <Label style="-fx-font-weight: bold; -fx-text-fill: -text-color;" styleClass="h5" text="JFXCss" />
                         <JFXProgressBar prefHeight="0.0" prefWidth="521.0" progress="0.9" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
@@ -165,17 +165,17 @@
                                     </Group>
                                  </graphic>
                               </Label>
-                              <Label style="-fx-font-weight: bold; -fx-text-fill: -text-color;" text="Phone :" GridPane.rowIndex="1" />
-                              <Hyperlink text="+55 62 999362299" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <Label style="-fx-font-weight: bold; -fx-text-fill: -text-color;" text="Email :" GridPane.rowIndex="2" />
-                              <Hyperlink text="gleidsonmt@gmail.com" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Label style="-fx-font-weight: bold; -fx-text-fill: -text-color;" styleClass="h5" text="Phone :" GridPane.rowIndex="1" />
+                              <Hyperlink style="-fx-font-size: 14;" text="+55 62 999362299" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label style="-fx-font-weight: bold; -fx-text-fill: -text-color;" styleClass="h5" text="Email :" GridPane.rowIndex="2" />
+                              <Hyperlink style="-fx-font-size: 14;" text="gleidsonmt@gmail.com" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                               <Label styleClass="h5" text="Basic Information" GridPane.rowIndex="4" />
-                              <Label style="-fx-font-weight: bold; -fx-text-fill: -text-color;" text="Birthday : " GridPane.rowIndex="5" />
-                              <Text style="-fx-fill: -text-color;" text="April 06, 1996" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                              <Label style="-fx-font-weight: bold; -fx-text-fill: -text-color;" text="Gender : " GridPane.rowIndex="6" />
-                              <Text style="-fx-fill: -text-color;" text="Male" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                              <Label layoutX="10.0" layoutY="131.0" style="-fx-font-weight: bold; -fx-text-fill: -text-color;" text="Site :" GridPane.rowIndex="3" />
-                              <Hyperlink layoutX="146.0" layoutY="128.0" text="gleidson28.github.io" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <Label style="-fx-font-weight: bold; -fx-text-fill: -text-color;" styleClass="h5" text="Birthday : " GridPane.rowIndex="5" />
+                              <Text style="-fx-fill: -text-color;" styleClass="h5" text="April 06, 1996" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <Label style="-fx-font-weight: bold; -fx-text-fill: -text-color;" styleClass="h5" text="Gender : " GridPane.rowIndex="6" />
+                              <Text style="-fx-fill: -text-color;" styleClass="h5" text="Male" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                              <Label layoutX="10.0" layoutY="131.0" style="-fx-font-weight: bold; -fx-text-fill: -text-color;" styleClass="h5" text="Site :" GridPane.rowIndex="3" />
+                              <Hyperlink layoutX="146.0" layoutY="128.0" style="-fx-font-size: 14;" text="gleidson28.github.io" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                            </children>
                         </GridPane>
                      </children>
@@ -194,8 +194,8 @@
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints maxHeight="44.0" minHeight="10.0" prefHeight="44.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="68.0" minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="22.0" minHeight="10.0" prefHeight="14.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="68.0" minHeight="9.0" prefHeight="18.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
                   <VBox>
@@ -217,20 +217,19 @@
                               <Insets bottom="5.0" />
                            </VBox.margin>
                         </Label>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Personalize o idioma do sistema." />
                      </children>
                   </VBox>
                   <HBox alignment="CENTER_LEFT" spacing="20.0" GridPane.rowIndex="1">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Material de icónes:" />
-                        <Hyperlink text="Google Icons" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="h5" text="Material de icónes:" />
+                        <Hyperlink style="-fx-font-size: 14;" text="Google Icons" />
                         <Label text="https://fonts.google.com/icons" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="43.0" prefWidth="662.0" spacing="20.0" GridPane.rowIndex="2">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Avatares:" />
-                        <Hyperlink text="FreePik" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="h5" text="Avatares:" />
+                        <Hyperlink style="-fx-font-size: 14;" text="FreePik" />
                         <Label text="https://freepik.com" />
                      </children>
                   </HBox>

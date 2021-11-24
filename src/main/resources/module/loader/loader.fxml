@@ -15,13 +15,13 @@
                <children>
                   <StackPane>
                      <children>
-                        <Circle fx:id="one" fill="TRANSPARENT" radius="100.0" stroke="#2bbbad" strokeType="INSIDE" strokeWidth="8.0" style="-fx-stroke-dash-offset: 51; -fx-stroke-dash-array: 100; -fx-stroke: -info;" />
-                        <Circle fx:id="two" fill="#1f93ff00" layoutX="581.0" layoutY="110.0" radius="50.0" stroke="#33b5e5" strokeType="INSIDE" strokeWidth="5.0" style="-fx-stroke-dash-array: 30;">
+                        <Circle fx:id="one" fill="TRANSPARENT" radius="100.0" stroke="#2bbbad" strokeType="INSIDE" strokeWidth="2.0" style="-fx-stroke-dash-offset: 30; -fx-stroke-dash-array: 100; -fx-stroke: -info;" />
+                        <Circle fx:id="two" fill="#1f93ff00" layoutX="581.0" layoutY="110.0" radius="50.0" stroke="#33b5e5" strokeType="INSIDE" strokeWidth="2.0" style="-fx-stroke-dash-array: 30; -fx-stroke: -aqua;">
                            <effect>
                               <DropShadow color="#00000014" />
                            </effect>
                         </Circle>
-                        <Circle fx:id="three" fill="#1f93ff00" layoutX="581.0" layoutY="110.0" radius="20.0" stroke="#33b5e5" strokeType="INSIDE" strokeWidth="2.0" style="-fx-stroke-dash-array: 30; -fx-stroke: -green;" />
+                        <Circle fx:id="three" fill="#1f93ff00" layoutX="581.0" layoutY="110.0" radius="20.0" stroke="#33b5e5" strokeType="INSIDE" style="-fx-stroke-dash-array: 30; -fx-stroke: -aqua;" />
                      </children>
                   </StackPane>
                   <Label id="labelLoading" prefHeight="36.0" style="-fx-font-size: 14;" text="Loading" textFill="#00000081" />

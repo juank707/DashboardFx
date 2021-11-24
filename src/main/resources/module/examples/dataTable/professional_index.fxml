@@ -64,16 +64,12 @@
                                     <Insets right="10.0" />
                                  </HBox.margin>
                               </Button>
-                              <SVGPath content="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" styleClass="icon" HBox.hgrow="ALWAYS" />
                               <TextField fx:id="search" prefHeight="40.0" promptText="Procurar" HBox.hgrow="ALWAYS">
                                  <styleClass>
-                                    <String fx:value="field-outlined" />
-                                    <String fx:value="clearable-field" />
-                                    <String fx:value="search-field" />
+                                    <String fx:value="field-filled" />
+                                    <String fx:value="tf-clear" />
+                                    <String fx:value="tf-search" />
                                  </styleClass>
-                                 <padding>
-                                    <Insets left="15.0" />
-                                 </padding>
                                  <HBox.margin>
                                     <Insets right="10.0" />
                                  </HBox.margin>
@@ -88,7 +84,7 @@
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                               </ComboBox>
-                              <Label fx:id="btnFilter" contentDisplay="RIGHT" graphicTextGap="15.0" minHeight="40.0" minWidth="-Infinity" onMouseClicked="#openFilterPopup" prefHeight="40.0" prefWidth="80.0" styleClass="field-outlined" text="Filters">
+                              <Label fx:id="btnFilter" contentDisplay="RIGHT" graphicTextGap="15.0" minHeight="40.0" minWidth="-Infinity" onMouseClicked="#openFilterPopup" prefHeight="40.0" prefWidth="80.0" styleClass="field-filled" text="Filters">
                                  <graphic>
                                     <SVGPath content="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" style="-fx-fill: -text-color;" translateY="1.0" />
                                  </graphic>

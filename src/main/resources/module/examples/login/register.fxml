@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
+
+<StackPane id="bodyRegister" prefHeight="546.0" prefWidth="632.0" styleClass="workground" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox prefHeight="546.0" prefWidth="1134.0">
+         <children>
+            <StackPane layoutX="10.0" layoutY="10.0" prefHeight="614.0" prefWidth="573.0" style="-fx-background-color: white;" HBox.hgrow="ALWAYS">
+               <children>
+                  <VBox alignment="CENTER">
+                     <children>
+                        <GridPane fx:id="grid" alignment="CENTER" maxHeight="581.0" maxWidth="400.0" prefHeight="581.0" prefWidth="400.0">
+                          <columnConstraints>
+                            <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                              <RowConstraints maxHeight="64.0" minHeight="10.0" prefHeight="51.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="89.0" minHeight="0.0" prefHeight="83.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="154.0" minHeight="10.0" prefHeight="60.0" valignment="TOP" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="154.0" minHeight="10.0" prefHeight="60.0" valignment="TOP" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="154.0" minHeight="10.0" prefHeight="60.0" valignment="TOP" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="126.0" minHeight="10.0" prefHeight="60.0" valignment="TOP" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="166.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="112.0" minHeight="1.0" prefHeight="112.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label alignment="CENTER" prefHeight="38.0" prefWidth="533.0" text="Criar Conta" textAlignment="CENTER" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER">
+                                 <styleClass>
+                                    <String fx:value="h2" />
+                                    <String fx:value="text-info" />
+                                 </styleClass>
+                              </Label>
+                              <Label alignment="CENTER" prefHeight="18.0" prefWidth="524.0" styleClass="h5" text="Bem vindo de volta! Por favor entre com sua conta." GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+                              <SVGPath content="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z" strokeWidth="2.0" style="-fx-fill: -icon-color;" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets top="12.0" />
+                                 </GridPane.margin></SVGPath>
+                              <TextField fx:id="fullname" prefHeight="40.0" promptText="Nome Completo" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
+                                 <styleClass>
+                                    <String fx:value="field-outlined" />
+                                    <String fx:value="clearable-field" />
+                                 </styleClass>
+                                 <padding>
+                                    <Insets left="30.0" />
+                                 </padding></TextField>
+                              <Label fx:id="lbl_fullname" style="-fx-text-fill: -danger;" text="Seu nome não pode ser menor do que três caracteres." GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <GridPane.margin>
+                                    <Insets bottom="8.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <SVGPath content="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" layoutX="7.0" layoutY="139.0" strokeWidth="2.0" style="-fx-fill: -icon-color;" GridPane.rowIndex="3">
+                                 <GridPane.margin>
+                                    <Insets top="9.0" />
+                                 </GridPane.margin></SVGPath>
+                              <TextField fx:id="username" layoutX="10.0" layoutY="131.0" prefHeight="40.0" promptText="%Login.username.prompt" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
+                                 <styleClass>
+                                    <String fx:value="field-outlined" />
+                                    <String fx:value="clearable-field" />
+                                 </styleClass>
+                                 <padding>
+                                    <Insets left="30.0" />
+                                 </padding>
+                              </TextField>
+                              <Label fx:id="lbl_user" layoutX="10.0" layoutY="189.0" style="-fx-text-fill: -danger;" text="Seu nome de usúario não pode ser menor do que três caracteres." visible="false" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets bottom="8.0" />
+                                 </padding>
+                              </Label>
+                              <SVGPath content="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" strokeWidth="2.0" style="-fx-fill: -icon-color;" GridPane.rowIndex="4">
+                                 <GridPane.margin>
+                                    <Insets top="10.0" />
+                                 </GridPane.margin></SVGPath>
+                              <TextField fx:id="email" prefHeight="40.0" promptText="Email" GridPane.columnSpan="2147483647" GridPane.rowIndex="4">
+                                 <styleClass>
+                                    <String fx:value="field-outlined" />
+                                    <String fx:value="clearable-field" />
+                                 </styleClass>
+                                 <padding>
+                                    <Insets left="30.0" />
+                                 </padding>
+                              </TextField>
+                              <Label fx:id="lbl_email" layoutX="10.0" layoutY="258.0" style="-fx-text-fill: -danger;" text="Seu nome de email está inválido." visible="false" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets bottom="8.0" />
+                                 </padding>
+                              </Label>
+                              <SVGPath content="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" strokeWidth="2.0" style="-fx-fill: -icon-color;" GridPane.rowIndex="5">
+                                 <GridPane.margin>
+                                    <Insets top="10.0" />
+                                 </GridPane.margin></SVGPath>
+                              <PasswordField fx:id="password" prefHeight="40.0" promptText="Senha" GridPane.columnSpan="2147483647" GridPane.rowIndex="5">
+                                 <styleClass>
+                                    <String fx:value="field-outlined" />
+                                    <String fx:value="viewer-field" />
+                                 </styleClass>
+                                 <padding>
+                                    <Insets left="30.0" />
+                                 </padding></PasswordField>
+                              <Label fx:id="lbl_pass" layoutX="10.0" layoutY="362.0" style="-fx-text-fill: -danger;" text="Sua senha preicsa ter no mínimo 8 caracteres." visible="false" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" GridPane.valignment="BOTTOM">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets bottom="8.0" />
+                                 </padding>
+                              </Label>
+                              <Button mnemonicParsing="false" prefWidth="489.0" style="-fx-text-fill: -info;" styleClass="rectangle" text="Entrar" visible="false" GridPane.columnSpan="2147483647" GridPane.rowIndex="6" />
+                              <Button fx:id="save" maxHeight="-Infinity" maxWidth="-Infinity" onMouseClicked="#save" prefHeight="42.0" prefWidth="514.0" style="-fx-text-fill: -info;" text="Salvar" GridPane.columnSpan="2147483647" GridPane.rowIndex="6">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </Button>
+                              <Hyperlink alignment="CENTER_RIGHT" contentDisplay="RIGHT" onMouseClicked="#goLogin" text="Return" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                 <graphic>
+                                    <SVGPath content="M16.01 11H4v2h12.01v3L20 12l-3.99-4z" />
+                                 </graphic>
+                              </Hyperlink>
+                           </children>
+                        </GridPane>
+                     </children>
+                     <padding>
+                        <Insets left="100.0" right="100.0" />
+                     </padding>
+                  </VBox>
+               </children>
+            </StackPane>
+         </children>
+      </HBox>
+   </children>
+    <stylesheets>
+        <URL value="@../../theme/css/material-color.css" />
+        <URL value="@../../theme/css/skeleton.css" />
+        <URL value="@../../theme/css/light.css" />
+        <URL value="@../../theme/css/bootstrap.css" />
+        <URL value="@../../theme/css/simple-info.css" />
+        <URL value="@../../theme/css/forms.css" />
+        <URL value="@../../theme/css/typographic.css" />
+        <URL value="@../../theme/css/helpers.css" />
+        <URL value="@../../theme/css/master.css" />
+    </stylesheets>
+</StackPane>

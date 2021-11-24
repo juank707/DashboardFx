@@ -20,9 +20,6 @@
       <TabPane tabClosingPolicy="UNAVAILABLE">
          <tabs>
             <Tab closable="false" text="Introduction">
-               <content>
-                  <fx:include source="introduction.fxml" />
-               </content>
             </Tab>
             <Tab closable="false" text="Types">
                <content>
