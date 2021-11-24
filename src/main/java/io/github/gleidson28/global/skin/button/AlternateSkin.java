@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.gleidson28.global.skin;
+package io.github.gleidson28.global.skin.button;
 
 import com.sun.javafx.css.converters.PaintConverter;
 import com.sun.javafx.scene.control.skin.ButtonSkin;
@@ -26,10 +26,13 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.BooleanPropertyBase;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.css.*;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.SkinBase;
 import javafx.scene.layout.*;
@@ -79,8 +82,13 @@ public class AlternateSkin extends ButtonSkin {
 
     private StyleableObjectProperty<Paint> transitionColor ;
 
+    private ObservableList<Node> customs = FXCollections.observableArrayList();
+
     public AlternateSkin(Button control) {
+        
         super(control);
+
+        customs.addAll(rect, rect1, rect2, rect3);
 
         rect.setShape(null);
 
@@ -142,7 +150,6 @@ public class AlternateSkin extends ButtonSkin {
             timeEntered.getKeyFrames().clear();
 
             pseudoClassStateChanged(ANIMATED_PSEUDO_CLASS, true);
-
 
             timeEntered.getKeyFrames().addAll(
 
@@ -290,5 +297,14 @@ public class AlternateSkin extends ButtonSkin {
 
     public void setTransitionColor(Paint transitionColor) {
         this.transitionColor.set(transitionColor);
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+
+//        getSkinnable().setOnMouseEntered(null);
+//        getSkinnable().setOnMouseExited(null);
+//        getChildren().removeAll(customs);
     }
 }
