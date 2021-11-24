@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.gleidson28.global.skin;
+package io.github.gleidson28.global.skin.button;
 
 import com.sun.javafx.css.converters.PaintConverter;
 import com.sun.javafx.scene.control.skin.ButtonSkin;
@@ -36,6 +36,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -47,12 +48,11 @@ import java.util.List;
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on  14/12/2018
  */
-public class SmooshSkin extends ButtonSkin {
+public class SwipeDiagonalSkin extends ButtonSkin {
 
     private Paint firstColor;
 
     private final StackPane rect = new StackPane();
-    private StackPane rect_bottom = new StackPane();
 
     private final ObjectProperty<Duration> velocity =
             new SimpleObjectProperty<>(this, "velocity",
@@ -68,7 +68,7 @@ public class SmooshSkin extends ButtonSkin {
         }
 
         @Override public Object getBean() {
-            return SmooshSkin.this;
+            return SwipeDiagonalSkin.this;
         }
 
         @Override public String getName() {
@@ -78,33 +78,24 @@ public class SmooshSkin extends ButtonSkin {
 
     private StyleableObjectProperty<Paint> transitionColor ;
 
-    public SmooshSkin(Button control) {
+    public SwipeDiagonalSkin(Button control) {
         super(control);
 
-        rect.setShape(null);
 
-        rect.setPrefHeight(0);
-        rect.setMaxHeight(0);
+        SVGPath shape = new SVGPath();
+        shape.setContent("M 250 200 L 250 300 L 500 300 L 450 200 L 250 200 ");
+        rect.setShape(shape);
 
         rect.setPrefWidth(Region.USE_COMPUTED_SIZE);
         rect.setMaxWidth(Region.USE_COMPUTED_SIZE);
 
-        rect_bottom.setPrefWidth(Region.USE_COMPUTED_SIZE);
-        rect_bottom.setMaxWidth(Region.USE_COMPUTED_SIZE);
+        rect.setPrefHeight(Region.USE_COMPUTED_SIZE);
+        rect.setMaxHeight(Region.USE_COMPUTED_SIZE);
 
+//        rect.setTranslateX(0);
 
-        getChildren().add(rect);
-        getChildren().add(rect_bottom);
-
-        rect_bottom.setPrefHeight(0);
-        rect_bottom.setMaxHeight(0);
-
-
-//        getChildren().add(title);
-        Text title;
-        if (getSkinnable().getChildrenUnmodifiable().get(1) instanceof Text)
-            title = (Text) getSkinnable().getChildrenUnmodifiable().get(1);
-        else title = (Text) getSkinnable().getChildrenUnmodifiable().get(0);
+//        rect.setPrefWidth(0);
+//        rect.setMaxWidth(0);
 
         Rectangle clip = new Rectangle();
         clip.setArcWidth(0);
@@ -114,9 +105,14 @@ public class SmooshSkin extends ButtonSkin {
         clip.widthProperty().bind(getSkinnable().widthProperty());
         clip.heightProperty().bind(getSkinnable().heightProperty());
 
-//        velocity.bind( ((GNButton)getSkinnable()).transitionDurationProperty());
+        getChildren().add(rect);
+
+//        getChildren().add(title);
+        Text title;
+        if (getSkinnable().getChildrenUnmodifiable().get(1) instanceof Text)
+            title = (Text) getSkinnable().getChildrenUnmodifiable().get(1);
+        else title = (Text) getSkinnable().getChildrenUnmodifiable().get(0);
         rect.toBack();
-        rect_bottom.toBack();
 
 
         Timeline timeEntered = new Timeline();
@@ -136,30 +132,20 @@ public class SmooshSkin extends ButtonSkin {
 
         getSkinnable().setOnMouseEntered(event -> {
             timeEntered.getKeyFrames().clear();
+
+            System.out.println("time entered");
+
             pseudoClassStateChanged(ANIMATED_PSEUDO_CLASS, true);
 
-
             timeEntered.getKeyFrames().addAll(
-                    new KeyFrame(Duration.ZERO, new KeyValue(rect.prefHeightProperty(), rect.getHeight())),
-                    new KeyFrame(Duration.ZERO, new KeyValue(rect.maxHeightProperty(), rect.getHeight())),
+                    new KeyFrame(Duration.ZERO, new KeyValue(rect.translateXProperty(), rect.getTranslateX())),
+//                    new KeyFrame(Duration.ZERO, new KeyValue(getSkinnable().textFillProperty(), getSkinnable().getTextFill())),
 
-                    new KeyFrame(Duration.ZERO, new KeyValue(rect_bottom.prefHeightProperty(), rect_bottom.getHeight())),
-                    new KeyFrame(Duration.ZERO, new KeyValue(rect_bottom.maxHeightProperty(), rect_bottom.getHeight())),
-
-
-                    new KeyFrame(velocity.get(), new KeyValue(rect.prefHeightProperty(), getSkinnable().getHeight() / 2)),
-                    new KeyFrame(velocity.get(), new KeyValue(rect.maxHeightProperty(), getSkinnable().getHeight() / 2)),
-
-                    new KeyFrame(velocity.get(), new KeyValue(rect_bottom.prefHeightProperty(), getSkinnable().getHeight() / 2)),
-                    new KeyFrame(velocity.get(), new KeyValue(rect_bottom.maxHeightProperty(), getSkinnable().getHeight() / 2)),
-
-
-                    new KeyFrame(Duration.ZERO, new KeyValue(getSkinnable().textFillProperty(), getSkinnable().getTextFill()))
-//                    new KeyFrame(velocity.get(), new KeyValue(getSkinnable().textFillProperty(), ((GNButton) getSkinnable()).getTransitionText()))
-
+                    new KeyFrame(velocity.get(), new KeyValue(rect.translateXProperty(), rect.getWidth()))
+//                    new KeyFrame(velocity.get(), new KeyValue(getSkinnable().textFillProperty(), ((Button) getSkinnable()).getTransitionText()))
             );
 
-            if (timeExited.getStatus() == Animation.Status.RUNNING) {
+            if (timeExited.getStatus() == Animation.Status.RUNNING){
                 timeExited.stop();
             }
 
@@ -171,25 +157,17 @@ public class SmooshSkin extends ButtonSkin {
             timeExited.getKeyFrames().clear();
             pseudoClassStateChanged(ANIMATED_PSEUDO_CLASS, false);
             timeExited.getKeyFrames().addAll(
-                    new KeyFrame(Duration.ZERO, new KeyValue(rect.prefHeightProperty(), rect.getHeight())),
-                    new KeyFrame(Duration.ZERO, new KeyValue(rect.maxHeightProperty(), rect.getHeight())),
-
-                    new KeyFrame(Duration.ZERO, new KeyValue(rect_bottom.prefHeightProperty(), rect_bottom.getHeight())),
-                    new KeyFrame(Duration.ZERO, new KeyValue(rect_bottom.maxHeightProperty(), rect_bottom.getHeight())),
+                    new KeyFrame(Duration.ZERO, new KeyValue(rect.translateXProperty(), rect.getTranslateX())),
 
                     new KeyFrame(Duration.ZERO, new KeyValue(getSkinnable().textFillProperty(), getSkinnable().getTextFill())),
 
-                    new KeyFrame(velocity.get(), new KeyValue(rect.prefHeightProperty(), 0D)),
-                    new KeyFrame(velocity.get(), new KeyValue(rect.maxHeightProperty(), 0D)),
-
-                    new KeyFrame(velocity.get(), new KeyValue(rect_bottom.prefHeightProperty(), 0D)),
-                    new KeyFrame(velocity.get(), new KeyValue(rect_bottom.maxHeightProperty(), 0D)),
-
+                    new KeyFrame(velocity.get(),
+                            new KeyValue(rect.translateXProperty(), 0D)),
                     new KeyFrame(velocity.get(), new KeyValue(getSkinnable().textFillProperty(), firstColor))
 
             );
 
-            if (timeEntered.getStatus() == Animation.Status.RUNNING) {
+            if (timeEntered.getStatus() == Animation.Status.RUNNING){
                 timeEntered.stop();
             }
 
@@ -198,21 +176,24 @@ public class SmooshSkin extends ButtonSkin {
 
         this.transitionColor = new SimpleStyleableObjectProperty<Paint>(TRANSITION_COLOR, this, "transitionColor");
 
-
         transitionColorProperty().addListener((observable, oldValue, newValue) -> {
             rect.setBackground(new Background(new BackgroundFill(newValue, CornerRadii.EMPTY, Insets.EMPTY)));
-            rect_bottom.setBackground(new Background(new BackgroundFill(newValue, CornerRadii.EMPTY, Insets.EMPTY)));
         });
     }
 
     @Override
     protected void layoutChildren(double contentX, double contentY, double contentWidth, double contentHeight) {
         super.layoutChildren(contentX, contentY, contentWidth, contentHeight);
-        layoutInArea(rect, contentX, 0 + snappedTopInset(), contentWidth, contentHeight, 0,
-                HPos.LEFT, VPos.TOP);
-
-        layoutInArea(rect_bottom, contentX, contentY, contentWidth, contentHeight, 0,
-                HPos.LEFT, VPos.BOTTOM);
+        layoutInArea(rect, (contentWidth * -1) -(contentWidth / 4), contentY, contentWidth + (contentWidth / 4) , contentHeight, 0,
+                HPos.LEFT,  VPos.CENTER);
+//        layoutInArea(
+//                rect,
+//                contentX - (snappedLeftInset() + rect.getBorder().getInsets().getRight()),
+//                contentY - snappedTopInset() ,
+//                contentWidth + (snappedRightInset() + snappedLeftInset()),
+//                contentHeight + (snappedBottomInset() + snappedTopInset()) + bottomLabelPadding(),
+//                0,
+//                HPos.LEFT,  VPos.CENTER);
 
     }
 
@@ -220,14 +201,14 @@ public class SmooshSkin extends ButtonSkin {
             new CssMetaData<Button, Paint>("-gn-transition-color", PaintConverter.getInstance(), Color.RED) {
                 @Override
                 public boolean isSettable(Button styleable) {
-                    return ( (SmooshSkin) styleable.getSkin()).transitionColor == null ||
-                            !( (SmooshSkin) styleable.getSkin()).transitionColor.isBound();
+                    return ( (SwipeDiagonalSkin) styleable.getSkin()).transitionColor == null ||
+                            !( (SwipeDiagonalSkin) styleable.getSkin()).transitionColor.isBound();
                 }
 
                 @Override
                 public StyleableProperty<Paint> getStyleableProperty(Button styleable) {
-                    if (styleable.getSkin() instanceof SmooshSkin) {
-                        return ( (SmooshSkin) styleable.getSkin() ).transitionColorProperty();
+                    if (styleable.getSkin() instanceof SwipeDiagonalSkin) {
+                        return ( (SwipeDiagonalSkin) styleable.getSkin() ).transitionColorProperty();
                     } else return null;
                 }
             };

@@ -14,35 +14,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.gleidson28.module.layout;
+package io.github.gleidson28.global.skin.icon;
 
-import javafx.scene.control.*;
-import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
+import javafx.scene.shape.SVGPath;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- * Create on  13/11/2021
+ * Create on  23/11/2021
  */
-public class CreativeTab extends Tab {
+public class Icon extends SVGPath {
 
-    public CreativeTab(String title, Control control, String... clazz) {
-
-        this.setText(title);
-
-        TilePane body = new TilePane();
-        VBox content = new VBox(body);
-        content.getStyleClass().add("background-color");
-
-        if(control instanceof Labeled) {
-            Label btn = (Label) control;
-            btn.setText(title);
-            Button newButton = new Button("Alternate");
-        }
+    public Icon() {
 
     }
 
-    private void createItem() {
-
+    public Icon(Icons icons) {
+        setContent(icons);
+        getStyleClass().add("icon");
     }
+
+    public void setContent(Icons icon) {
+        setContent(icon.getContent());
+    }
+
 }
