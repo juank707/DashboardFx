@@ -21,7 +21,7 @@ import animatefx.animation.FadeOutLeft;
 import io.github.gleidson28.global.dao.ProfessionalPresenter;
 import io.github.gleidson28.global.enhancement.CrudView;
 import io.github.gleidson28.global.enhancement.DataHandler;
-import io.github.gleidson28.global.enhancement.FluidView;
+import io.github.gleidson28.global.enhancement.ActionView;
 import io.github.gleidson28.global.enhancement.ObserverView;
 import io.github.gleidson28.global.exceptions.NavigationException;
 import io.github.gleidson28.global.factory.*;
@@ -29,7 +29,7 @@ import io.github.gleidson28.global.model.Model;
 import io.github.gleidson28.global.model.Professional;
 import io.github.gleidson28.global.model.Status;
 import io.github.gleidson28.global.plugin.ViewManager;
-import io.github.gleidson28.global.popup.DashPopup;
+import io.github.gleidson28.global.popup.Popup;
 import javafx.animation.FadeTransition;
 import javafx.animation.RotateTransition;
 import javafx.beans.binding.Bindings;
@@ -64,7 +64,7 @@ import java.util.function.Predicate;
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on  22/09/2020
  */
-public class IndexController implements Initializable, FluidView, CrudView, ObserverView {
+public class IndexController implements Initializable, ActionView, CrudView, ObserverView {
 
     @FXML private StackPane root;
 
@@ -144,8 +144,9 @@ public class IndexController implements Initializable, FluidView, CrudView, Obse
 
     @FXML
     private void openBoxColumnVisibility() {
-        DashPopup dashPopup = new DashPopup(boxColumnVisibility);
-        dashPopup.showTopRight(columnOptions);
+        boxColumnVisibility.setPadding(new Insets(10));
+        Popup dashPopup = new Popup(boxColumnVisibility);
+        dashPopup.showBottomLeft(columnOptions);
     }
 
     private StackPane createColumnFilter() {
@@ -277,8 +278,8 @@ public class IndexController implements Initializable, FluidView, CrudView, Obse
 
     @FXML
     private void openFilterPopup() {
-        DashPopup p = new DashPopup(popupRoot);
-        p.showBottomRight(btnFilter);
+        Popup p = new Popup(popupRoot);
+        p.showBottomLeft(btnFilter);
 //        p.showOnWindow();
     }
 

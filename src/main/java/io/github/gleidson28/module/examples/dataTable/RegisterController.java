@@ -19,18 +19,19 @@ package io.github.gleidson28.module.examples.dataTable;
 import io.github.gleidson28.App;
 import io.github.gleidson28.GNAvatarView;
 import io.github.gleidson28.global.converters.MoneySimpleStringConverter;
-import io.github.gleidson28.global.creators.DialogCreator;
 import io.github.gleidson28.global.creators.DrawerCreator;
-import io.github.gleidson28.global.dao.ProfessionalPresenter;
 import io.github.gleidson28.global.enhancement.Avatar;
 import io.github.gleidson28.global.enhancement.CrudView;
-import io.github.gleidson28.global.enhancement.FluidView;
+import io.github.gleidson28.global.enhancement.ActionView;
 import io.github.gleidson28.global.exceptions.NavigationException;
 import io.github.gleidson28.global.model.Model;
 import io.github.gleidson28.global.model.Professional;
 import io.github.gleidson28.global.model.Status;
 import io.github.gleidson28.global.plugin.ViewManager;
-import io.github.gleidson28.global.popup.DashPopup;
+import io.github.gleidson28.global.popup.Popup;
+import io.github.gleidson28.global.skin.LetterValidator;
+import io.github.gleidson28.global.skin.SizeValidator;
+import io.github.gleidson28.global.skin.ValidatorBase;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -49,13 +50,15 @@ import javafx.scene.text.Text;
 import org.controlsfx.control.Rating;
 
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on  22/09/2020
  */
-public class RegisterController implements Initializable, FluidView, CrudView {
+public class RegisterController implements Initializable, ActionView, CrudView {
 
     @FXML private GridPane form;
     @FXML private VBox info;
@@ -137,20 +140,29 @@ public class RegisterController implements Initializable, FluidView, CrudView {
     private final ChangeListener<Number> resizeForm = (observable, oldValue, newValue) ->
             relocate(newValue.doubleValue());
 
+    List<ValidatorBase> validators;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        tfName.lengthProperty().addListener((observable, oldValue, newValue) -> {
-            String max = nameLength.getText().substring(nameLength.getText().indexOf("/"));
-            String size = String.valueOf(newValue.intValue());
-            nameLength.setText(size + max);
-        });
 
-        tfLastName.lengthProperty().addListener((observable, oldValue, newValue) -> {
-            String max = lastNameLength.getText().substring(lastNameLength.getText().indexOf("/"));
-            String size = String.valueOf(newValue.intValue());
-            lastNameLength.setText(size + max);
-        });
+        validators =  Arrays.asList(
+                    new SizeValidator(tfName, "The name of " + tfName.getText() + " is not valid", 28),
+                    new LetterValidator(tfName, "The size not contains necessary letters")
+        );
+//
+//        tfName.lengthProperty().addListener((observable, oldValue, newValue) -> {
+//            String max = nameLength.getText().substring(nameLength.getText().indexOf("/"));
+//            String size = String.valueOf(newValue.intValue());
+//            nameLength.setText(size + max);
+//        });
 
+//        tfLastName.lengthProperty().addListener((observable, oldValue, newValue) -> {
+//            String max = lastNameLength.getText().substring(lastNameLength.getText().indexOf("/"));
+//            String size = String.valueOf(newValue.intValue());
+//            lastNameLength.setText(size + max);
+//        });
+
+//        tfName.setSkin(new GNTextFieldSkin(tfName, professional, "Error on this label"));
     }
 
     @Override
@@ -175,7 +187,7 @@ public class RegisterController implements Initializable, FluidView, CrudView {
             ViewManager.INSTANCE.setContent("avatars_content");
             DrawerCreator.INSTANCE.closePopup();
         } else {
-            DashPopup popup = new DashPopup(
+            Popup popup = new Popup(
                     ViewManager.INSTANCE.getRoot("avatars_content")
             );
             if(DrawerCreator.INSTANCE.isShow())
@@ -195,13 +207,13 @@ public class RegisterController implements Initializable, FluidView, CrudView {
 
         // Name
         tfName.textProperty().bindBidirectional(professional.nameProperty());
-        errorName.visibleProperty().bind(
-                professional.nameValidatorProperty().not());
+//        errorName.visibleProperty().bind(
+//                professional.nameValidatorProperty().not());
 
         // Last Name
         tfLastName.textProperty().bindBidirectional(professional.lastNameProperty());
-        errorLastName.visibleProperty().bind(professional
-                .lastNameValidatorProperty().not());
+//        errorLastName.visibleProperty().bind(professional
+//                .lastNameValidatorProperty().not());
 
         tfPrice.textProperty().bindBidirectional(professional.priceProperty(), new MoneySimpleStringConverter());
 
@@ -225,55 +237,61 @@ public class RegisterController implements Initializable, FluidView, CrudView {
     @FXML
     private void save() throws NavigationException  {
 
-        if(this.professional.isValid()) {
+        boolean valid = false;
 
-            if(this.professional.getId() == 0) {
+        for (ValidatorBase val : validators) valid = val.validate();
 
-                new ProfessionalPresenter().save(professional);
+        System.out.println(valid);
 
-//                DrawerCreator.INSTANCE.createTrayNotification(
+//        if(this.professional.isValid()) {
+//
+//            if(this.professional.getId() == 0) {
+//
+//                new ProfessionalPresenter().save(professional);
+//
+////                DrawerCreator.INSTANCE.createTrayNotification(
+////                        "Save Successful",
+////                        "The professional " + professional.getName() + " saved."
+////                );
+//
+//                Button btnOk = new Button("OK");
+//                Button btnCancel = new Button("Cancel");
+//                btnOk.getStyleClass().add("btn-flat");
+//                btnCancel.getStyleClass().add("btn-flat");
+//
+//
+//                DialogCreator.INSTANCE.createDialog(
 //                        "Save Successful",
-//                        "The professional " + professional.getName() + " saved."
+//                        "The professional " + professional.getName() + " saved.",
+//                        btnOk
 //                );
-
-                Button btnOk = new Button("OK");
-                Button btnCancel = new Button("Cancel");
-                btnOk.getStyleClass().add("btn-flat");
-                btnCancel.getStyleClass().add("btn-flat");
-
-
-                DialogCreator.INSTANCE.createDialog(
-                        "Save Successful",
-                        "The professional " + professional.getName() + " saved.",
-                        btnOk
-                );
-
-
-            }
-            else new ProfessionalPresenter().edit(professional);
-//            DrawerCreator.INSTANCE.createTrayNotification(
+//
+//
+//            }
+//            else new ProfessionalPresenter().edit(professional);
+////            DrawerCreator.INSTANCE.createTrayNotification(
+////                    "Edit Successful",
+////                    "The professional " + professional.getName() + " edited."
+////            );
+//            Button btnOk = new Button("OK");
+//            Button btnCancel = new Button("Cancel");
+//            btnOk.getStyleClass().add("btn-flat");
+//            btnCancel.getStyleClass().add("btn-flat");
+//
+//
+//            DialogCreator.INSTANCE.createDialog(
 //                    "Edit Successful",
-//                    "The professional " + professional.getName() + " edited."
+//                    "The professional " + professional.getName() + " edited.",
+//                    btnOk
 //            );
-            Button btnOk = new Button("OK");
-            Button btnCancel = new Button("Cancel");
-            btnOk.getStyleClass().add("btn-flat");
-            btnCancel.getStyleClass().add("btn-flat");
-
-
-            DialogCreator.INSTANCE.createDialog(
-                    "Edit Successful",
-                    "The professional " + professional.getName() + " edited.",
-                    btnOk
-            );
-
-            back();
-        }
+//
+//            back();
+//        }
     }
 
     @FXML
     private void openTeamPopup() {
-        DashPopup p = new DashPopup(
+        Popup p = new Popup(
                 createRootPopup(FXCollections.observableArrayList(
                         "Creative", "Support", "Engineer"), teamsText));
         p.showTopRight(btnTeams);
@@ -282,7 +300,7 @@ public class RegisterController implements Initializable, FluidView, CrudView {
 
     @FXML
     private void openSkillPopup() {
-        DashPopup p = new DashPopup(
+        Popup p = new Popup(
                 createRootPopup(FXCollections.observableArrayList(
                         "PHP", "Android", "UX Designer", "Java"),
                         skillsText));
