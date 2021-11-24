@@ -33,7 +33,7 @@ public class MonetaryFieldSkin extends TextFieldSkin {
 
         super(textField);
 
-        textField.getStyleClass().add("gn-monetary-field");
+        textField.getStyleClass().add("monetary-field");
 
         DecimalFormat ds = (DecimalFormat) DecimalFormat.getInstance();
         textField.setText("0" + ds.getDecimalFormatSymbols().getMonetaryDecimalSeparator() + "00");

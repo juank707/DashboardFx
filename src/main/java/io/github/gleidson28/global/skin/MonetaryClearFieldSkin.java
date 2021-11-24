@@ -31,7 +31,7 @@ public class MonetaryClearFieldSkin extends ClearableSkin {
     public MonetaryClearFieldSkin(TextField textField) {
         super(textField);
 
-        textField.getStyleClass().add("gn-monetary-field-clear");
+        textField.getStyleClass().add("monetary-field-clear");
 
         DecimalFormat ds = (DecimalFormat) DecimalFormat.getInstance();
         textField.setText("0" + ds.getDecimalFormatSymbols().getMonetaryDecimalSeparator() + "00");

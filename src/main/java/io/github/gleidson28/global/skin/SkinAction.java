@@ -122,8 +122,11 @@ public abstract class SkinAction extends TextFieldSkin {
     }
 
     abstract void mouseReleased();
+
     abstract void textChanged();
+
     abstract void focusChanged();
+
     abstract void mousePressed();
 
 }
