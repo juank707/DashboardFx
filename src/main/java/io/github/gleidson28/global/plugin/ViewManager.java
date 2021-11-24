@@ -20,7 +20,7 @@ import io.github.gleidson28.App;
 import io.github.gleidson28.decorator.GNDecorator;
 import io.github.gleidson28.global.creators.PopupCreator;
 import io.github.gleidson28.global.enhancement.CrudView;
-import io.github.gleidson28.global.enhancement.FluidView;
+import io.github.gleidson28.global.enhancement.ActionView;
 import io.github.gleidson28.global.enhancement.ObserverView;
 import io.github.gleidson28.global.exceptions.NavigationException;
 import io.github.gleidson28.global.model.Model;
@@ -86,8 +86,8 @@ public enum ViewManager {
 
             App.INSTANCE.setContent(viewController.getRoot());
 
-            if (get(name).getController() instanceof FluidView){
-                ( (FluidView) viewController.getController()).onEnter();
+            if (get(name).getController() instanceof ActionView){
+                ( (ActionView) viewController.getController()).onEnter();
 
             }
 
@@ -162,7 +162,12 @@ public enum ViewManager {
             crumb.getChildren().clear();
             updateCrumb(viewController.getModule());
 
-            Hyperlink link = new Hyperlink(viewController.getModule().getTitle());
+            Hyperlink link = new Hyperlink(
+                    title == null ?
+                    viewController.getModule().getTitle() :
+                    title
+            );
+
             link.getStyleClass().add("bread-link");
             crumb.getChildren().add(link);
             link.setDisable(true);
@@ -172,14 +177,15 @@ public enum ViewManager {
             else
                 breadTitle.setText(viewController.getModule().getTitle());
 
+
             body.setContent(viewController.getRoot());
 
             if(previous != null) {
 
                 Object controller = get(previous).getController();
 
-                if (controller instanceof FluidView)
-                    ((FluidView) get(previous).getController()).onExit();
+                if (controller instanceof ActionView)
+                    ((ActionView) get(previous).getController()).onExit();
 
                 if (controller instanceof ObserverView) {
                     for(ChangeListener<Number> l : ((ObserverView) controller).getListeners()) {
@@ -189,8 +195,8 @@ public enum ViewManager {
 
             }
 
-            if (viewController.getController() instanceof FluidView) {
-                ((FluidView) viewController.getController()).onEnter();
+            if (viewController.getController() instanceof ActionView) {
+                ((ActionView) viewController.getController()).onEnter();
             }
 
             if (viewController.getController() instanceof ObserverView) {

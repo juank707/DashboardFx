@@ -16,8 +16,10 @@
  */
 package io.github.gleidson28.global.properties;
 
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 
@@ -28,16 +30,19 @@ import javafx.scene.layout.VBox;
 public class TypeSelector extends Selector {
 
     private Control control;
-
     private PropertyAside aside;
+    private final VBox content = new VBox();
+    private final ToggleGroup group = new ToggleGroup();
 
-    private VBox content = new VBox();
-
-    private ToggleGroup group = new ToggleGroup();
+    private String oldText;
 
     public TypeSelector(Control control, String... options) {
 
         this.control = control;
+
+        if(control instanceof Button) {
+            oldText = ((Button) control).getText();
+        }
 
         Label title = new Label("Type");
         title.getStyleClass().add("h5");
@@ -66,15 +71,36 @@ public class TypeSelector extends Selector {
             }
 
             if(oldV != null ) {
-                control.getStyleClass().removeAll(control.getProperties().get("prefix") +  oldV.toLowerCase());
-                aside.removeStyleClass(control.getProperties().get("prefix")  + oldV.toLowerCase() + ", ");
+
+                String finalOldV = oldV;
+                Platform.runLater( () -> {
+
+                    control.getStyleClass().removeAll(control.getProperties().get("prefix") +  finalOldV.toLowerCase());
+                    aside.removeStyleClass(control.getProperties().get("prefix")  + finalOldV.toLowerCase() + ", ");
+                });
 
             }
 
             if (!newV.equals("Default") && aside != null ) {
 
-                control.getStyleClass().addAll(control.getProperties().get("prefix")  + newV.toLowerCase());
-                aside.addStyleClass(control.getProperties().get("prefix")  + newV.toLowerCase() + ", ");
+                if(control instanceof Button) {
+                    if(newV.equalsIgnoreCase("round")) {
+                        ((Button) control).setText("R");
+                        control.setMinWidth(40);
+                        control.setPrefWidth(40);
+                    } else {
+                        ((Button) control).setText(oldText);
+                        control.setMinWidth(Region.USE_COMPUTED_SIZE);
+                        control.setPrefWidth(80);
+                    }
+
+                }
+
+                Platform.runLater(() -> {
+                    control.getStyleClass().addAll(control.getProperties().get("prefix")  + newV.toLowerCase());
+                    aside.addStyleClass(control.getProperties().get("prefix")  + newV.toLowerCase() + ", ");
+                });
+
             }
 
 

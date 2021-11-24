@@ -240,8 +240,10 @@ public class PropertyAside extends ScrollPane {
                     "\t\t <String fx:value=\""+ newValue.replace(",", "") + "\" />\n");
         }
 
-        if(styleArea.getText() != null)
-            styleArea.replaceText(styleArea.getText().lastIndexOf(","), styleArea.getText().length(), "");
+        if(styleArea.getText() != null) {
+            if(styleArea.getText().contains(","))
+                styleArea.replaceText(styleArea.getText().lastIndexOf(","), styleArea.getText().length(), "");
+        }
 
         if(javaArea.getText() != null && javaArea.getText().contains(",")) {
             javaArea.replaceText(javaArea.getText().lastIndexOf(","), javaArea.getText().length(), "");

@@ -167,8 +167,6 @@ public final class DaoProfessional extends AbstractDao<Professional> {
 
             @Override
             protected void failed() {
-                System.out.println("failed");
-                System.out.println(super.getException());
                 super.failed();
             }
 

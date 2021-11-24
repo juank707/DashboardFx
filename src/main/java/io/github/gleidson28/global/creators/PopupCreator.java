@@ -199,4 +199,5 @@ public enum PopupCreator {
     public void setOnShow(EventHandler<WindowEvent> event) {
         stage.setOnShown(event);
     }
+
 }

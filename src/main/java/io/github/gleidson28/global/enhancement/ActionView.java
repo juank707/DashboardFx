@@ -22,7 +22,7 @@ import io.github.gleidson28.global.exceptions.NavigationException;
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on  24/09/2020
  */
-public interface FluidView {
+public interface ActionView {
 
     void onEnter() throws NavigationException;
 

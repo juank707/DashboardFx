@@ -16,7 +16,7 @@
  */
 package io.github.gleidson28.global.badges;
 
-import io.github.gleidson28.global.popup.DashPopup;
+import io.github.gleidson28.global.popup.Popup;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
@@ -53,7 +53,7 @@ public class MessageBadge extends StackPane {
         action.setGraphic(icon);
 
         this.setOnMouseClicked(event -> {
-            DashPopup dashPopup = new DashPopup(new BadgeCellMessage());
+            Popup dashPopup = new Popup(new BadgeCellMessage());
             dashPopup.showBottomRight(this);
         });
     }

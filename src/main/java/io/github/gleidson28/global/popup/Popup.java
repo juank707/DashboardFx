@@ -30,18 +30,18 @@ import org.controlsfx.control.PopOver;
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on  06/06/2021
  */
-public class DashPopup extends PopOver {
+public class Popup extends PopOver {
 
     private Node owner;
 
-    public DashPopup(Node content) {
+    public Popup(Node content) {
         this(content, -1D);
     }
 
-    public DashPopup(Node content, double width) {
+    public Popup(Node content, double width) {
 
         this.getRoot().getStylesheets().add(
-                DashPopup.class.getResource("/theme/css/poplight.css").toExternalForm());
+                Popup.class.getResource("/theme/css/poplight.css").toExternalForm());
 
         this.setArrowLocation(ArrowLocation.TOP_LEFT);
         this.setArrowIndent(0);
@@ -96,6 +96,24 @@ public class DashPopup extends PopOver {
         fadeInLeft.play();
     }
 
+    public void showBottomLeft (Node node) {
+
+        this.setArrowLocation(ArrowLocation.TOP_LEFT);
+        this.setAnimated(false);
+
+        Bounds bounds = node.localToScreen(node.getBoundsInLocal());
+
+        this.show(node, bounds.getMinX() - bounds.getWidth() ,
+                bounds.getMinY() + bounds.getHeight()  );
+
+//        Node skinNode = this.getSkin().getNode();
+//        new Pulse(skinNode).play();
+
+//        Pulse fadeInLeft = new Pulse();
+//        fadeInLeft.setNode(getRoot());
+//        fadeInLeft.play();
+    }
+
     public void showTopRight(Node node, boolean shadow) {
 
         this.setArrowLocation(ArrowLocation.TOP_LEFT);
@@ -107,11 +125,11 @@ public class DashPopup extends PopOver {
 
         Node skinNode = this.getSkin().getNode();
         new Pulse(skinNode).play();
-//
+
         if(shadow) {
-            Pulse fadeInLeft = new Pulse();
-            fadeInLeft.setNode(getRoot());
-            fadeInLeft.play();
+//            Pulse fadeInLeft = new Pulse();
+//            fadeInLeft.setNode(getRoot());
+//            fadeInLeft.play();
 
             LayoutController layoutController = (LayoutController)
                     ViewManager.INSTANCE.getController("layout");
