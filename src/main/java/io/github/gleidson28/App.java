@@ -123,7 +123,8 @@ public enum App {
         decorator.getIcons().add(new Image("/theme/img/logo4.png"));
         decorator.show();
 
-//        decorator.testWithScenicView();
+        decorator.testWithScenicView();
+
     }
 
     public Object getObject(String name) {
