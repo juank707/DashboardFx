@@ -17,27 +17,24 @@
 package io.github.gleidson28.global.skin;
 
 import com.sun.javafx.scene.control.skin.TextFieldSkin;
-import io.github.gleidson28.global.skin.icon.Icon;
+import io.github.gleidson28.global.skin.icon.IconContainer;
 import io.github.gleidson28.global.skin.icon.Icons;
-import io.github.gleidson28.global.skin.textField.*;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
+import io.github.gleidson28.global.skin.textField.ActionButtonType;
+import io.github.gleidson28.global.skin.textField.ActionButtonTypeConverter;
+import io.github.gleidson28.global.skin.textField.FieldFooter;
+import io.github.gleidson28.global.skin.textField.LeadIconTypeConverter;
+import javafx.animation.*;
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.BooleanPropertyBase;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.css.*;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
@@ -54,8 +51,8 @@ public class GNTextFieldSkin extends TextFieldSkin {
 
     private final Label lbl = new Label("Error label");
 
-    private Icon leadIcon = new Icon();
-    private Icon actionIcon = new Icon();
+    private IconContainer leadIcon = new IconContainer();
+    private IconContainer actionIcon = new IconContainer();
     private Button  actionButton = new Button();
     private Button  leadButton = new Button();
 
@@ -68,7 +65,7 @@ public class GNTextFieldSkin extends TextFieldSkin {
     private final Timeline animation = new Timeline();
 
     private StyleableObjectProperty<ActionButtonType> actionButtonType;
-    private StyleableObjectProperty<LeadIconType> leadIconType;
+    private StyleableObjectProperty<Icons> leadIconType;
 
     private final StyleableObjectProperty<Boolean> leadIconVisible;
     private final StyleableObjectProperty<Boolean> actionButtonVisible;
@@ -83,14 +80,35 @@ public class GNTextFieldSkin extends TextFieldSkin {
 
     private boolean up = false;
 
+    private static final PseudoClass FLOAT_PSEUDO_CLASS =
+            PseudoClass.getPseudoClass("float");
+
+    private final BooleanProperty _float = new BooleanPropertyBase(false) {
+        public void invalidated() {
+            pseudoClassStateChanged(FLOAT_PSEUDO_CLASS, get());
+        }
+
+        @Override public Object getBean() {
+            return GNTextFieldSkin.this;
+        }
+
+        @Override public String getName() {
+            return "float";
+        }
+    };
+
+    private final StyleableObjectProperty<Boolean> floatPrompt;
+
     public GNTextFieldSkin(TextField textField) {
         super(textField);
+
+        floatPrompt = new SimpleStyleableObjectProperty<>(FLOAT_PROMPT, false);
 
         prompt.setText(textField.getPromptText());
 
         prompt.fontProperty().bind(textField.fontProperty());
 
-        prompt.getStyleClass().add("prompt");
+        prompt.getStyleClass().add("prompt-text");
 
         actionIcon.setContent("M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z");
 
@@ -109,8 +127,6 @@ public class GNTextFieldSkin extends TextFieldSkin {
         leadButton.setPrefSize(_btnSize,_btnSize);
         leadButton.setMinSize(_btnSize,_btnSize);
 
-        textField.setStyle("-fx-border-color : black;");
-
         actionButton.setGraphic(actionIcon);
         leadButton.setGraphic(leadIcon);
         actionButton.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
@@ -120,61 +136,21 @@ public class GNTextFieldSkin extends TextFieldSkin {
 
         pane = (Pane) getChildren().get(0);
 
-        textField.setStyle("-fx-prompt-text-fill : transparent;");
-
-        pane.getStyleClass().add("content");
-        getChildren().add(prompt);
-        prompt.setPadding(new Insets(2));
-
         actionButton.setMaxWidth(_iconSize);
         actionButton.setPrefWidth(_iconSize);
 
         actionButton.setVisible(true);
 
-        getSkinnable().focusedProperty().addListener((observable, oldValue, newValue) -> {
-
-            actionButton.setVisible(newValue);
-
-            if (animation.getStatus() == Animation.Status.RUNNING) {
-                return;
-            }
-
-            if (newValue) {
-
-                if (up) return;
-
-                if(getSkinnable().getText() == null) {
-                    upPrompt();
-                    return;
-                }
-
-                if (!getSkinnable().getText().isEmpty()) {
-                    if (up) return;
-                }
-                upPrompt();
-
-            } else {
-                if (animation.getStatus() == Animation.Status.RUNNING) {
-                    return;
-                }
-
-                if (getSkinnable().getText() == null) {
-                    downPrompt();
-                    return;
-                }
-
-                if (getSkinnable().getText().isEmpty()) {
-                    downPrompt();
-                }
-            }
-        });
-
         Platform.runLater(() -> {
-            if (getSkinnable().getText() != null) {
+            if (getSkinnable().getText() != null && getFloatPrompt()) {
                 if (!getSkinnable().getText().isEmpty())
                     upPrompt();
             }
         });
+
+        if(getFloatPrompt()) {
+            addFloating(textField);
+        }
 
         this.leadIconVisible = new SimpleStyleableObjectProperty<>(
                 LEAD_ICON_VISIBLE, false);
@@ -185,7 +161,7 @@ public class GNTextFieldSkin extends TextFieldSkin {
         this.maxLength = new SimpleStyleableObjectProperty<>(
                 MAX_LENGTH, Double.POSITIVE_INFINITY);
         this.leadIconType = new SimpleStyleableObjectProperty<>(
-                LEAD_ICON_TYPE, LeadIconType.FAVORITE);
+                LEAD_ICON_TYPE, Icons.FAVORITE);
         this.maxLengthVisible = new SimpleStyleableObjectProperty<>(
                 MAX_LENGTH_VISIBLE, false);
 
@@ -199,40 +175,22 @@ public class GNTextFieldSkin extends TextFieldSkin {
             }
         });
 
-        this.actionButtonVisible.addListener((observable, oldValue, newValue) -> {
-            if(newValue) {
-                if(!getChildren().contains(actionButton))
-                    getChildren().add(actionButton);
-            } else {
-                getChildren().remove(actionButton);
-            }
-        });
-
-        this.actionButtonType.addListener(new ChangeListener<ActionButtonType>() {
-            @Override
-            public void changed(ObservableValue<? extends ActionButtonType> observable, ActionButtonType oldValue, ActionButtonType newValue) {
-                switch (newValue) {
-                    case CLEAR :
-                        createClearAction();
-                        break;
-                }
-            }
-        });
 
         leadIcon.getStyleClass().add("icon");
         leadIcon.getStyleClass().add("lead-icon");
 
         this.leadIconType.addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                for (Icons ic : Icons.values()) {
-                    if(newValue.toString().equals(ic.toString())) {
-                        leadIcon.setContent(ic);
-                    }
-                }
-                if (newValue == LeadIconType.MONETARY) {
-                    leadIcon.setContent(Icons.MONETARY);
-                    leadIcon.getStyleClass().add("monetary-icon");
-                }
+//                for (Icons ic : Icons.values()) {
+//                    if(newValue.toString().equals(ic.toString())) {
+//                        leadIcon.setContent(ic);
+//                    }
+//                }
+                leadIcon.setContent(newValue);
+//                if (newValue == LeadIconType.MONETARY) {
+//                    leadIcon.setContent(Icons.MONETARY);
+//                    leadIcon.getStyleClass().add("monetary-icon");
+//                }
             }
         });
 
@@ -241,7 +199,7 @@ public class GNTextFieldSkin extends TextFieldSkin {
         getChildren().add(fieldFooter);
 
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null && !getChildren().contains(actionButton))  {
+            if(newValue != null  && isActionButtonVisible() && !getChildren().contains(actionButton))  {
                 getChildren().add(actionButton);
             };
         });
@@ -266,6 +224,30 @@ public class GNTextFieldSkin extends TextFieldSkin {
                 fieldFooter.setVisibleCount(newValue));
 
         actionButton.setFocusTraversable(false);
+
+        this.actionButtonVisible.addListener((observable, oldValue, newValue) -> {
+
+            if(newValue) {
+                if(!getChildren().contains(actionButton))
+                    getChildren().add(actionButton);
+            } else {
+                getChildren().remove(actionButton);
+            }
+        });
+
+        this.actionButtonType.addListener((observable, oldValue, newValue) -> {
+            switch (newValue) {
+                case CLEAR :
+                    createClearAction();
+                    break;
+            }
+        });
+
+        floatPrompt.addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                addFloating(textField);
+            } else removeFloating(textField);
+        });
     }
 
     private void updateFooterSize(int length) {
@@ -279,6 +261,62 @@ public class GNTextFieldSkin extends TextFieldSkin {
         actionButton.setOnMouseClicked(event ->   {
             getSkinnable().clear();
             getChildren().remove(actionButton);
+        });
+    }
+
+    private void removeFloating(TextField textField) {
+        downPrompt();
+        getChildren().remove(prompt);
+        textField.setStyle("-fx-prompt-text-fill : -prompt-fill;");
+    }
+
+    private void addFloating(TextField textField) {
+
+        // to remove prompt text
+        textField.setStyle("-fx-prompt-text-fill : transparent;");
+
+        pane.getStyleClass().add("content");
+        getChildren().add(prompt);
+        prompt.setPadding(new Insets(2));
+        prompt.setText(prompt.getText());
+        prompt.setMouseTransparent(true);
+
+        getSkinnable().focusedProperty().addListener((observable, oldValue, newValue) -> {
+
+            actionButton.setVisible(newValue);
+
+            if (animation.getStatus() == Animation.Status.RUNNING) {
+                return;
+            }
+
+            if (newValue) {
+
+                if (up) return;
+
+                if(getSkinnable().getText() == null) {
+                    upPrompt();
+                    return;
+                }
+
+                if (!getSkinnable().getText().isEmpty()) {
+                    if (up) return;
+                }
+                upPrompt();
+
+
+
+            } else {
+                if (animation.getStatus() == Animation.Status.RUNNING) {
+                    return;
+                }
+
+                if (getSkinnable().getText() != null) {
+                    if(!getSkinnable().getText().isEmpty())
+                        return;
+                }
+
+                downPrompt();
+            }
         });
     }
 
@@ -364,30 +402,22 @@ public class GNTextFieldSkin extends TextFieldSkin {
         animation.getKeyFrames().clear();
 
         up = false;
-        animation.getKeyFrames().setAll(
 
-                new KeyFrame(Duration.ZERO,
-                        new KeyValue(
-                                prompt.translateYProperty(), prompt.getTranslateY())
-                ),
+        KeyFrame yIni = new KeyFrame(Duration.ZERO,
+                new KeyValue(prompt.translateYProperty(), prompt.getTranslateY(), Interpolator.EASE_BOTH));
+        KeyFrame yEnd = new KeyFrame(Duration.millis(50),
+                new KeyValue(prompt.translateYProperty(), 0 , Interpolator.EASE_BOTH));
 
-                new KeyFrame(Duration.ZERO,
-                        new KeyValue(
-                                prompt.translateXProperty(), leadButton.getWidth() * -1
-                        )
-                ),
+        KeyFrame xIni = new KeyFrame(Duration.ZERO,
+                new KeyValue(prompt.translateXProperty(), leadButton.getWidth() * -1, Interpolator.EASE_BOTH));
 
-                new KeyFrame(Duration.millis(200),
-                        new KeyValue(prompt.translateXProperty(),
-                                0)),
+        KeyFrame xEnd = new KeyFrame(Duration.millis(50),
+                new KeyValue(prompt.translateXProperty(), 0, Interpolator.EASE_BOTH));
 
-                new KeyFrame(Duration.millis(200),
-                        new KeyValue(
-                                prompt.translateYProperty(),
-                                0)
-                )
+        if (getChildren().contains(leadButton)) animation.getKeyFrames().setAll(yIni, xIni, yEnd, xEnd);
+        else animation.getKeyFrames().setAll(yIni, yEnd);
 
-        );
+        animation.setOnFinished(event -> pseudoClassStateChanged(FLOAT_PSEUDO_CLASS, false));
         animation.play();
     }
 
@@ -396,28 +426,21 @@ public class GNTextFieldSkin extends TextFieldSkin {
 
         up = true;
 
-        animation.getKeyFrames().setAll(
-                new KeyFrame(Duration.ZERO,
-                        new KeyValue(
-                                prompt.translateYProperty(),
-                                0)),
+        KeyFrame yIni = new KeyFrame(Duration.ZERO,
+                new KeyValue(prompt.translateYProperty(), 0, Interpolator.EASE_BOTH));
+        KeyFrame yEnd = new KeyFrame(Duration.millis(50),
+                new KeyValue(prompt.translateYProperty(), newY * -1 , Interpolator.EASE_BOTH));
 
-                new KeyFrame(Duration.ZERO,
-                        new KeyValue(
-                                prompt.translateXProperty(), 0
-                        )
-                ),
+        KeyFrame xIni = new KeyFrame(Duration.ZERO,
+                new KeyValue(prompt.translateXProperty(), 0, Interpolator.EASE_BOTH));
 
-                new KeyFrame(Duration.millis(200),
-                        new KeyValue(prompt.translateXProperty(),
-                                leadButton.getWidth() * -1)),
+        KeyFrame xEnd = new KeyFrame(Duration.millis(50),
+                new KeyValue(prompt.translateXProperty(), leadButton.getWidth() * -1, Interpolator.EASE_BOTH));
 
-                new KeyFrame(Duration.millis(200),
-                        new KeyValue(prompt.translateYProperty(),
-                                newY * -1 ))
+        if (getChildren().contains(leadButton)) animation.getKeyFrames().setAll(yIni, xIni, yEnd, xEnd);
+         else animation.getKeyFrames().setAll(yIni, yEnd);
 
-        );
-
+        animation.setOnFinished(event -> pseudoClassStateChanged(FLOAT_PSEUDO_CLASS, true));
         animation.play();
     }
 //
@@ -505,10 +528,10 @@ public class GNTextFieldSkin extends TextFieldSkin {
                 }
             };
 
-    private static final CssMetaData<TextField, LeadIconType> LEAD_ICON_TYPE =
-            new CssMetaData<TextField, LeadIconType>(
-                    "-gn-icon-type",
-                    LeadIconTypeConverter.getInstance(), LeadIconType.FAVORITE
+    private static final CssMetaData<TextField, Icons> LEAD_ICON_TYPE =
+            new CssMetaData<TextField, Icons>(
+                    "-gn-lead-icon",
+                    LeadIconTypeConverter.getInstance(), Icons.FAVORITE
 
             ) {
                 @Override
@@ -518,7 +541,7 @@ public class GNTextFieldSkin extends TextFieldSkin {
                 }
 
                 @Override
-                public StyleableProperty<LeadIconType> getStyleableProperty(TextField styleable) {
+                public StyleableProperty<Icons> getStyleableProperty(TextField styleable) {
                     if (styleable.getSkin() instanceof GNTextFieldSkin) {
                         return ((GNTextFieldSkin) styleable.getSkin()).leadIconTypeProperty();
                     } else return null;
@@ -547,11 +570,33 @@ public class GNTextFieldSkin extends TextFieldSkin {
                 }
             };
 
+    private static final CssMetaData<TextField, Boolean> FLOAT_PROMPT =
+            new CssMetaData<TextField, Boolean>(
+                    "-gn-float-prompt",
+                    StyleConverter.getBooleanConverter(), false
+
+            ) {
+                @Override
+                public boolean isSettable(TextField styleable) {
+                    return ((GNTextFieldSkin) styleable.getSkin()).floatPrompt == null ||
+                            !((GNTextFieldSkin) styleable.getSkin()).floatPrompt.isBound();
+                }
+
+                @Override
+                public StyleableProperty<Boolean> getStyleableProperty(TextField styleable) {
+                    if (styleable.getSkin() instanceof GNTextFieldSkin) {
+                        return ((GNTextFieldSkin) styleable.getSkin()).floatPromptProperty();
+                    } else return null;
+
+                }
+            };
+
     private static final List<CssMetaData<? extends Styleable, ?>> STYLEABLES;
 
     static {
         final List<CssMetaData<? extends Styleable, ?>> styleables =
                 new ArrayList<>(TextFieldSkin.getClassCssMetaData());
+        styleables.add(FLOAT_PROMPT);
         styleables.add(MAX_LENGTH_VISIBLE);
         styleables.add(ACTION_BUTTON_TYPE);
         styleables.add(MAX_LENGTH);
@@ -569,7 +614,6 @@ public class GNTextFieldSkin extends TextFieldSkin {
     public List<CssMetaData<? extends Styleable, ?>> getCssMetaData() {
         return getClassCssMetaData();
     }
-
 
     public void setErrorVisible(Boolean errorVisible) {
         this.fieldFooter.setErrorVisible(errorVisible);
@@ -595,10 +639,6 @@ public class GNTextFieldSkin extends TextFieldSkin {
         return actionButtonType;
     }
 
-    public StyleableObjectProperty<LeadIconType> leadIconTypeProperty() {
-        return leadIconType;
-    }
-
     public StyleableObjectProperty<Number> maxLengthProperty() {
         return maxLength;
     }
@@ -611,15 +651,35 @@ public class GNTextFieldSkin extends TextFieldSkin {
         return actionButton;
     }
 
-    protected Icon getActionIcon() {
+    protected IconContainer getActionIcon() {
         return actionIcon;
     }
 
-    protected ActionButtonType getActionButtonType() {
-        return actionButtonType.get();
+    public Boolean isActionButtonVisible() {
+        return actionButtonVisible.get();
     }
 
-    public void setActionButtonType(ActionButtonType actionButtonType) {
-        this.actionButtonType.set(actionButtonType);
+    public Boolean getFloatPrompt() {
+        return floatPrompt.get();
+    }
+
+    public StyleableObjectProperty<Boolean> floatPromptProperty() {
+        return floatPrompt;
+    }
+
+    public void setFloatPrompt(Boolean floatPrompt) {
+        this.floatPrompt.set(floatPrompt);
+    }
+
+    public Icons getLeadIconType() {
+        return leadIconType.get();
+    }
+
+    public void setLeadIconType(Icons leadIconType) {
+        this.leadIconType.set(leadIconType);
+    }
+
+    public StyleableObjectProperty<Icons> leadIconTypeProperty() {
+        return leadIconType;
     }
 }
