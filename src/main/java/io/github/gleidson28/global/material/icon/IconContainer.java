@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.gleidson28.global.skin.icon;
+package io.github.gleidson28.global.material.icon;
 
 import javafx.scene.shape.SVGPath;
 
@@ -22,19 +22,36 @@ import javafx.scene.shape.SVGPath;
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on  23/11/2021
  */
-public class Icon extends SVGPath {
+public class IconContainer extends SVGPath {
 
-    public Icon() {
+    private String name;
+
+    public IconContainer() {
 
     }
 
-    public Icon(Icons icons) {
-        setContent(icons);
+    public IconContainer(String name) {
+        for (Icons i : Icons.values()) {
+            if (i.toString().equals(name)) {
+                setContent(i);
+                getStyleClass().add("icon");
+                this.name = name;
+            }
+        }
+    }
+
+    public IconContainer(Icons icon) {
+        setContent(icon);
         getStyleClass().add("icon");
+        name = icon.name();
     }
 
     public void setContent(Icons icon) {
         setContent(icon.getContent());
+        name = icon.name();
     }
 
+    public String getName() {
+        return name;
+    }
 }
