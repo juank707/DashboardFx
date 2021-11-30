@@ -55,14 +55,14 @@ public class SizeSelector extends Selector {
                         if(oldValue != null ) {
                             if (aside != null) {
                                 String oldV = (String) oldValue.getUserData();
-                                control.getStyleClass().removeAll(control.getProperties().get("prefix")  + oldV.toLowerCase());
-                                aside.removeStyleClass(control.getProperties().get("prefix") + oldV.toLowerCase() + ", ");
+                                control.getStyleClass().removeAll("input-" + oldV.toLowerCase());
+                                aside.removeStyleClass("input-" + oldV.toLowerCase() + ", ");
                             }
                         }
 
                         if(!newV.equalsIgnoreCase(_default) && aside != null) {
-                            control.getStyleClass().addAll(control.getProperties().get("prefix") + newV.toLowerCase());
-                            aside.addStyleClass(control.getProperties().get("prefix") + newV.toLowerCase() + ", ");
+                            control.getStyleClass().addAll("input-" + newV.toLowerCase());
+                            aside.addStyleClass("input-" + newV.toLowerCase() + ", ");
                         }
                 }
             }

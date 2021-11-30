@@ -16,13 +16,13 @@
  */
 package io.github.gleidson28.global.properties;
 
+import io.github.gleidson28.global.material.color.Colors;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 
 
 /**
@@ -39,6 +39,9 @@ public class ColorSelector extends Selector {
 
     private GridPane content = new GridPane();
 
+    public ColorSelector(Control control) {
+        this(control, "Nenhum");
+    }
     public ColorSelector(Control control, String... items) {
 
         this.control = control;
@@ -48,10 +51,6 @@ public class ColorSelector extends Selector {
 
         content.setAlignment(Pos.CENTER_LEFT);
 
-        Circle color = new Circle();
-        color.setStroke(Color.TRANSPARENT);
-        color.setRadius(11D);
-
         this.getChildren().addAll(createSeparator(), title, content);
 
         VBox.setMargin(title, new Insets(5,0,0,0));
@@ -60,23 +59,28 @@ public class ColorSelector extends Selector {
         content.setVgap(5D);
         content.setPadding(new Insets(5D));
 
+
         group.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
 
             if(newValue != null) {
-                String newV = (String) newValue.getUserData();
 
-                color.setStyle("-base : -" + newV.toLowerCase());
+                String newV = (String) newValue.getUserData();
+//                color.setStyle("-primary-color : \"" + newV.toLowerCase() + "\";");
 
                 if(oldValue != null) {
                     String oldV = (String) oldValue.getUserData();
-                    control.getStyleClass().removeAll(control.getProperties().get("prefix")   + oldV.toLowerCase());
-                    aside.removeStyleClass(control.getProperties().get("prefix")  + oldV.toLowerCase() + ", ");
+                    control.getStyleClass().removeAll("border-" + oldV.toLowerCase());
+                    aside.removeStyleClass("border-" +oldV.toLowerCase() + ", ");
                 }
 
                 if (aside != null) {
-                    control.getStyleClass().addAll(control.getProperties().get("prefix") + newV.toLowerCase());
-                    aside.addStyleClass(control.getProperties().get("prefix") + newV.toLowerCase() + ", ");
+                    control.getStyleClass().addAll(
+                            "border-" + newV.toLowerCase());
+                    aside.addStyleClass(
+                            "border-" + newV.toLowerCase() + ", ");
                 }
+
+                control.requestFocus();
             }
         });
 
@@ -89,7 +93,7 @@ public class ColorSelector extends Selector {
         int _row = 0;
         int _column = 0;
 
-        for (String i : items) {
+        for (Colors i : Colors.values()) {
 
             if(_count == 5) {
                 _row += 1;
@@ -97,26 +101,33 @@ public class ColorSelector extends Selector {
             }
 
             ToggleButton color = new ToggleButton();
-            color.setUserData(i);
+            color.setUserData(i.name());
             color.setToggleGroup(group);
+
+            color.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+                if (color.isSelected()) {
+                    event.consume();
+                }
+            });
 
             color.setMinSize(30, 30);
 
             color.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
             color.getStyleClass().addAll("rounded");
-            color.setStyle("-base : -" + i.toLowerCase() + ";");
+            color.setStyle("-fx-background-color : " + i + ";");
 
             content.getChildren().add(color);
             GridPane.setConstraints(color, _column, _row );
 
-            if(i.equalsIgnoreCase("info"))
-                group.selectToggle(color);
+
+//            if(i.equalsIgnoreCase("info"))
+//                group.selectToggle(color);
 
             _count += 1;
             _column += 1;
         }
 
-//        chColor.getSelectionModel().selectFirst();
+        group.selectToggle(group.getToggles().get(0));
     }
 
     @Override

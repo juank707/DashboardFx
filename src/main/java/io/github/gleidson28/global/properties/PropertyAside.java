@@ -29,8 +29,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
 
-import java.util.List;
-
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on  01/11/2021
@@ -81,9 +79,9 @@ public class PropertyAside extends ScrollPane {
         VBox body = new VBox();
         body.getChildren().add(title);
         body.getChildren().add(1, customSelectors);
-        body.getChildren().addAll(createSeparator(), createBox("StyleClass", "Your StyleClass", BoxType.STYLE));
-        body.getChildren().addAll(createSeparator(), createBox("Java", "CheckBox checkBox = new CheckBox(\"CheckBox\");", BoxType.JAVA));
-        body.getChildren().addAll(createSeparator(), createBox("FXML", "<CheckBox text=\"CheckBox\">", BoxType.FXML));
+        body.getChildren().addAll(createSeparator(), createBox("StyleClass", BoxType.STYLE));
+        body.getChildren().addAll(createSeparator(), createBox("Java", BoxType.JAVA));
+        body.getChildren().addAll(createSeparator(), createBox("FXML", BoxType.FXML));
 
         body.setSpacing(20);
 
@@ -106,17 +104,13 @@ public class PropertyAside extends ScrollPane {
 
     }
 
+    @Deprecated
     public void addSelectors(Selector... selectors) {
         customSelectors.getChildren().addAll(selectors);
-
     }
 
     public void addStyleClass(String _class) {
         styleClass.addAll(_class);
-    }
-
-    private void removeStyleClass(List _class) {
-        styleClass.removeAll(_class);
     }
 
     public void removeStyleClass(String _class) {
@@ -140,11 +134,11 @@ public class PropertyAside extends ScrollPane {
         fxmlArea.setText(null);
     }
 
-    private VBox createBox(String title, String prompt, BoxType type) {
-        return createBox(title, prompt, type, null);
+    private VBox createBox(String title, BoxType type) {
+        return createBox(title, type, null);
     }
 
-    private VBox createBox(String title, String prompt, BoxType type, String text) {
+    private VBox createBox(String title,  BoxType type, String text) {
         VBox box = new VBox();
 
         box.setMinHeight(200);
@@ -160,14 +154,14 @@ public class PropertyAside extends ScrollPane {
         box.setSpacing(10D);
 
         TextArea boxArea = new TextArea();
-        boxArea.setPromptText(prompt);
         boxArea.setText(text);
 
         Button btnCopy = new Button();
         btnCopy.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         btnCopy.getStyleClass().add("btn-flat");
         SVGPath iconCopy = new SVGPath();
-        iconCopy.setContent("M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z");
+        iconCopy.setContent("M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 " +
+                ".9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z");
         iconCopy.getStyleClass().add("icon");
 
         btnCopy.setGraphic(iconCopy);
@@ -177,24 +171,20 @@ public class PropertyAside extends ScrollPane {
         switch (type) {
             case STYLE:
                 content.getChildren().addAll(styleArea, btnCopy);
-                styleArea.setPromptText(prompt);
                 styleArea.setText(text);
                 area = styleArea;
                 break;
             case JAVA:
                 content.getChildren().addAll(javaArea, btnCopy);
-                javaArea.setPromptText(prompt);
                 javaArea.setText(text);
                 area = javaArea;
                 break;
             case FXML:
                 content.getChildren().addAll(fxmlArea, btnCopy);
-                fxmlArea.setPromptText(prompt);
                 fxmlArea.setText(text);
                 area = fxmlArea;
                 break;
         }
-
 
         TextArea finalArea = area;
         btnCopy.setOnMouseClicked(event -> {
@@ -209,11 +199,8 @@ public class PropertyAside extends ScrollPane {
         });
 
         btnCopy.setTooltip(new Tooltip("Copy"));
-
         box.getChildren().addAll(lblTitle, content);
-
         StackPane.setAlignment(btnCopy, Pos.BOTTOM_RIGHT);
-
         return box;
     }
 
@@ -224,20 +211,21 @@ public class PropertyAside extends ScrollPane {
     }
 
     private void read() {
-
         reset();
-
         javaArea.setText(
                 "CheckBox checkBox = new CheckBox(\"CheckBox\");" +
                         "\ncheckBox.getStyleClass()\n.addAll("
         );
+        fxmlArea.setText("<CheckBox text=\"CheckBox\">\n" +
+                "\t<styleClass>\n");
 
         for (String newValue : styleClass) {
-            styleArea.appendText(newValue);
-            javaArea.appendText( "\"" + newValue + "\n");
-            fxmlArea.appendText( "<CheckBox text=\"CheckBox\">\n" +
-                    "\t<styleClass>\n" +
-                    "\t\t <String fx:value=\""+ newValue.replace(",", "") + "\" />\n");
+
+            styleArea.appendText(newValue + " ");
+            javaArea.appendText("\"" + newValue.replaceAll(",","") + "\", ");
+            fxmlArea.appendText(
+                    "\t\t <String fx:value=\""+ newValue
+                            .replace(",", "") + "\" />\n");
         }
 
         if(styleArea.getText() != null) {
@@ -246,24 +234,39 @@ public class PropertyAside extends ScrollPane {
         }
 
         if(javaArea.getText() != null && javaArea.getText().contains(",")) {
-            javaArea.replaceText(javaArea.getText().lastIndexOf(","), javaArea.getText().length(), "");
-            javaArea.appendText("\");");
+
+            javaArea.setText(javaArea.getText().replaceAll(" ", ""));
+            javaArea.replaceText(
+                    javaArea.getText().
+                            lastIndexOf(","),
+                    javaArea.getText().length(), "");
+
+            javaArea.appendText(");");
         }
 
         if(fxmlArea.getText() != null) {
+            fxmlArea.setText(fxmlArea.getText().replaceAll(" ", ""));
             fxmlArea.appendText("\t</styleClass>\n" +
                     "</CheckBox>");
         }
-
     }
 
     private VBox createSeparator() {
         VBox separator = new VBox();
 
         separator.getStyleClass().addAll("border");
-        separator.setStyle("-fx-background-color : -light-gray;");
+        separator.setStyle("-fx-background-color : -separator-color;");
 
         separator.setPrefHeight(1);
         return separator;
+    }
+
+    public void removeSelector(Selector selector) {
+        selector.reset();
+        customSelectors.getChildren().remove(selector);
+    }
+
+    public void addSelector(Selector selector) {
+        customSelectors.getChildren().add(selector);
     }
 }

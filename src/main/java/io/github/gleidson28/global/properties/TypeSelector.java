@@ -16,105 +16,150 @@
  */
 package io.github.gleidson28.global.properties;
 
-import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
- * Create on  04/11/2021
+ * Create on  05/11/2021
  */
 public class TypeSelector extends Selector {
 
     private Control control;
+    private ToggleGroup group   = new ToggleGroup();
+    private VBox        content = new VBox();
+
     private PropertyAside aside;
-    private final VBox content = new VBox();
-    private final ToggleGroup group = new ToggleGroup();
+    private String _default;
 
-    private String oldText;
+//    public TypeSelector(Control control, String... options) {
+//        this(control, "Type", options);
+//    }
 
-    public TypeSelector(Control control, String... options) {
-
+    public TypeSelector(Control control, String title, String... options) {
         this.control = control;
 
-        if(control instanceof Button) {
-            oldText = ((Button) control).getText();
-        }
+        Label _title = new Label(title);
+        _title.getStyleClass().add("h5");
 
-        Label title = new Label("Type");
-        title.getStyleClass().add("h5");
-
-        this.setSpacing(10D);
+        this.setSpacing(5D);
+        content.setSpacing(2D);
         content.setAlignment(Pos.CENTER_LEFT);
 
-        RadioButton _default = new RadioButton("Default");
-        _default.setToggleGroup(group);
-        content.getChildren().addAll(_default);
+        this.getChildren().addAll(createSeparator(), _title, content);
 
-        this.getChildren().addAll(createSeparator(), title, content);
-
-        group.selectToggle(_default);
-
-        content.setSpacing(2D);
-
-        group.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-
-            String newV = ( (ToggleButton) newValue).getText();
-
-            String oldV = null;
-
-            if (oldValue != null) {
-                oldV = ( (ToggleButton) oldValue).getText();
-            }
-
-            if(oldV != null ) {
-
-                String finalOldV = oldV;
-                Platform.runLater( () -> {
-
-                    control.getStyleClass().removeAll(control.getProperties().get("prefix") +  finalOldV.toLowerCase());
-                    aside.removeStyleClass(control.getProperties().get("prefix")  + finalOldV.toLowerCase() + ", ");
-                });
-
-            }
-
-            if (!newV.equals("Default") && aside != null ) {
-
-                if(control instanceof Button) {
-                    if(newV.equalsIgnoreCase("round")) {
-                        ((Button) control).setText("R");
-                        control.setMinWidth(40);
-                        control.setPrefWidth(40);
-                    } else {
-                        ((Button) control).setText(oldText);
-                        control.setMinWidth(Region.USE_COMPUTED_SIZE);
-                        control.setPrefWidth(80);
-                    }
-
-                }
-
-                Platform.runLater(() -> {
-                    control.getStyleClass().addAll(control.getProperties().get("prefix")  + newV.toLowerCase());
-                    aside.addStyleClass(control.getProperties().get("prefix")  + newV.toLowerCase() + ", ");
-                });
-
-            }
-
-
-        });
 
         addOptions(options);
     }
 
+
     public void addOptions(String... options) {
-        for (String r : options) {
-            RadioButton radioButton = new RadioButton(r);
+
+        RadioButton _default = new RadioButton("Default");
+        _default.setContentDisplay(ContentDisplay.TEXT_ONLY);
+        _default.setPrefWidth(80);
+
+        _default.setToggleGroup(group);
+
+        content.getChildren().add(_default);
+        group.selectToggle(_default);
+
+        for (String i : options) {
+
+            RadioButton radioButton = new RadioButton(i);
+            radioButton.setPrefWidth(80);
+
             radioButton.setToggleGroup(group);
-            content.getChildren().addAll(radioButton);
+            radioButton.setContentDisplay(ContentDisplay.TEXT_ONLY);
+
+//            typeButton.getStyleClass().addAll("border", "toggle-light");
+//            typeButton.setStyle("-fx-border-width : 1px;");
+
+//            if(i.equalsIgnoreCase(_default)) {
+//                typeButton.setSelected(true);
+//            }
+//            color.setStyle("-base : -" + i.toLowerCase() + ";");
+
+            content.getChildren().add(radioButton);
         }
+
+        group.selectedToggleProperty().addListener(this::changed);
+    }
+
+
+    private void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+
+        if (oldValue != null) {
+            String _class = ((RadioButton) oldValue).getText();
+            if (control instanceof TextInputControl) {
+                removeClass(_class, "input-");
+            } else {
+                removeClass(_class);
+            }
+        }
+
+        if (newValue != null) {
+            String _class = ( (RadioButton) newValue).getText();
+
+            if (!_class.equalsIgnoreCase("default")) {
+                if (control instanceof TextInputControl) {
+                    addClass(_class, "input-");
+                } else {
+                    addClass(_class);
+                }
+            }
+        }
+
+    }
+
+
+
+    private void removeClass(String _class) {
+
+        _class = _class.toLowerCase();
+
+        control.getStyleClass().removeAll( control.getProperties().get("prefix") +
+                _class);
+
+        aside.removeStyleClass( control.getProperties().get("prefix") +
+                _class + ", ");
+    }
+
+    private void removeClass(String _class, String prefix) {
+
+        _class = _class.toLowerCase();
+
+        control.getStyleClass().removeAll( prefix +
+                _class);
+
+        aside.removeStyleClass( prefix +
+                _class + ", ");
+    }
+
+    private void addClass(String _class) {
+
+        _class = _class.toLowerCase();
+
+        control.getStyleClass().addAll( control.getProperties().get("prefix") +
+                _class);
+
+        if (aside != null)
+            aside.addStyleClass( control.getProperties().get("prefix") +
+                    _class + ", ");
+    }
+
+    private void addClass(String _class, String prefix) {
+
+        _class = _class.toLowerCase();
+
+        control.getStyleClass().addAll( prefix +
+                _class);
+
+        if (aside != null)
+            aside.addStyleClass( prefix +
+                    _class + ", ");
     }
 
 
