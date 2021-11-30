@@ -5,6 +5,95 @@
     Samples styles
 */
 
+
+/********************************************************************
+
+            Main Chart
+
+*********************************************************************/
+
+.main-chart .chart-series-area-fill  {
+  -fx-fill : linear-gradient(to left, -base, -info);
+  /* -fx-fill : linear-gradient(to bottom, white, transp); */
+}
+
+.main-chart .chart-series-area-line {
+    -fx-stroke: linear-gradient(to left, -base, -info);
+    -fx-stroke-width: 2px;
+}
+
+.main-chart .chart-area-symbol
+{
+    -fx-background-color : linear-gradient(to left, -base, -info);
+}
+
+.main-chart .chart-content .chart-plot-background {
+    -fx-background-color : transparent;
+}
+
+.btn-choose-icon {
+    -fx-background-color : transparent;
+    -fx-text-fill : -text-color;
+    -fx-border-width : 2px;
+    -fx-border-color : -border-color;
+    -fx-border-style : dashed;
+    -fx-stroke-dash-offset : 30;
+    -fx-stroke-dash-array : 100px;
+    -fx-background-radius : 2px;
+    -fx-border-radius : 2px;
+}
+
+.btn-choose-icon:pressed:hover,
+.btn-choose-icon:pressed,
+.btn-choose-icon:focused,
+.btn-choose-icon:hover:focused,
+.btn-choose-icon:selected,
+.btn-choose-icon:hover {
+    -fx-background-color : transparent;
+}
+
+.btn-choose-icon:pressed {
+    -fx-background-color : -medium-gray;
+}
+
+.btn-icon-select {
+    -fx-border-width : 1px;
+}
+
+.btn-icon-select:pressed {
+    -fx-background-color : -dark-gray;
+    -fx-background-radius : 100px;
+    -fx-border-radius : 100px;
+    -fx-border-style : solid;
+}
+
+.btn-icon-select:selected .icon {
+    -fx-fill : white;
+}
+
+.btn-icon-select:selected {
+    -fx-background-color : -dark-gray;
+    -fx-background-radius : 100px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .btn-hover
 {
   -fx-background-color : derive(-base, -40%);
@@ -13,13 +102,6 @@
 .btn-focused
 {
   -fx-background-color : derive(-base, -40%), derive(-base, -40%), derive(-base, -40%), -base;
-}
-
-.gn-buttons .gn-close, .gn-buttons .gn-minimize, .gn-buttons .gn-maximize,
-.gn-buttons .gn-full-screen
- {
-  -fx-background-color : transparent;
-  -fx-cursor : default;
 }
 
 .btn-payments,
@@ -60,29 +142,6 @@
 }
 
 
-.table-detail
-{
-   -fx-border-width : 1 0 1 0;
-}
-
-.table-detail:row-selection:constrained-resize .column-header-background
-{
-    -fx-padding : 0px;
-}
-
-/* menu */
-
-.lbl-profile,
-.lbl-profile:focused,
-.lbl-profile:pressed,
-.lbl-profile:hover,
-.lbl-profile .text
-{
-  -fx-padding : 5px;
-  -fx-background-radius : 2px;
-  -fx-background-color : derive(-base, 90%);
-  -fx-fill : -base;
-}
 
 .btn-profile:focused,
 .btn-profile:pressed,
@@ -97,21 +156,6 @@
     -fx-fill : -base;
 }
 
-.btn-profile .text
-{
-  -fx-fill : -text-color;
-}
-
-.btn-profile SVGPath
-{
-  -fx-fill : -icon-color;
-}
-
-.btn-profile
-{
-  -fx-border-width : 0px;
-  -fx-background-color : transparent;
-}
 
 .rating .container .button.strong
 {
@@ -194,17 +238,7 @@
     -fx-translate-y : -10px;
 }
 
-.jfx-dialog > StackPane
-{
-  -fx-background-color : transparent;
-}
 
-
-.calendar-pane .calendar-cell
-{
-    -fx-background-color : transparent;
-    -fx-background-radius : 5px;
-}
 
 .calendar-pane .calendar-cell:selected
 {
@@ -254,9 +288,6 @@
     -fx-border-width : 1px;
 }
 
-.test {
-    -fx-background-color :  radial-gradient(radius 200%, -mint, -info, derive(-info, 40%));
-}
 
 .table-row-cell:filled:selected .table-column .text
 {
@@ -272,10 +303,6 @@
 }
 
 
-.workground {
-  -fx-background-image : url("/com/gn/module/media/workground.jpg");
-  -fx-background-size  : cover;
-}
 
 .label-place {
   -fx-text-fill : -text-color;
@@ -801,6 +828,7 @@
     -fx-background-color : -info;
 }
 
+.background-color:fitToWidth .viewport,
 .background-color {
     -fx-background-color : -light-gray;
 }
@@ -860,4 +888,117 @@
     -fx-background-color : transparent;
     -fx-border-color : -medium-gray;
 }
+
+.img-back {
+    -fx-background-image : url("../img/imgBack.jpg");
+    -fx-background-size : cover;
+}
+
+.name-field {
+    -gn-lead-icon-visible : true;
+    -gn-action-button-visible : true;
+    -gn-action-button-type : clear;
+    -gn-icon-type : contact;
+
+    -gn-max-length-visible : true;
+    -gn-max-length : 20;
+
+}
+
+.name-field .action-button {
+    -fx-scale-x : 0.6;
+    -fx-scale-y : 0.6;
+
+}
+
+.tf-monetary, .pw-monetary {
+    -gn-lead-icon-visible : true;
+    -gn-icon-type : monetary;
+}
+
+.tf-favorite , .pw-favorite {
+    -gn-lead-icon-visible : true;
+    -gn-icon-type : favorite;
+}
+
+
+.tf-place, .pw-place{
+    -gn-lead-icon-visible : true;
+    -gn-icon-type : place;
+}
+
+.tf-education, .pw-education {
+    -gn-lead-icon-visible : true;
+    -gn-icon-type : education;
+}
+
+.tf-lapse, .pw-lapse{
+    -gn-icon-type : timelapse;
+}
+
+.tf-map, .pw-map{
+    -gn-lead-icon-visible : true;
+    -gn-icon-type : map;
+}
+
+.tf-search .action-button {
+    -fx-translate-x : -5px;
+}
+
+.tf-search, .pw-search{
+    -gn-lead-icon-visible : true;
+    -gn-icon-type : search;
+}
+
+.tf-clear, .pw-clear {
+    -gn-action-button-visible : true;
+    -gn-action-button-type : clear;
+}
+
+.tf-timelapse, .pw-timelapse {
+    -gn-lead-icon-visible : true;
+    -gn-icon-type : timelapse;
+}
+
+.tf-lock, .pw-lock {
+    -gn-lead-icon-visible : true;
+    -gn-icon-type : lock;
+}
+
+.pw-viewer {
+    -gn-action-button-visible : true;
+    -gn-action-button-type : viewer;
+}
+
+
+.field-filled .prompt {
+    -fx-background-color : transparent;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -19,16 +19,20 @@ package io.github.gleidson28.module.main;
 import com.gn.GNCarousel;
 import core.CurveFittedAreaChart;
 import core.DonutChart;
-import io.github.gleidson28.global.enhancement.FluidView;
+import io.github.gleidson28.global.enhancement.ActionView;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.chart.*;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
@@ -40,9 +44,13 @@ import java.util.ResourceBundle;
  * Create on  20/10/2018
  * Version 1.0
  */
-public class Dashboard implements Initializable, FluidView {
+public class Dashboard implements Initializable, ActionView {
 
     @FXML private StackPane root;
+
+    @FXML private GridPane  row1;
+    @FXML private GridPane  row2;
+
     @FXML private CurveFittedAreaChart<Number, Number> curve;
     @FXML private DonutChart donutChart;
     @FXML private GNCarousel carousel;
@@ -264,13 +272,49 @@ public class Dashboard implements Initializable, FluidView {
         lineChart.setCreateSymbols(true);
     }
 
+
+
+    private void resizeAll(ObservableValue<? extends Number> observableValue,
+                           Number oldValue, Number newValue) {
+
+        if(newValue.doubleValue() <= 400) {
+            resize(row1, 1, 4);
+            resize(row2, 1, 3);
+        } else if(newValue.doubleValue() < 800 && newValue.doubleValue() > 400) {
+            resize(row1, 2, 2);
+            resize(row2, 1, 3);
+        } else if(newValue.doubleValue() < 1200 && newValue.doubleValue() > 800) {
+            resize(row2, 1, 3);
+        } else {
+            resize(row1, 4,1);
+            resize(row2, 3, 1);
+        }
+
+    }
+
+    private void resize(GridPane grid, int col, int row) {
+        grid.getRowConstraints().clear();
+        grid.getColumnConstraints().clear();
+        int count = 0;
+        for (int i = 0; i < col; i++) {
+            for (int k = 0; k < row; k++) {
+
+                if (count < grid.getChildren().size()) {
+                    GridPane.setConstraints(grid.getChildren().get(count++),
+                            i, k, 1, 1,
+                            HPos.CENTER, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS);
+                }
+            }
+        }
+    }
+
     @Override
     public void onEnter()  {
-
+        addListener(root, this::resizeAll);
     }
 
     @Override
     public void onExit() {
-
+        removeListener(root);
     }
 }

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.SplitMenuButton?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.web.HTMLEditor?>
+
+<VBox alignment="CENTER" prefHeight="1214.0" prefWidth="758.0" spacing="30.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+    <stylesheets>
+        <URL value="@../theme/css/material-color.css" />
+        <URL value="@../theme/css/skeleton.css" />
+        <URL value="@../theme/css/light.css" />
+        <URL value="@../theme/css/bootstrap.css" />
+        <URL value="@../theme/css/shape.css" />
+        <URL value="@../theme/css/typographic.css" />
+        <URL value="@../theme/css/helpers.css" />
+        <URL value="@../theme/css/master.css" />
+    </stylesheets>
+   <children>
+      <HTMLEditor htmlText="&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body contenteditable=&quot;true&quot;&gt;&lt;/body&gt;&lt;/html&gt;" prefHeight="200.0" prefWidth="506.0" />
+      <TextField promptText="Prompt Text" />
+      <HBox>
+         <children>
+            <PasswordField minHeight="10.0" prefHeight="20.0" prefWidth="433.0" promptText="Prompt Text" />
+            <TextArea maxHeight="85.0" minHeight="40.0" prefHeight="85.0" prefWidth="358.0" promptText="Prompt Text" wrapText="true" />
+         </children>
+      </HBox>
+      <ComboBox prefWidth="768.0" promptText="Prompt Text" />
+      <ChoiceBox prefWidth="698.0" />
+      <MenuButton mnemonicParsing="false" prefWidth="657.0" text="MenuButton">
+        <items>
+          <MenuItem mnemonicParsing="false" text="Action 1" />
+          <MenuItem mnemonicParsing="false" text="Action 2" />
+        </items>
+      </MenuButton>
+      <SplitMenuButton contentDisplay="BOTTOM" mnemonicParsing="false" prefWidth="671.0" text="SplitMenuButton">
+        <items>
+          <MenuItem mnemonicParsing="false" text="Action 1" />
+          <MenuItem mnemonicParsing="false" text="Action 2" />
+        </items>
+      </SplitMenuButton>
+      <Spinner prefHeight="42.0" prefWidth="756.0" />
+      <HBox alignment="CENTER" prefHeight="88.0" prefWidth="658.0" spacing="20.0">
+         <children>
+            <RadioButton mnemonicParsing="false" text="RadioButton" />
+            <CheckBox mnemonicParsing="false" text="CheckBox" />
+         </children>
+      </HBox>
+      <Button mnemonicParsing="false" prefHeight="38.0" prefWidth="77.0" text="Button" />
+      <Accordion />
+   </children>
+   <padding>
+      <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+   </padding>
+
+</VBox>

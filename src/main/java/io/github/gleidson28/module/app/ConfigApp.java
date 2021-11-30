@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.gleidson28;
+package io.github.gleidson28.module.app;
 
 import io.github.gleidson28.decorator.GNDecorator;
 import io.github.gleidson28.global.badges.AlertBadge;
@@ -44,7 +44,7 @@ import java.util.ResourceBundle;
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on  04/08/2021
  */
-public enum App {
+public enum ConfigApp {
 
     INSTANCE;
 
@@ -58,7 +58,7 @@ public enum App {
 
     private HostServices hostServices = null;
 
-    App() {
+    ConfigApp() {
         width.set( Double.parseDouble(getString("app.width")));
         height.set( Double.parseDouble(getString("app.height")));
 
@@ -88,6 +88,7 @@ public enum App {
         return this.decorator.widthProperty();
     }
 
+    @Contract(mutates = "this")
     public void setHostServices(HostServices hostServices) {
         this.hostServices = hostServices;
     }
@@ -110,7 +111,6 @@ public enum App {
                 getClass().getResource("/theme/css/skeleton.css").toExternalForm(),
                 getClass().getResource("/theme/css/light.css").toExternalForm(),
                 getClass().getResource("/theme/css/bootstrap.css").toExternalForm(),
-                getClass().getResource("/theme/css/simple-info.css").toExternalForm(),
                 getClass().getResource("/theme/css/forms.css").toExternalForm(),
                 getClass().getResource("/theme/css/shape.css").toExternalForm(),
                 getClass().getResource("/theme/css/typographic.css").toExternalForm(),
@@ -123,7 +123,7 @@ public enum App {
         decorator.getIcons().add(new Image("/theme/img/logo4.png"));
         decorator.show();
 
-        decorator.testWithScenicView();
+//        decorator.testWithScenicView();
 
     }
 
@@ -147,14 +147,6 @@ public enum App {
             e.printStackTrace();
         }
         return properties.getProperty(name);
-    }
-
-    public double getWidth() {
-        return width.get();
-    }
-
-    public double getHeight() {
-        return height.get();
     }
 
     public void setLocale(Locale locale) {

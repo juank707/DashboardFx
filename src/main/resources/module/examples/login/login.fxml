@@ -22,11 +22,11 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<StackPane fx:id="root" minHeight="-Infinity" minWidth="-Infinity" prefHeight="614.0" prefWidth="1028.0" styleClass="workground" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.gleidson28.module.examples.login.LoginController">
+<StackPane fx:id="root" minHeight="-Infinity" minWidth="-Infinity" prefHeight="614.0" prefWidth="1028.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.gleidson28.module.examples.login.LoginController">
    <children>
       <HBox prefHeight="546.0" prefWidth="1134.0">
          <children>
-            <StackPane maxWidth="400.0" prefHeight="614.0" prefWidth="262.0" style="-fx-background-color: -base;" styleClass="workground">
+            <StackPane maxWidth="400.0" prefHeight="614.0" prefWidth="262.0">
                <children>
                   <VBox alignment="BOTTOM_CENTER" prefHeight="614.0" prefWidth="239.0" styleClass="img-back" StackPane.alignment="CENTER">
                      <children>
@@ -68,7 +68,7 @@
                <children>
                   <ScrollPane id="bodyLogin" fx:id="bodyLogin" fitToHeight="true" fitToWidth="true">
                      <content>
-                        <VBox id="loginContent" fx:id="loginContent" alignment="CENTER">
+                        <VBox id="loginContent" fx:id="loginContent" alignment="CENTER" style="-fx-background-color: white;">
                            <children>
                               <GridPane fx:id="login_content" alignment="CENTER" maxHeight="400.0" maxWidth="400.0" prefHeight="416.0" prefWidth="354.0">
                                 <columnConstraints>
@@ -84,20 +84,22 @@
                                     <RowConstraints maxHeight="125.0" minHeight="1.0" prefHeight="124.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <TextField fx:id="username" prefHeight="40.0" prefWidth="371.0" promptText="Nome de usuario" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" GridPane.valignment="TOP">
+                                    <TextField fx:id="username" minHeight="50.0" prefHeight="40.0" prefWidth="371.0" promptText="Nome de usuario" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" GridPane.valignment="TOP">
                                        <styleClass>
-                                          <String fx:value="field-filled" />
-                                          <String fx:value="name-field" />
+                                          <String fx:value="lead-contact" />
+                                          <String fx:value="action-clear" />
+                                          <String fx:value="input-large" />
                                        </styleClass>
                                     </TextField>
-                                    <PasswordField fx:id="password" prefHeight="40.0" promptText="Sua senha" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" GridPane.valignment="TOP">
+                                    <PasswordField fx:id="password" minHeight="50.0" prefHeight="40.0" promptText="Sua senha" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" GridPane.valignment="TOP">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>
                                        <styleClass>
                                           <String fx:value="field-filled" />
-                                          <String fx:value="tf-lock" />
+                                          <String fx:value="lead-lock" />
                                           <String fx:value="pw-viewer" />
+                                          <String fx:value="input-large" />
                                        </styleClass>
                                     </PasswordField>
                                     <Button fx:id="btn_enter" defaultButton="true" mnemonicParsing="false" onMouseClicked="#login" prefWidth="121.0" styleClass="btn-alternate" text="Entrar" GridPane.rowIndex="5" />
@@ -151,14 +153,10 @@
    <stylesheets>
       <URL value="@../../../theme/css/material-color.css" />
       <URL value="@../../../theme/css/skeleton.css" />
+      <URL value="@../../../theme/css/bootstrap.css" />
       <URL value="@../../../theme/css/shape.css" />
       <URL value="@../../../theme/css/typographic.css" />
       <URL value="@../../../theme/css/helpers.css" />
-      <URL value="@../../../theme/css/bootstrap.css" />
       <URL value="@../../../theme/css/master.css" />
-
-
-
-
    </stylesheets>
 </StackPane>

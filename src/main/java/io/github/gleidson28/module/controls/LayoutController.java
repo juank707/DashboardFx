@@ -17,24 +17,23 @@
 package io.github.gleidson28.module.controls;
 
 import io.github.gleidson28.global.creators.DrawerCreator;
-import io.github.gleidson28.global.enhancement.ObserverView;
+import io.github.gleidson28.global.enhancement.ActionView;
+import io.github.gleidson28.global.material.icon.IconContainer;
+import io.github.gleidson28.global.material.icon.Icons;
 import io.github.gleidson28.global.properties.PropertyAside;
 import io.github.gleidson28.global.properties.Selector;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Text;
 
 import java.net.URL;
-import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -42,7 +41,7 @@ import java.util.ResourceBundle;
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on  05/11/2021
  */
-public class LayoutController implements Initializable, ObserverView {
+public class LayoutController implements Initializable, ActionView {
 
     @FXML private BorderPane body;
     @FXML private TilePane boxControl;
@@ -51,16 +50,20 @@ public class LayoutController implements Initializable, ObserverView {
     @FXML private VBox header;
     @FXML private TabPane tabs;
 
+    @FXML private ChoiceBox<String> options;
+
     @FXML private Tab skin;
 
     @FXML private GridPane grid;
 
     @FXML private VBox box;
 
+    @FXML private TextField textTest;
+
     private final Button        hamburger   = new Button();
     private final PropertyAside aside       = new PropertyAside();
 
-    @FXML private Button btnAlternate;
+    @FXML private ComboBox<String> comboBox;
 
     private final ChangeListener<Number> resizeLayout = (observable, oldValue, newValue) -> {
         if(newValue.doubleValue() < 800) {
@@ -77,70 +80,48 @@ public class LayoutController implements Initializable, ObserverView {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         hamburger.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-        hamburger.getStyleClass().addAll("btn-transparent", "border");
+        hamburger.getStyleClass().addAll("btn-flat");
         hamburger.setPadding(new Insets(0,10,0,10));
 
         hamburger.setPrefSize(40, 40);
         hamburger.setMaxSize(40, 40);
 
-        SVGPath icon = new SVGPath();
-        icon.setContent("M2 15.5v2h20v-2H2zm0-5v2h20v-2H2zm0-5v2h20v-2H2z");
-        icon.setStyle("-fx-fill : -text-color;");
-        hamburger.setGraphic(icon);
+        hamburger.setMinHeight(40);
+
+        hamburger.setGraphic(new IconContainer(Icons.HAMBURGER));
 
         hamburger.setOnMouseClicked(event -> {
             DrawerCreator.INSTANCE.createDrawerLeft(aside);
         });
 
-//        box.getChildren().forEach( child -> {
-//            GridPane newChild = (GridPane) child;
-//            newChild.widthProperty().addListener((observable, oldValue, newValue) -> {
-//                AtomicInteger inc = new AtomicInteger();
-//                if(newValue.doubleValue() < 425D) {
-//                    newChild.getChildren().forEach( f -> {
-//                        newChild.getColumnConstraints().clear();
-//                        GridPane.setConstraints(
-//                                f,0,
-//                                inc.getAndIncrement(),1, 1,
-//                                HPos.LEFT, VPos.CENTER, Priority.ALWAYS, Priority.SOMETIMES
-//                        );
-//                    });
-//                } else {
-//                    newChild.getChildren().forEach( f -> {
-//                        newChild.getRowConstraints().clear();
-//                        GridPane.setConstraints(f, inc.getAndIncrement(),0,1, 1,
-//                                HPos.LEFT, VPos.CENTER, Priority.ALWAYS, Priority.SOMETIMES
-//                        );
-//                    });
-//                }
-//            });
-//        });
-
-
+        comboBox.getItems().addAll("First Value", "Second Value");
     }
 
-    public void setControl(Control control,  String about, Selector... selectors) {
-        setControl(control, null, selectors);
+    public void setControl(Control control,  String about,  Selector... selectors) {
+        setControl(control,  null, null, selectors);
     }
 
-    public void setControl(Control control, Parent parent, String about, Selector... selectors) {
+    public void setControl(Control control, String about, List<Tab> tabs, Selector... selectors) {
 
         title.setText(control.getClass().getSimpleName());
 
         this.about.setText(about);
 
-//        this.tabs.getTabs().remove(1, this.tabs.getTabs().size());
-
-        if(parent != null)
-            skin.setContent(parent);
+        this.tabs.getTabs().remove(1, this.tabs.getTabs().size());
+        if (tabs != null) {
+            for (Tab tab : tabs) {
+                this.tabs.getTabs().add(tab);
+            }
+        }
 
         aside.clear();
         aside.setControl(control);
 
         for (Selector selector : selectors) {
             selector.setAside(aside);
-            aside.addSelectors(selector);
+            aside.addSelector(selector);
         }
 
         boxControl.getChildren().clear();
@@ -149,9 +130,13 @@ public class LayoutController implements Initializable, ObserverView {
         body.setLeft(aside);
     }
 
+    @Override
+    public void onEnter() {
+        addListener(body, resizeLayout);
+    }
 
     @Override
-    public List<ChangeListener<Number>> getListeners() {
-        return Collections.singletonList(resizeLayout);
+    public void onExit() {
+        removeListener(body);
     }
 }

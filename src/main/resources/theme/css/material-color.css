@@ -236,7 +236,7 @@
 }
 
 .base
- {
+{
   -fx-background-color : -base;
 }
 
@@ -350,7 +350,7 @@
   -fx-background-color : -linkedin;
 }
 
-.instgram
+.instagram
 {
   -fx-background-color : -instgram;
 }

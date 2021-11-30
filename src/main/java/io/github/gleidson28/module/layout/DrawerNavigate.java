@@ -16,16 +16,24 @@
  */
 package io.github.gleidson28.module.layout;
 
+import io.github.gleidson28.module.app.ConfigApp;
 import io.github.gleidson28.GNAvatarView;
-import io.github.gleidson28.global.enhancement.FluidView;
+import io.github.gleidson28.global.enhancement.ActionView;
 import io.github.gleidson28.global.exceptions.NavigationException;
 import io.github.gleidson28.global.plugin.ViewManager;
 import io.github.gleidson28.global.properties.*;
+import io.github.gleidson28.global.skin.GNComboBoxSkin;
+import io.github.gleidson28.global.material.icon.IconContainer;
+import io.github.gleidson28.global.material.icon.Icons;
 import io.github.gleidson28.module.controls.LayoutController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
 
@@ -33,13 +41,16 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Properties;
+import java.util.ResourceBundle;
 
 /**
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on  14/09/2020
  */
-public class DrawerNavigate implements Initializable, FluidView {
+public class DrawerNavigate implements Initializable, ActionView {
 
     @FXML private VBox drawerBox;
     @FXML private HBox searchBox;
@@ -53,6 +64,7 @@ public class DrawerNavigate implements Initializable, FluidView {
     private LayoutController layoutController;
 
     private Properties properties = new Properties();
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -97,11 +109,6 @@ public class DrawerNavigate implements Initializable, FluidView {
     private void goDash() throws NavigationException {
         ViewManager.INSTANCE.setContent("dashboard");
     }
-
-
-
-
-
 
     @FXML
     private void goCarousel() throws NavigationException {
@@ -177,27 +184,80 @@ public class DrawerNavigate implements Initializable, FluidView {
 
     @FXML
     private void openOptions() {
+        ContextMenu contextSettings = new ContextMenu();
+        MenuItem profile = new MenuItem("Profile");
+        profile.setGraphic(new IconContainer(Icons.CONTACT));
+        MenuItem logout = new MenuItem("Logout");
+        logout.setGraphic(new IconContainer(Icons.LOGOUT));
 
+        contextSettings.getItems().addAll(profile, logout);
+
+        Bounds bounds = btn_settings.localToScreen(btn_settings.getBoundsInLocal());
+//
+        contextSettings.show(ConfigApp.INSTANCE.getDecorator().getWindow(),
+                bounds.getMaxX(), bounds.getMinY()
+        );
     }
 
-    private void configLayoutControl(Control control, List<Tab> tabs, Selector... selectors) throws NavigationException {
+   private void configLayoutControl(Control control, List<Tab> tabs, Selector... selectors)
+           throws NavigationException {
 
-        if(layoutController == null) {
-            layoutController = (LayoutController)
-                    ViewManager.INSTANCE.getController("control-layout");
-        }
+        defineLayout();
 
         String className = control.getClass().getSimpleName();
 
         ViewManager.INSTANCE.setContent("control-layout", className);
 
         layoutController.setControl(
-                control,
-                tabs,
-                properties.getProperty(className + ".about"),
-                selectors
+               control,
+               properties.getProperty(className + ".about"),
+               tabs,
+               selectors
         );
+
+   }
+
+    private void configLayoutControl(Control control,  Selector... selectors) throws NavigationException {
+        configLayoutControl(control, null, selectors);
     }
+
+    private void defineLayout() {
+        if(layoutController == null) {
+            layoutController = (LayoutController)
+                    ViewManager.INSTANCE.getController("control-layout");
+        }
+    }
+
+    private Tab createContent(String text) {
+        Tab first = new Tab(text);
+        StackPane firstContent = new StackPane(new Button(text));
+        firstContent.setStyle("-fx-background-color : -light-gray;");
+        firstContent.setAlignment(Pos.CENTER);
+        first.setContent(firstContent);
+        return first;
+    }
+
+    @FXML
+    private void goTabPane() throws NavigationException {
+
+        TabPane tabPane = new TabPane();
+
+        tabPane.getTabs().addAll(
+                createContent("First"),
+                createContent("Second"),
+                createContent("Third")
+        );
+
+        tabPane.getProperties().putIfAbsent("prefix", "tab-");
+
+        tabPane.setMinSize(500, 500);
+
+        configLayoutControl(
+                tabPane
+        );
+
+    }
+
 
     @FXML
     private void goCheckBox() throws NavigationException {
@@ -205,16 +265,100 @@ public class DrawerNavigate implements Initializable, FluidView {
         checkBox.getProperties().putIfAbsent("prefix", "check-");
         configLayoutControl(
                 checkBox,
-                Collections.singletonList(new Tab("Skin")),
                 new ColorSelector(
                         checkBox,
                         "Primary", "Info", "Success", "Warning", "Danger", "Secondary"
                 ),
-                new TypeSelector(
-                        checkBox,
-                        "Rounded", "Flat", "Task"
-                ),
                 new SizeSelector(checkBox, "small")
+        );
+    }
+
+    @FXML
+    private void goChoiceBox() throws NavigationException {
+        ChoiceBox<String> choice = new ChoiceBox<>();
+        choice.getItems().addAll("Option 01", "Option 02", "Option 03");
+        choice.getProperties().putIfAbsent("prefix", "ch-");
+        configLayoutControl(
+                choice,
+                new ColorSelector(
+                        choice,
+                        "Primary", "Info", "Success", "Warning", "Danger", "Secondary"
+                ),
+
+                new SizeSelector(choice, "small")
+        );
+    }
+
+    @FXML
+    private void goSplitButton() throws NavigationException {
+        SplitMenuButton menuButton = new SplitMenuButton();
+        menuButton.setText("Split Menu Button");
+        Menu menuOptions = new Menu("Option 03");
+        menuOptions.getItems().addAll(
+                new MenuItem("Option 01"),
+                new MenuItem("Option 02"),
+                new MenuItem("Option 03")
+        );
+        menuButton.getItems().addAll(
+                new MenuItem("Option 01"),
+                new MenuItem("Option 02"),
+                menuOptions,
+                new MenuItem("Option 04")
+        );
+
+        menuButton.getProperties().putIfAbsent("prefix", "smb-");
+        configLayoutControl(
+                menuButton,
+                new ColorSelector(
+                        menuButton,
+                        "Primary", "Info", "Success", "Warning", "Danger", "Secondary"
+                ),
+                new SizeSelector(menuButton, "small")
+        );
+    }
+
+
+
+    @FXML
+    private void goMenuButton() throws NavigationException {
+
+        MenuButton menuButton = new MenuButton("Menu Button");
+        Menu menuOptions = new Menu("Option 03");
+        menuOptions.getItems().addAll(
+                new MenuItem("Option 01"),
+                new MenuItem("Option 02"),
+                new MenuItem("Option 03")
+        );
+        menuButton.getItems().addAll(
+                            new MenuItem("Option 01"),
+                            new MenuItem("Option 02"),
+                            menuOptions,
+                            new MenuItem("Option 04")
+        );
+        menuButton.getProperties().putIfAbsent("prefix", "mb-");
+        configLayoutControl(
+                menuButton,
+                new ColorSelector(
+                        menuButton,
+                        "Primary", "Info", "Success", "Warning", "Danger", "Secondary"
+                ),
+                new SizeSelector(menuButton, "small")
+        );
+    }
+
+    @FXML
+    private void goSpinner() throws NavigationException {
+
+        Spinner<Integer> spinner = new Spinner<>();
+        spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,100));
+        spinner.getProperties().putIfAbsent("prefix", "spn-");
+        configLayoutControl(
+                spinner,
+                new ColorSelector(
+                        spinner,
+                        "Primary", "Info", "Success", "Warning", "Danger", "Secondary"
+                ),
+                new SizeSelector(spinner, "small")
         );
     }
 
@@ -224,16 +368,13 @@ public class DrawerNavigate implements Initializable, FluidView {
         pagination.getProperties().putIfAbsent("prefix", "pag-");
         configLayoutControl(
                 pagination,
-                Collections.singletonList(new Tab("Skin")),
                 new ColorSelector(
                         pagination,
                         "Primary", "Info", "Success", "Warning", "Danger", "Secondary"
-                ),
-                new TypeSelector(
-                        pagination,
-                        "Rounded", "Triangle"
                 )
+
         );
+
     }
 
 
@@ -241,11 +382,6 @@ public class DrawerNavigate implements Initializable, FluidView {
     private void goButton() throws NavigationException {
 
         Button button = new Button("Button");
-
-        SVGPath iconCopy = new SVGPath();
-        iconCopy.setContent("M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z");
-        iconCopy.getStyleClass().add("icon");
-
 //        button.setGraphic(iconCopy);
         button.setPrefSize(80, 60);
 
@@ -253,23 +389,140 @@ public class DrawerNavigate implements Initializable, FluidView {
 
         configLayoutControl(
                 button,
-                Arrays.asList(
-                        new Tab("Skin"),
-                        new Tab("Lead Icon")
+                Collections.singletonList(
+                    createTabSkin(
+                            ViewManager.INSTANCE.getRoot("button-skin")
+                    )
                 ),
+                new TypeSelector(button, "Skin","Centralize", "Ripple"),
+                new TypeSelector(button, "Type","Round"),
+                new SizeSelector(button, "medium")
+        );
+    }
+
+    @FXML
+    private void goLabel() throws NavigationException {
+
+        Label label = new Label("Label");
+
+//        button.setGraphic(iconCopy);
+        label.setPrefSize(80, 60);
+
+        label.getProperties().putIfAbsent("prefix", "lbl-");
+
+        configLayoutControl(
+                label,
+
                 new ColorSelector(
-                        button,
+                        label,
                         "Primary", "Info", "Success", "Warning", "Danger", "Secondary"
                 ),
-                new TypeSelector(
-                        button,
-                        "Flat", "Round", "Rounded", "Deep",
-                        "Raised", "Outlined"
+                new SizeSelector(label, "medium")
+        );
+    }
+
+    @FXML
+    private void goTextField() throws NavigationException {
+        TextField textField = new TextField();
+        textField.setPromptText("Text Field");
+
+//        textField.setPrefSize(200D, 80);
+//        textField.setMinHeight(80);
+//        textField.setMinWidth(400D);
+
+        textField.getProperties().putIfAbsent("prefix", "tf-");
+
+        defineLayout();
+
+        configLayoutControl(
+                textField,
+                Collections.singletonList(
+                        createTabImplementation(
+                                ViewManager.INSTANCE.getRoot("text-field-implement"))
+                        ),
+                new ColorSelector(textField
+
                 ),
-                new SizeSelector(button, "medium")
+                new CheckSelector(textField,
+                        "Float", "Counter", "Lead Icon", "Action Button"),
+                new TypeSelector(textField, "Type","Filled"),
+                new TypeSelector(textField,
+                        "Validator", "Warning", "Error", "Checked"),
+                new SizeSelector(textField, "medium")
 
         );
+    }
 
+    @FXML
+    private void goPasswordField() throws NavigationException {
+        PasswordField textField = new PasswordField();
+        textField.setPromptText("Password Field");
+        textField.setPrefSize(200D, 40D);
+
+        textField.getProperties().putIfAbsent("prefix", "pw-");
+
+        defineLayout();
+
+        configLayoutControl(
+                textField,
+                new CheckSelector(textField,
+                        "Float", "Lead Icon", "Action Button"
+                ),
+                new SizeSelector(textField, "medium")
+
+
+        );
+    }
+
+
+    @FXML
+    private void goTextArea() throws NavigationException {
+        TextArea textArea = new TextArea();
+        textArea.setPromptText("Text Area");
+        textArea.setPrefSize(200D, 100);
+
+        textArea.getProperties().putIfAbsent("prefix", "ta-");
+
+        defineLayout();
+
+        configLayoutControl(
+                textArea,
+                new CheckSelector(textArea,
+                        "Float", "Error"
+                ),
+                new TypeSelector(textArea,"Type","Filled")
+        );
+    }
+
+    @FXML
+    private void goComboBox() throws NavigationException {
+        ComboBox<String> comboBox = new ComboBox<>();
+
+        comboBox.setPromptText("Password Field");
+        comboBox.setSkin(new GNComboBoxSkin<>(comboBox));
+
+        comboBox.getItems().addAll("Option 01", "Option 02", "Option 3");
+
+        comboBox.setPrefSize(200D, 40D);
+
+        comboBox.getProperties().putIfAbsent("prefix", "cmb-");
+
+        defineLayout();
+
+        configLayoutControl(
+                comboBox,
+                new ColorSelector(
+                        comboBox,
+                        "Gray", "Primary", "Info", "Success", "Warning", "Danger", "Secondary"
+                ),
+                new SizeSelector(comboBox, "medium")
+
+
+        );
+    }
+
+    @FXML private void goLogin() throws NavigationException {
+        ViewManager.INSTANCE.navigate("login");
     }
 
 
@@ -282,5 +535,26 @@ public class DrawerNavigate implements Initializable, FluidView {
     @Override
     public void onExit() {
 
+    }
+
+    private Tab createTabSkin(Parent content) {
+        Tab tab = new Tab("Skins");
+        SVGPath icon = new SVGPath();
+        icon.getStyleClass().add("icon");
+        icon.setContent("M11.99 18.54l-7.37-5.73L3 14.07l9 7 9-7-1.63-1.27zM12 16l7.36-5.73L21 9l-9-7-9 7 1.63 1.27L12 16zm0-11.47L17.74 9 12 13.47 6.26 9 12 4.53z");
+        tab.setGraphic(icon);
+        tab.setContent(content);
+        return tab;
+    }
+
+    private Tab createTabImplementation(Parent content) {
+        Tab tab = new Tab("Implementation");
+        SVGPath icon = new SVGPath();
+        icon.getStyleClass().add("icon");
+
+        icon.setContent("M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z");
+        tab.setGraphic(icon);
+        tab.setContent(content);
+        return tab;
     }
 }

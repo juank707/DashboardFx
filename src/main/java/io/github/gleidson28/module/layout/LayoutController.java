@@ -16,8 +16,14 @@
  */
 package io.github.gleidson28.module.layout;
 
-import io.github.gleidson28.App;
 import io.github.gleidson28.global.creators.DrawerCreator;
+import io.github.gleidson28.global.enhancement.ActionView;
+import io.github.gleidson28.module.app.App;
+import io.github.gleidson28.module.app.ConfigApp;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -33,7 +39,7 @@ import java.util.ResourceBundle;
  * @author Gleidson Neves da Silveira | gleidisonmt@gmail.com
  * Create on  31/08/2020
  */
-public class LayoutController implements Initializable {
+public class LayoutController implements Initializable, ActionView {
 
     @FXML private HBox titleContent;
     @FXML private BorderPane main;
@@ -49,30 +55,43 @@ public class LayoutController implements Initializable {
 
     @FXML private Label lbl_title;
 
+    private ObservableList<ChangeListener<Number>> widthListeners =
+            FXCollections.observableArrayList();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        App.INSTANCE.getDecorator().widthProperty().addListener((observable, oldValue, newValue) -> {
+        hamburger.getStyleClass().add("btn-flat");
+    }
 
-            double x = App.INSTANCE.getDecorator().getWidth() - (drawer.getWidth() + breadTitle.getWidth());
+    private void changed(ObservableValue<? extends Number> observable,
+                         Number oldValue, Number newValue) {
 
-            removeOrAddBread(x < 220);
+        double x = App.getWidth() -
+                (drawer.getWidth() + breadTitle.getWidth());
 
-            if(newValue.doubleValue() < 500){
+
+        removeOrAddBread(x < 220);
+
+        if(newValue.doubleValue() < 500) {
+
 //                if(!titleContent.getChildren().contains(hamburger)) titleContent.getChildren().add(0, hamburger);
-                if(!App.INSTANCE.getDecorator().getCustomControls().contains(hamburger)) {
-                    App.INSTANCE.getDecorator().getCustomControls().add(hamburger);
+
+            if(!ConfigApp.INSTANCE.getDecorator()
+                    .getCustomControls().contains(hamburger)) {
+                ConfigApp.INSTANCE.getDecorator()
+                        .getCustomControls().add(hamburger);
                 }
-                hideDrawer();
-                showHamburger();
-                VBox.setMargin(breadTitle, new Insets(5));
 
-            } else if(newValue.doubleValue() > 600) {
-                hideHamburger();
-                showDrawer();
-                VBox.setMargin(breadTitle, new Insets(5,100,5,5));
+            hideDrawer();
+            showHamburger();
+            VBox.setMargin(breadTitle, new Insets(5));
 
-            }
-        });
+        } else if(newValue.doubleValue() > 600) {
+            hideHamburger();
+            showDrawer();
+            VBox.setMargin(breadTitle, new Insets(5,100,5,5));
+
+        }
     }
 
     public void foregroundOpen() {
@@ -96,8 +115,8 @@ public class LayoutController implements Initializable {
         hamburger.setVisible(true);
         hamburger.toBack();
 
-        if(!App.INSTANCE.getDecorator().getCustomControls().contains(hamburger)){
-            App.INSTANCE.getDecorator().addControl(hamburger);
+        if(!ConfigApp.INSTANCE.getDecorator().getCustomControls().contains(hamburger)){
+            ConfigApp.INSTANCE.getDecorator().addControl(hamburger);
         }
 
         removeOrAddBread(true);
@@ -108,7 +127,7 @@ public class LayoutController implements Initializable {
             drawer.setPrefWidth(250D);
             main.setLeft(drawer);
 
-            App.INSTANCE.getDecorator().removeControl(hamburger);
+            ConfigApp.INSTANCE.getDecorator().removeControl(hamburger);
             removeOrAddBread(false);
         }
     }
@@ -117,7 +136,7 @@ public class LayoutController implements Initializable {
 //
         if(remove) {
             VBox box = (VBox) drawer.lookup("#drawerBox");
-            HBox h = (HBox) App.INSTANCE.getDecorator().lookup(".badges");
+            HBox h = (HBox) ConfigApp.INSTANCE.getDecorator().lookup(".badges");
             if(h != null && !box.getChildren().contains(h)) {
                 box.getChildren().add(h);
                 HBox.setHgrow(h, Priority.ALWAYS);
@@ -128,11 +147,11 @@ public class LayoutController implements Initializable {
             }
         } else {
 
-            HBox h = (HBox) App.INSTANCE.getDecorator().lookup(".badges");
+            HBox h = (HBox) ConfigApp.INSTANCE.getDecorator().lookup(".badges");
             if(h != null) {
                 h.setPadding(new Insets(0));
-                if (!App.INSTANCE.getDecorator().getCustomControls().contains(h)) {
-                    App.INSTANCE.getDecorator().getCustomControls().add(h);
+                if (!ConfigApp.INSTANCE.getDecorator().getCustomControls().contains(h)) {
+                    ConfigApp.INSTANCE.getDecorator().getCustomControls().add(h);
                     h.setAlignment(Pos.CENTER_RIGHT);
                 }
             }
@@ -152,5 +171,15 @@ public class LayoutController implements Initializable {
 //        lbl_title.setPrefHeight(50);
 //        lbl_title.setPadding(new Insets(0, 0 ,0 ,10));
 //        lbl_title.getStyleClass().removeAll("h4");
+    }
+
+    @Override
+    public void onEnter() {
+        addGlobalListener(this::changed);
+    }
+
+    @Override
+    public void onExit() {
+        removeGlobalListener();
     }
 }

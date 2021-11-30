@@ -17,7 +17,7 @@
 package io.github.gleidson28.module.carousel;
 
 import com.gn.GNCarousel;
-import io.github.gleidson28.App;
+import io.github.gleidson28.module.app.ConfigApp;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -82,7 +82,7 @@ public class Carousel implements Initializable {
 
     @FXML
     private void openProject() {
-        App.INSTANCE.openLink("https://github.com/Gleidson28/GNCarousel");
+        ConfigApp.INSTANCE.openLink("https://github.com/Gleidson28/GNCarousel");
     }
 
 }

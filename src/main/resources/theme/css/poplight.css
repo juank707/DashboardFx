@@ -3,32 +3,39 @@
     -elegant    : #2E2E2E;
     -dark-gray  : #656D78;
     -light-gray : #E6E9ED;
-
+    -fx-background-color : transparent;
 }
 
 .popover  {
-	-fx-background-color: transparent;
+    -fx-background-color: white;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,.2) , 18, 0 , 0 , 10 );
+    -fx-stroke: linear-gradient(to top, -primary-color, -aqua);
 
-	 -fx-border-color : linear-gradient(to top, -mint, -aqua);
-        -fx-border-width : 0 0 0 4;
+    -fx-border-width : 0 0 0 4;
+    -fx-border-width : 1;
+    -fx-background-radius : 10px;
+    -fx-border-radius : 10px;
+
+    -fx-border-color: -light-gray-2;
 }
 
 .popover > .border {
-	-fx-stroke: linear-gradient(to top, -mint, -aqua);
-	-fx-stroke-width: 0.8;
+	-fx-stroke-width: 0.0;
 	-fx-fill: transparent;
 	-fx-effect: null;
 	-fx-stroke-type : inside;
 }
 
 .popover > .content {
-  -fx-border-color : linear-gradient(to top, -mint, -aqua);
-  -fx-border-width : 1px;
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
+    -fx-border-width : 0px;
+
 	-fx-padding: 0;
 }
 
 .popover > .detached {
-	-fx-background-color: transparent;
+	-fx-background-color: white;
 }
 
 .popover > .content > .title > .text  {

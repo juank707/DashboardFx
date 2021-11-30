@@ -12,6 +12,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.SplitMenuButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -64,16 +65,17 @@
                                     <Insets right="10.0" />
                                  </HBox.margin>
                               </Button>
+                              <SVGPath content="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                               <TextField fx:id="search" prefHeight="40.0" promptText="Procurar" HBox.hgrow="ALWAYS">
                                  <styleClass>
-                                    <String fx:value="field-filled" />
-                                    <String fx:value="tf-clear" />
-                                    <String fx:value="tf-search" />
+                                    <String fx:value="filled" />
+                                    <String fx:value="lead-contact" />
                                  </styleClass>
                                  <HBox.margin>
                                     <Insets right="10.0" />
                                  </HBox.margin>
                               </TextField>
+                              <TextField fx:id="search1" layoutX="80.0" layoutY="23.0" prefHeight="40.0" prefWidth="382.0" promptText="Procurar" />
                            </children>
                         </HBox>
                         <HBox fx:id="boxEntries" alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1">
@@ -84,6 +86,12 @@
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                               </ComboBox>
+                              <SplitMenuButton mnemonicParsing="false" text="Filters">
+                                <items>
+                                  <MenuItem mnemonicParsing="false" text="Action 1" />
+                                  <MenuItem mnemonicParsing="false" text="Action 2" />
+                                </items>
+                              </SplitMenuButton>
                               <Label fx:id="btnFilter" contentDisplay="RIGHT" graphicTextGap="15.0" minHeight="40.0" minWidth="-Infinity" onMouseClicked="#openFilterPopup" prefHeight="40.0" prefWidth="80.0" styleClass="field-filled" text="Filters">
                                  <graphic>
                                     <SVGPath content="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" style="-fx-fill: -text-color;" translateY="1.0" />

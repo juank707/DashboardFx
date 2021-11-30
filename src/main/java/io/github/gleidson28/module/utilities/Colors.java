@@ -18,7 +18,7 @@ package io.github.gleidson28.module.utilities;
 
 import eu.hansolo.colors.ColorHelper;
 import eu.hansolo.colors.MaterialDesign;
-import io.github.gleidson28.App;
+import io.github.gleidson28.module.app.ConfigApp;
 import io.github.gleidson28.global.creators.SnackBarCreator;
 import io.github.gleidson28.global.creators.SnackType;
 import javafx.fxml.FXML;
@@ -81,6 +81,7 @@ public class Colors implements Initializable {
     private void createContent() {
         tiles.getChildren().clear();
 
+
         properties.stringPropertyNames().forEach( f -> {
 
             String color = f.contains("/") ? f.substring(f.lastIndexOf("-")) : f;
@@ -100,6 +101,19 @@ public class Colors implements Initializable {
             Pane center = new Pane();
             center.setPrefSize(tileWidth, tileHeight);
             center.setStyle("-fx-background-color : " + color + ";");
+//
+//            System.out.println();
+//            String x = color.substring(1).replaceAll("-", "_");
+//            System.out.println(x.toUpperCase() + "(\"" + properties.getProperty(color) + "\"),");
+//
+//            System.out.println();
+//            String _class = color.toLowerCase();
+//            System.out.println(".tf" + _class + ":focused,\n" +
+//                    ".tf" + _class + ":focused .border {\n" +
+//                    "    -fx-border-color : " + _class + ";\n" +
+//                    "    -fx-stroke : " + _class + ";\n" +
+//                    "}");
+
             Pane right = new Pane();
             right.setPrefSize(tileWidth, tileHeight);
             right.setStyle("-fx-background-radius : 0 10 0 0; -fx-background-color : derive(" + color + ", 20%);");
@@ -136,12 +150,15 @@ public class Colors implements Initializable {
             contextMenu.getItems().addAll(name, background, border, fill, text, java);
 
             name.setOnAction(event -> {
-                toClipBoard( "Hexadecimal : " + formatHexString(Color.web(properties.getProperty(color))));
+                toClipBoard( "Hexadecimal : " +
+                        formatHexString(Color.web(properties.getProperty(color))));
             });
 
             background.setOnAction(event -> {
                 toClipBoard(createCopyString("background", color));
             });
+
+
 
             border.setOnAction(event -> {
                 toClipBoard( "-fx-border-color : derive(" + color + ", -10%);\n-fx-background-color : " + color + ";\n-fx-background-color : derive(" + color + ", 20%);");
@@ -164,7 +181,7 @@ public class Colors implements Initializable {
                     if(event.isSecondaryButtonDown()) {
 
                     Bounds bounds = child.localToScreen(child.getBoundsInLocal());
-                    contextMenu.show(App.INSTANCE.getDecorator().getWindow(),
+                    contextMenu.show(ConfigApp.INSTANCE.getDecorator().getWindow(),
                             bounds.getMinX() + 20, bounds.getMaxY() - 40
                     );
                 }

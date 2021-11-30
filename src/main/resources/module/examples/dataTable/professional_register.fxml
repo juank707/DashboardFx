@@ -28,14 +28,13 @@
 <?import javafx.scene.text.TextFlow?>
 <?import org.controlsfx.control.Rating?>
 
-<StackPane fx:id="root" prefHeight="712.0" prefWidth="958.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.gleidson28.module.examples.dataTable.RegisterController">
+<StackPane fx:id="root" prefHeight="712.0" prefWidth="958.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.gleidson28.module.examples.dataTable.RegisterController">
     <stylesheets>
         <URL value="@../../../theme/css/material-color.css" />
         <URL value="@../../../theme/css/skeleton.css" />
-        <URL value="@../../../theme/css/light.css" />
-        <URL value="@../../../theme/css/bootstrap.css" />
-        <URL value="@../../../theme/css/simple-info.css" />
-        <URL value="@../../../theme/css/forms.css" />
+       <URL value="@../../../theme/css/bootstrap.css" />
+<!--       <URL value="@../../../theme/css/light.css" />-->
+        <URL value="@../../../theme/css/shape.css" />
         <URL value="@../../../theme/css/typographic.css" />
         <URL value="@../../../theme/css/helpers.css" />
         <URL value="@../../../theme/css/master.css" />
@@ -64,51 +63,30 @@
                                              <children>
                                                 <TextField fx:id="tfName" minHeight="40.0" promptText="Name">
                                                    <styleClass>
-                                                      <String fx:value="field-filled" />
-                                                      <String fx:value="name-field" />
+                                                      <String fx:value="float" />
+                                                      <String fx:value="lead-icon" />
+                                                      <String fx:value="lead-contact" />
                                                    </styleClass>
                                                 </TextField>
-                                                <TextField fx:id="tfPrice" minHeight="40.0" promptText="Price">
+                                                <TextField fx:id="tfPrice" minHeight="40.0" promptText="Price" style="-fx-border-color: red;">
                                                    <styleClass>
-                                                      <String fx:value="field-filled" />
-                                                      <String fx:value="tf-monetary" />
-                                                   </styleClass>
-                                                </TextField>
-                                                <TextField minHeight="40.0" promptText="Education">
-                                                   <styleClass>
-                                                      <String fx:value="field-filled" />
-                                                      <String fx:value="tf-education" />
-                                                   </styleClass>
-                                                </TextField>
-                                                <TextField minHeight="40.0" promptText="Geographic Preferences:">
-                                                   <styleClass>
-                                                      <String fx:value="field-filled" />
-                                                      <String fx:value="tf-map" />
-                                                   </styleClass>
-                                                </TextField>
+                                                      <String fx:value="float" />
+                                                      <String fx:value="lead-monetary" />
+                                                   </styleClass></TextField>
+                                                <TextField minHeight="40.0" promptText="Education" />
+                                                <TextField minHeight="40.0" promptText="Geographic Preferences:" />
                                              </children>
                                           </VBox>
                                           <VBox fx:id="secondColumn" minHeight="295.0" spacing="30.0" GridPane.columnIndex="1">
                                              <children>
                                                 <TextField fx:id="tfLastName" minHeight="40.0" promptText="Last Name">
                                                    <styleClass>
-                                                      <String fx:value="field-filled" />
-                                                      <String fx:value="tf-contact" />
-                                                   </styleClass>
-                                                </TextField>
-                                                <TextField minHeight="40.0" promptText="Location">
-                                                   <styleClass>
-                                                      <String fx:value="field-filled" />
-                                                      <String fx:value="tf-place" />
-                                                   </styleClass>
-                                                </TextField>
-                                                <TextField minHeight="40.0" promptText="Years Of Experience:">
-                                                   <styleClass>
-                                                      <String fx:value="field-filled" />
-                                                      <String fx:value="tf-lapse" />
-                                                   </styleClass>
-                                                </TextField>
-                                                <TextField minHeight="40.0" promptText="Specialization:" styleClass="field-filled" />
+                                                      <String fx:value="float" />
+                                                      <String fx:value="lead-contact" />
+                                                   </styleClass></TextField>
+                                                <TextField minHeight="40.0" promptText="Location" styleClass="float" />
+                                                <TextField minHeight="40.0" promptText="Years Of Experience:" />
+                                                <TextField minHeight="40.0" promptText="Specialization:" />
                                              </children>
                                           </VBox>
                                        </children>
@@ -199,7 +177,7 @@
                                                 <Text fx:id="teamsText" opacity="0.7" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" styleClass="h5" text="Dream, Teams, Creative" textAlignment="CENTER" />
                                              </children>
                                           </TextFlow>
-                                          <Button fx:id="btnTeams" contentDisplay="GRAPHIC_ONLY" graphicTextGap="10.0" mnemonicParsing="false" onMouseClicked="#openTeamPopup" prefHeight="41.0" prefWidth="40.0" style="-fx-min-height: -1; -fx-max-height: -1;" text="Gas" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                                          <Button fx:id="btnTeams" contentDisplay="GRAPHIC_ONLY" graphicTextGap="10.0" mnemonicParsing="false" onMouseClicked="#openTeamPopup" prefHeight="41.0" prefWidth="40.0" style="-fx-min-height: -1; -fx-max-height: -1;" styleClass="btn-flat" text="Gas" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                                              <graphic>
                                                 <Group>
                                                    <children>
@@ -210,10 +188,6 @@
                                              <effect>
                                                 <ColorAdjust brightness="0.14" />
                                              </effect>
-                                             <styleClass>
-                                                <String fx:value="btn-transparent" />
-                                                <String fx:value="border" />
-                                             </styleClass>
                                           </Button>
                                        </children>
                                     </GridPane>
@@ -241,7 +215,7 @@
                                                 <Text fx:id="teamsText1" opacity="0.7" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" styleClass="h5" text="Strategy, Project, Unit, Economy, UX Designer" textAlignment="CENTER" />
                                              </children>
                                           </TextFlow>
-                                          <Button fx:id="btnSkills" contentDisplay="GRAPHIC_ONLY" graphicTextGap="10.0" mnemonicParsing="false" onAction="#openSkillPopup" prefHeight="41.0" prefWidth="40.0" style="-fx-min-height: -1; -fx-max-height: -1;" text="Gas" GridPane.columnIndex="1">
+                                          <Button fx:id="btnSkills" contentDisplay="GRAPHIC_ONLY" graphicTextGap="10.0" mnemonicParsing="false" onAction="#openSkillPopup" prefHeight="41.0" prefWidth="40.0" style="-fx-min-height: -1; -fx-max-height: -1;" styleClass="btn-flat" text="Gas" GridPane.columnIndex="1">
                                              <graphic>
                                                 <Group>
                                                    <children>
@@ -252,10 +226,6 @@
                                              <effect>
                                                 <ColorAdjust brightness="0.14" />
                                              </effect>
-                                             <styleClass>
-                                                <String fx:value="btn-transparent" />
-                                                <String fx:value="border" />
-                                             </styleClass>
                                           </Button>
                                        </children>
                                     </GridPane>
