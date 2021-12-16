@@ -16,15 +16,17 @@
  */
 package io.github.gleidson28.module.layout;
 
-import io.github.gleidson28.module.app.ConfigApp;
 import io.github.gleidson28.GNAvatarView;
+import io.github.gleidson28.global.controls.GNComboBoxSkin;
+import io.github.gleidson28.global.controls.control.GNTextArea;
+import io.github.gleidson28.global.controls.control.GNTextField;
 import io.github.gleidson28.global.enhancement.ActionView;
 import io.github.gleidson28.global.exceptions.NavigationException;
-import io.github.gleidson28.global.plugin.ViewManager;
-import io.github.gleidson28.global.properties.*;
-import io.github.gleidson28.global.skin.GNComboBoxSkin;
 import io.github.gleidson28.global.material.icon.IconContainer;
 import io.github.gleidson28.global.material.icon.Icons;
+import io.github.gleidson28.global.plugin.ViewManager;
+import io.github.gleidson28.global.properties.*;
+import io.github.gleidson28.module.app.ConfigApp;
 import io.github.gleidson28.module.controls.LayoutController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -423,8 +425,11 @@ public class DrawerNavigate implements Initializable, ActionView {
 
     @FXML
     private void goTextField() throws NavigationException {
-        TextField textField = new TextField();
+
+        GNTextField textField = new GNTextField();
         textField.setPromptText("Text Field");
+
+//        textField.setFloatPrompt(true);
 
 //        textField.setPrefSize(200D, 80);
 //        textField.setMinHeight(80);
@@ -440,9 +445,7 @@ public class DrawerNavigate implements Initializable, ActionView {
                         createTabImplementation(
                                 ViewManager.INSTANCE.getRoot("text-field-implement"))
                         ),
-                new ColorSelector(textField
-
-                ),
+                new ColorSelector(textField),
                 new CheckSelector(textField,
                         "Float", "Counter", "Lead Icon", "Action Button"),
                 new TypeSelector(textField, "Type","Filled"),
@@ -477,9 +480,10 @@ public class DrawerNavigate implements Initializable, ActionView {
 
     @FXML
     private void goTextArea() throws NavigationException {
-        TextArea textArea = new TextArea();
+        GNTextArea textArea = new GNTextArea();
+
         textArea.setPromptText("Text Area");
-        textArea.setPrefSize(200D, 100);
+//        textArea.setPrefSize(200D, 100);
 
         textArea.getProperties().putIfAbsent("prefix", "ta-");
 
@@ -487,10 +491,12 @@ public class DrawerNavigate implements Initializable, ActionView {
 
         configLayoutControl(
                 textArea,
+                new ColorSelector(textArea),
                 new CheckSelector(textArea,
-                        "Float", "Error"
+                        "Float"
                 ),
-                new TypeSelector(textArea,"Type","Filled")
+                new TypeSelector(textArea,"Type","Filled"),
+                new SizeSelector(textArea, "medium")
         );
     }
 
